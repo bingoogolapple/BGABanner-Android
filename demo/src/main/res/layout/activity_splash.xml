@@ -1,0 +1,12 @@
+<cn.bingoogolapple.bgabanner.library.BGABanner xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/banner_splash_pager"
+    style="@style/MatchMatch"
+    app:pointContainerBackground="#4000"
+    app:pointContainerHeight="25dp"
+    app:pointContainerWidth="match_parent"
+    app:pointFocusedImg="@drawable/point_focused"
+    app:pointGravity="bottom|center_horizontal"
+    app:pointSpacing="5dp"
+    app:pointUnfocusedImg="@drawable/point_unfocused"
+    app:pointVisibility="true" />

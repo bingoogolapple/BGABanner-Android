@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="BGA" />
+
+    <style name="BGA.Theme" parent="@android:style/Theme.Light.NoTitleBar"></style>
+
+    <style name="BGA.Theme.Translucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+
+</resources>

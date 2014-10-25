@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.Vertical">
+
+    <cn.bingoogolapple.bgabanner.library.BGABanner
+        android:id="@+id/banner1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:pointAutoPlayAble="true"
+        app:pointAutoPlayInterval="2000"
+        app:pointContainerBackground="#200a"
+        app:pointContainerHeight="20dp"
+        app:pointContainerWidth="match_parent"
+        app:pointEdgeSpacing="10dp"
+        app:pointFocusedImg="@drawable/point_focused"
+        app:pointGravity="bottom|center_horizontal"
+        app:pointSpacing="5dp"
+        app:pointUnfocusedImg="@drawable/point_unfocused"
+        app:pointVisibility="true" />
+
+    <cn.bingoogolapple.bgabanner.library.BGABanner
+        android:id="@+id/banner2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        app:pointAutoPlayAble="true"
+        app:pointAutoPlayInterval="2000"
+        app:pointContainerBackground="@android:color/transparent"
+        app:pointContainerHeight="20dp"
+        app:pointContainerWidth="match_parent"
+        app:pointEdgeSpacing="10dp"
+        app:pointFocusedImg="@drawable/point_focused"
+        app:pointGravity="bottom|right"
+        app:pointSpacing="5dp"
+        app:pointUnfocusedImg="@drawable/point_unfocused"
+        app:pointVisibility="true" />
+
+    <cn.bingoogolapple.bgabanner.library.BGABanner
+        android:id="@+id/banner3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        app:pointAutoPlayAble="true"
+        app:pointAutoPlayInterval="2000"
+        app:pointContainerBackground="#4000"
+        app:pointContainerHeight="20dp"
+        app:pointContainerWidth="match_parent"
+        app:pointEdgeSpacing="10dp"
+        app:pointFocusedImg="@drawable/point_focused"
+        app:pointGravity="bottom|left"
+        app:pointSpacing="5dp"
+        app:pointUnfocusedImg="@drawable/point_unfocused"
+        app:pointVisibility="true" />
+
+</LinearLayout>
