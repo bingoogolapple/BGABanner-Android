@@ -10,6 +10,8 @@ Splash界面导航效果+广告条自动轮播效果
 
 #### [下载Demo](http://bingoshare.u.qiniudn.com/BGABannerDemo.apk)
 
+>Gradle
+
 ```groovy
 dependencies {
     compile 'cn.bingoogolapple.bgabanner:library:1.0.0@aar'
