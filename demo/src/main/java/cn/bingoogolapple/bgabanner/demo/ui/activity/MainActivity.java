@@ -7,25 +7,25 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bingoogolapple.bgaannotation.BGAA;
+import cn.bingoogolapple.bgaannotation.BGAALayout;
+import cn.bingoogolapple.bgaannotation.BGAAView;
 import cn.bingoogolapple.bgabanner.demo.R;
-import cn.bingoogolapple.bgabanner.library.BGABanner;
-import cn.bingoogolapple.loon.library.Loon;
-import cn.bingoogolapple.loon.library.LoonLayout;
-import cn.bingoogolapple.loon.library.LoonView;
+import cn.bingoogolapple.bgabanner.BGABanner;
 
-@LoonLayout(id = R.layout.activity_main)
+@BGAALayout(R.layout.activity_main)
 public class MainActivity extends FragmentActivity {
-    @LoonView(id = R.id.banner1)
+    @BGAAView(R.id.banner1)
     private BGABanner mBanner1;
-    @LoonView(id = R.id.banner2)
+    @BGAAView(R.id.banner2)
     private BGABanner mBanner2;
-    @LoonView(id = R.id.banner3)
+    @BGAAView(R.id.banner3)
     private BGABanner mBanner3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Loon.injectView2Activity(this);
+        BGAA.injectView2Activity(this);
         mBanner1.setViewPagerViews(getDatas());
         mBanner2.setViewPagerViews(getDatas());
         mBanner3.setViewPagerViews(getDatas());

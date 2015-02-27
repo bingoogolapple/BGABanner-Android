@@ -1,26 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "cn.bingoogolapple.bgabanner.demo"
-        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
-        versionName "1.0.0"
-        versionCode 1
-    }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.+'
-    compile 'cn.bingoogolapple.loon:library:1.1.0@aar'
-    compile project(':library')
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'cn.bingoogolapple:bga-annotation:1.0.0@aar'
+//    compile project(':library')
+    compile 'cn.bingoogolapple:bga-banner:1.0.0@aar'
 }

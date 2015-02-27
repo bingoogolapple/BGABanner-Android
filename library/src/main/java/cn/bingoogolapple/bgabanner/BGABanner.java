@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner.library;
+package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -61,60 +61,61 @@ public class BGABanner extends RelativeLayout {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGABanner);
-        final int count = typedArray.getIndexCount();
-        for (int i = 0; i < count; i++) {
-            int attr = typedArray.getIndex(i);
-            if (attr == R.styleable.BGABanner_pointFocusedImg) {
-                mPointFocusedDrawable = typedArray.getDrawable(attr);
-
-            } else if (attr == R.styleable.BGABanner_pointUnfocusedImg) {
-                mPointUnfocusedDrawable = typedArray.getDrawable(attr);
-
-            } else if (attr == R.styleable.BGABanner_pointContainerBackground) {
-                mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
-
-            } else if (attr == R.styleable.BGABanner_pointSpacing) {
-                /**
-                 * getDimension和getDimensionPixelOffset的功能差不多,都是获取某个dimen的值,如果是dp或sp的单位,将其乘以density,如果是px,则不乘;两个函数的区别是一个返回float,一个返回int. getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.
-                 */
-                mPointSpacing = typedArray.getDimensionPixelSize(attr, mPointSpacing);
-
-            } else if (attr == R.styleable.BGABanner_pointEdgeSpacing) {
-                mPointEdgeSpacing = typedArray.getDimensionPixelSize(attr, mPointEdgeSpacing);
-
-            } else if (attr == R.styleable.BGABanner_pointGravity) {
-                mPointGravity = typedArray.getInt(attr, mPointGravity);
-
-            } else if (attr == R.styleable.BGABanner_pointContainerWidth) {
-                try {
-                    mPointContainerWidth = typedArray.getDimensionPixelSize(attr, mPointContainerWidth);
-                } catch (UnsupportedOperationException e) {
-                    // 如果是指定的wrap_content或者match_parent会执行下面这一行
-                    mPointContainerWidth = typedArray.getInt(attr, mPointContainerWidth);
-                }
-
-            } else if (attr == R.styleable.BGABanner_pointContainerHeight) {
-                try {
-                    mPointContainerHeight = typedArray.getDimensionPixelSize(attr, mPointContainerHeight);
-                } catch (UnsupportedOperationException e) {
-                    mPointContainerHeight = typedArray.getInt(attr, mPointContainerHeight);
-                }
-
-            } else if (attr == R.styleable.BGABanner_pointVisibility) {
-                mPointVisibility = typedArray.getBoolean(attr, mPointVisibility);
-
-            } else if (attr == R.styleable.BGABanner_pointAutoPlayAble) {
-                mAutoPlayAble = typedArray.getBoolean(attr, mAutoPlayAble);
-
-            } else if (attr == R.styleable.BGABanner_pointAutoPlayInterval) {
-                mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
-
-            }
+        final int N = typedArray.getIndexCount();
+        for (int i = 0; i < N; i++) {
+            initAttr(typedArray.getIndex(i), typedArray);
         }
         typedArray.recycle();
     }
 
-    @SuppressWarnings("deprecation")
+    public void initAttr(int attr, TypedArray typedArray) {
+        if (attr == R.styleable.BGABanner_banner_pointFocusedImg) {
+            mPointFocusedDrawable = typedArray.getDrawable(attr);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointUnfocusedImg) {
+            mPointUnfocusedDrawable = typedArray.getDrawable(attr);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
+            mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointSpacing) {
+            /**
+             * getDimension和getDimensionPixelOffset的功能差不多,都是获取某个dimen的值,如果是dp或sp的单位,将其乘以density,如果是px,则不乘;两个函数的区别是一个返回float,一个返回int. getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.
+             */
+            mPointSpacing = typedArray.getDimensionPixelSize(attr, mPointSpacing);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointEdgeSpacing) {
+            mPointEdgeSpacing = typedArray.getDimensionPixelSize(attr, mPointEdgeSpacing);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointGravity) {
+            mPointGravity = typedArray.getInt(attr, mPointGravity);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointContainerWidth) {
+            try {
+                mPointContainerWidth = typedArray.getDimensionPixelSize(attr, mPointContainerWidth);
+            } catch (UnsupportedOperationException e) {
+                // 如果是指定的wrap_content或者match_parent会执行下面这一行
+                mPointContainerWidth = typedArray.getInt(attr, mPointContainerWidth);
+            }
+
+        } else if (attr == R.styleable.BGABanner_banner_pointContainerHeight) {
+            try {
+                mPointContainerHeight = typedArray.getDimensionPixelSize(attr, mPointContainerHeight);
+            } catch (UnsupportedOperationException e) {
+                mPointContainerHeight = typedArray.getInt(attr, mPointContainerHeight);
+            }
+
+        } else if (attr == R.styleable.BGABanner_banner_pointVisibility) {
+            mPointVisibility = typedArray.getBoolean(attr, mPointVisibility);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayAble) {
+            mAutoPlayAble = typedArray.getBoolean(attr, mAutoPlayAble);
+
+        } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayInterval) {
+            mAutoPlayInterval = typedArray.getInteger(attr, mAutoPlayInterval);
+        }
+    }
+
     private void initView(Context context) {
         mViewPager = new ViewPager(context);
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));

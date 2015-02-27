@@ -2,57 +2,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch.Vertical">
 
-    <cn.bingoogolapple.bgabanner.library.BGABanner
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:pointAutoPlayAble="true"
-        app:pointAutoPlayInterval="2000"
-        app:pointContainerBackground="#200a"
-        app:pointContainerHeight="20dp"
-        app:pointContainerWidth="match_parent"
-        app:pointEdgeSpacing="10dp"
-        app:pointFocusedImg="@drawable/point_focused"
-        app:pointGravity="bottom|center_horizontal"
-        app:pointSpacing="5dp"
-        app:pointUnfocusedImg="@drawable/point_unfocused"
-        app:pointVisibility="true" />
+        app:banner_pointAutoPlayAble="true"
+        app:banner_pointAutoPlayInterval="2000"
+        app:banner_pointContainerBackground="#200a"
+        app:banner_pointContainerHeight="20dp"
+        app:banner_pointContainerWidth="match_parent"
+        app:banner_pointEdgeSpacing="10dp"
+        app:banner_pointFocusedImg="@drawable/shape_point_select"
+        app:banner_pointGravity="bottom|center_horizontal"
+        app:banner_pointSpacing="5dp"
+        app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
+        app:banner_pointVisibility="true" />
 
-    <cn.bingoogolapple.bgabanner.library.BGABanner
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="20dp"
-        app:pointAutoPlayAble="true"
-        app:pointAutoPlayInterval="2000"
-        app:pointContainerBackground="@android:color/transparent"
-        app:pointContainerHeight="20dp"
-        app:pointContainerWidth="match_parent"
-        app:pointEdgeSpacing="10dp"
-        app:pointFocusedImg="@drawable/point_focused"
-        app:pointGravity="bottom|right"
-        app:pointSpacing="5dp"
-        app:pointUnfocusedImg="@drawable/point_unfocused"
-        app:pointVisibility="true" />
+        app:banner_pointAutoPlayAble="true"
+        app:banner_pointAutoPlayInterval="2000"
+        app:banner_pointContainerBackground="@android:color/transparent"
+        app:banner_pointContainerHeight="20dp"
+        app:banner_pointContainerWidth="match_parent"
+        app:banner_pointEdgeSpacing="10dp"
+        app:banner_pointFocusedImg="@drawable/point_focused"
+        app:banner_pointGravity="bottom|right"
+        app:banner_pointSpacing="5dp"
+        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
+        app:banner_pointVisibility="true" />
 
-    <cn.bingoogolapple.bgabanner.library.BGABanner
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:layout_weight="1"
-        app:pointAutoPlayAble="true"
-        app:pointAutoPlayInterval="2000"
-        app:pointContainerBackground="#4000"
-        app:pointContainerHeight="20dp"
-        app:pointContainerWidth="match_parent"
-        app:pointEdgeSpacing="10dp"
-        app:pointFocusedImg="@drawable/point_focused"
-        app:pointGravity="bottom|left"
-        app:pointSpacing="5dp"
-        app:pointUnfocusedImg="@drawable/point_unfocused"
-        app:pointVisibility="true" />
+        app:banner_pointAutoPlayAble="true"
+        app:banner_pointAutoPlayInterval="2000"
+        app:banner_pointContainerBackground="#4000"
+        app:banner_pointContainerHeight="20dp"
+        app:banner_pointContainerWidth="match_parent"
+        app:banner_pointEdgeSpacing="10dp"
+        app:banner_pointFocusedImg="@drawable/point_focused"
+        app:banner_pointGravity="bottom|left"
+        app:banner_pointSpacing="5dp"
+        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
+        app:banner_pointVisibility="true" />
 
 </LinearLayout>

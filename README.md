@@ -14,7 +14,7 @@ Splash界面导航效果+广告条自动轮播效果
 
 ```groovy
 dependencies {
-    compile 'cn.bingoogolapple.bgabanner:library:1.0.0@aar'
+    compile 'cn.bingoogolapple:bga-banner:1.0.0@aar'
 }
 ```
 

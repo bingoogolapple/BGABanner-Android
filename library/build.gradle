@@ -1,18 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "cn.bingoogolapple.bgabanner.library"
-        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:appcompat-v7:21.0.2'
 }
 
-apply from: './gradle-mvn-push.gradle'
+apply from: 'android-artifacts.gradle'
+apply from: 'central-publish.gradle'
+apply from: 'bintray-publish.gradle'
