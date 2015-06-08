@@ -18,4 +18,4 @@ dependencies {
 }
 ```
 
-##### 详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner/tree/master/demo):feet:
+##### 详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
