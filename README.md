@@ -1,4 +1,4 @@
-:running:BGABanner v1.0.0:running:
+:running:BGABanner-Android v1.0.0:running:
 ============
 Splash界面导航效果+广告条自动轮播效果
 
