@@ -27,8 +27,11 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         BGAA.injectView2Activity(this);
         mBanner1.setViewPagerViews(getDatas());
+        mBanner1.setTransitionEffect(BGABanner.TransitionEffect.Cube);
         mBanner2.setViewPagerViews(getDatas());
+        mBanner2.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
         mBanner3.setViewPagerViews(getDatas());
+        mBanner3.setTransitionEffect(BGABanner.TransitionEffect.Depth);
     }
 
     private List<View> getDatas() {

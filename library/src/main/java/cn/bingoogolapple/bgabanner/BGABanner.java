@@ -6,11 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,7 +22,7 @@ public class BGABanner extends RelativeLayout {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private ViewPager mViewPager = null;
+    private BGAViewPager mViewPager = null;
     private List<View> mViews = null;
     private LinearLayout mPointContainer = null;
     private List<ImageView> mPoints = null;
@@ -44,7 +44,7 @@ public class BGABanner extends RelativeLayout {
     private Runnable mAutoPlayTask = new Runnable() {
         @Override
         public void run() {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
             mPagerHandler.postDelayed(mAutoPlayTask, mAutoPlayInterval);
         }
     };
@@ -117,7 +117,7 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initView(Context context) {
-        mViewPager = new ViewPager(context);
+        mViewPager = new BGAViewPager(context);
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
 
         if (mPointVisibility) {
@@ -154,8 +154,8 @@ public class BGABanner extends RelativeLayout {
 
     public void setViewPagerViews(List<View> views) {
         mViews = views;
-        mViewPager.setAdapter(new MyAdapter());
-        mViewPager.setOnPageChangeListener(new MyListener());
+        mViewPager.setAdapter(new PageAdapter());
+        mViewPager.addOnPageChangeListener(new ChangePointListener());
         if (mPointVisibility) {
             initPoints();
             processAutoPlay();
@@ -168,7 +168,7 @@ public class BGABanner extends RelativeLayout {
         if (mPoints != null) {
             mPoints.clear();
         } else {
-            mPoints = new ArrayList<ImageView>();
+            mPoints = new ArrayList<>();
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
         int margin = mPointSpacing / 2;
@@ -201,7 +201,7 @@ public class BGABanner extends RelativeLayout {
                     return false;
                 }
             });
-            mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size());
+            mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size(), true);
         } else {
             switchToPoint(0);
         }
@@ -245,7 +245,35 @@ public class BGABanner extends RelativeLayout {
         mCurrentPoint = newCurrentPoint;
     }
 
-    private final class MyAdapter extends PagerAdapter {
+    public void setTransitionEffect(TransitionEffect effect) {
+        switch (effect) {
+            case Alpha:
+                mViewPager.setPageTransformer(true, new AlphaPageTransformer());
+                break;
+            case Rotate:
+                mViewPager.setPageTransformer(true, new RotatePageTransformer());
+                break;
+            case Zoom:
+                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
+                break;
+            case Depth:
+                mViewPager.setPageTransformer(true, new DepthPageTransformer());
+                break;
+            case Cube:
+                mViewPager.setPageTransformer(true, new CubePageTransformer());
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void setPageTransformer(ViewPager.PageTransformer transformer) {
+        if (transformer != null) {
+            mViewPager.setPageTransformer(true, transformer);
+        }
+    }
+
+    private final class PageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -254,25 +282,25 @@ public class BGABanner extends RelativeLayout {
         }
 
         @Override
-        public Object instantiateItem(View container, int position) {
+        public Object instantiateItem(ViewGroup container, int position) {
             // container容器就是ViewPager, position指的是ViewPager的索引
             // 从View集合中获取对应索引的元素, 并添加到ViewPager中
             if (mAutoPlayAble) {
-                ((ViewPager) container).addView(mViews.get(position % mViews.size()));
+                container.addView(mViews.get(position % mViews.size()));
                 return mViews.get(position % mViews.size());
             } else {
-                ((ViewPager) container).addView(mViews.get(position));
+                container.addView(mViews.get(position));
                 return mViews.get(position);
             }
         }
 
         @Override
-        public void destroyItem(View container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, Object object) {
             // 从ViewPager中删除集合中对应索引的View对象
             if (mAutoPlayAble) {
-                ((ViewPager) container).removeView(mViews.get(position % mViews.size()));
+                container.removeView(mViews.get(position % mViews.size()));
             } else {
-                ((ViewPager) container).removeView(mViews.get(position));
+                container.removeView(mViews.get(position));
             }
         }
 
@@ -284,31 +312,7 @@ public class BGABanner extends RelativeLayout {
         }
     }
 
-    private final class MyListener implements OnPageChangeListener {
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-            switch (state) {
-                case ViewPager.SCROLL_STATE_DRAGGING:
-                    // 开始滑动
-                    break;
-                case ViewPager.SCROLL_STATE_SETTLING:
-                    // 当松开手时
-                    // 如果没有其他页显示出来：SCROLL_STATE_DRAGGING --> SCROLL_STATE_IDLE
-                    // 如果有其他页有显示出来（不管显示了多少），就会触发正在设置页码
-                    // 页码没有改变时：SCROLL_STATE_DRAGGING --> SCROLL_STATE_SETTLING --> SCROLL_STATE_IDLE
-                    // 页码有改变时：SCROLL_STATE_DRAGGING --> SCROLL_STATE_SETTLING --> onPageSelected --> SCROLL_STATE_IDLE
-                    break;
-                case ViewPager.SCROLL_STATE_IDLE:
-                    // 停止滑动
-                    break;
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            // Logger.i(TAG, "onPageScrolled:  position=" + position + "  positionOffset=" + positionOffset + "  positionOffsetPixels=" + positionOffsetPixels);
-        }
+    private final class ChangePointListener extends BGAViewPager.SimpleOnPageChangeListener {
 
         @Override
         public void onPageSelected(int position) {
@@ -320,6 +324,14 @@ public class BGABanner extends RelativeLayout {
                 }
             }
         }
+    }
+
+    public enum TransitionEffect {
+        Alpha,
+        Rotate,
+        Zoom,
+        Depth,
+        Cube
     }
 
 }

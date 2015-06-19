@@ -1,13 +1,8 @@
 <resources>
 
-    <style name="BGA" />
-
-    <style name="BGA.Theme" parent="Theme.AppCompat.Light.DarkActionBar"/>
-
-    <style name="BGA.Theme.Translucent">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
     </style>
 
 </resources>

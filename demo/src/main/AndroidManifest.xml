@@ -5,11 +5,10 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/BGA.Theme"
+        android:theme="@style/AppTheme"
         android:label="@string/app_name" >
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:theme="@style/BGA.Theme.Translucent"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
