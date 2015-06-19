@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner;
+package cn.bingoogolapple.bgabanner.transformer;
 
 import android.view.View;
 
@@ -23,7 +23,6 @@ public class ZoomPageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
-        ViewHelper.setAlpha(view, 0);
     }
 
     @Override

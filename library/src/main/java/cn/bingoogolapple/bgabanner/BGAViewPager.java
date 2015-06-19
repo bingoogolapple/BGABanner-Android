@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -64,18 +63,32 @@ public class BGAViewPager extends ViewPager {
                 populateMethod.setAccessible(true);
                 populateMethod.invoke(this);
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setScrollable(boolean scrollable) {
+    /**
+     * 设置调用setCurrentItem(int item, boolean smoothScroll)方法时，page切换的时间
+     *
+     * @param duration page切换的时间
+     */
+    public void setPageChangeDuration(int duration) {
+        try {
+            Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
+            scrollerField.setAccessible(true);
+            scrollerField.set(this, new PageChangeDurationScroller(getContext(), duration));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置是否允许用户手指滑动
+     *
+     * @param scrollable true表示允许跟随用户触摸滑动，false反之
+     */
+    public void setAllowUserScrollable(boolean scrollable) {
         mScrollable = scrollable;
     }
 

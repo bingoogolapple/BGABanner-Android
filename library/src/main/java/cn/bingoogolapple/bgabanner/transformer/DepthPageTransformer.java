@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner;
+package cn.bingoogolapple.bgabanner.transformer;
 
 import android.view.View;
 

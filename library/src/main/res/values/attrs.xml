@@ -17,12 +17,22 @@
         <attr name="banner_pointVisibility" format="boolean" />
         <attr name="banner_pointAutoPlayAble" format="boolean" />
         <attr name="banner_pointAutoPlayInterval" format="integer" />
+        <attr name="banner_pageChangeDuration" format="integer" />
         <attr name="banner_pointGravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
             <flag name="left" value="0x03" />
             <flag name="right" value="0x05" />
             <flag name="center_horizontal" value="0x01" />
+        </attr>
+        <attr name="banner_transitionEffect" format="enum">
+            <enum name="alpha" value="0" />
+            <enum name="rotate" value="1" />
+            <enum name="zoom" value="2" />
+            <enum name="depth" value="3" />
+            <enum name="cube" value="4" />
+            <enum name="flip" value="5" />
+            <enum name="accordion" value="6" />
         </attr>
     </declare-styleable>
 

@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch"
-    android:background="#5f00" >
+    android:background="#B2DB4D" >
 
     <TextView
         style="@style/WrapWrap"

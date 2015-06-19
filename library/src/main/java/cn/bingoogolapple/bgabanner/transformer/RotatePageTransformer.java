@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner;
+package cn.bingoogolapple.bgabanner.transformer;
 
 import android.view.View;
 
@@ -10,7 +10,7 @@ import com.nineoldandroids.view.ViewHelper;
  * 描述:
  */
 public class RotatePageTransformer extends BGAPageTransformer {
-    protected float mMaxRotation = 15.0f;
+    private float mMaxRotation = 15.0f;
 
     public RotatePageTransformer() {
     }
@@ -21,6 +21,8 @@ public class RotatePageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
+        ViewHelper.setPivotX(view, view.getMeasuredWidth() * 0.5f);
+        ViewHelper.setPivotY(view, view.getMeasuredHeight());
         ViewHelper.setRotation(view, 0);
     }
 

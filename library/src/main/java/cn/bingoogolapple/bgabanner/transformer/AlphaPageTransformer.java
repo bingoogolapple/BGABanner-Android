@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner;
+package cn.bingoogolapple.bgabanner.transformer;
 
 import android.view.View;
 
@@ -10,7 +10,7 @@ import com.nineoldandroids.view.ViewHelper;
  * 描述:
  */
 public class AlphaPageTransformer extends BGAPageTransformer {
-    private float mMinScale = 0.2f;
+    private float mMinScale = 0.4f;
 
     public AlphaPageTransformer() {
     }

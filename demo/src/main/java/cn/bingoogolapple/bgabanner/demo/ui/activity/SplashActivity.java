@@ -26,7 +26,8 @@ public class SplashActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BGAA.injectView2Activity(this);
-        mBanner.setTransitionEffect(BGABanner.TransitionEffect.Alpha);
+        mBanner.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
+        mBanner.setPageChangeDuration(1000);
 
         List<View> views = new ArrayList<>();
         views.add(getPageView(R.drawable.guide_1));
@@ -35,7 +36,6 @@ public class SplashActivity extends FragmentActivity {
 
         View lastView = getLayoutInflater().inflate(R.layout.view_last, null);
         views.add(lastView);
-        mBanner.setViewPagerViews(views);
 
         lastView.findViewById(R.id.btn_last_main).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +44,8 @@ public class SplashActivity extends FragmentActivity {
                 finish();
             }
         });
+
+        mBanner.setViewPagerViews(views);
     }
 
     private View getPageView(@DrawableRes int resid) {

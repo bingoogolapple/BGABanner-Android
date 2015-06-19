@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner;
+package cn.bingoogolapple.bgabanner.transformer;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
