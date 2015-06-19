@@ -5,7 +5,7 @@
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_cube"
         style="@style/MatchAuto"
-        app:banner_pointAutoPlayInterval="2000"
+        app:banner_pointAutoPlayInterval="1500"
         app:banner_pointContainerHeight="20dp"
         app:banner_pointContainerWidth="match_parent"
         app:banner_pointEdgeSpacing="10dp"
@@ -34,7 +34,7 @@
         android:id="@+id/banner_main_flip"
         style="@style/MatchAuto"
         android:layout_marginTop="10dp"
-        app:banner_pageChangeDuration="2000"
+        app:banner_pageChangeDuration="3000"
         app:banner_pointAutoPlayInterval="2000"
         app:banner_pointContainerBackground="#99FEC2BD"
         app:banner_pointContainerHeight="20dp"
@@ -60,28 +60,6 @@
         app:banner_pointSpacing="5dp"
         app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
         app:banner_transitionEffect="rotate" />
-
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner_main_zoom"
-        style="@style/MatchAuto"
-        android:layout_marginTop="10dp"
-        app:banner_pointAutoPlayInterval="2000"
-        app:banner_pointContainerBackground="#99FEC2BD"
-        app:banner_pointContainerHeight="20dp"
-        app:banner_pointContainerWidth="match_parent"
-        app:banner_pointEdgeSpacing="10dp"
-        app:banner_pointFocusedImg="@drawable/point_focused"
-        app:banner_pointGravity="bottom|center_horizontal"
-        app:banner_pointSpacing="5dp"
-        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
-        app:banner_transitionEffect="zoom" />
-
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner_main_depth"
-        style="@style/MatchAuto"
-        android:layout_marginTop="10dp"
-        app:banner_pointVisibility="false"
-        app:banner_transitionEffect="depth" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_alpha"

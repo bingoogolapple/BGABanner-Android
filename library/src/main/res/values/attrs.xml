@@ -28,11 +28,9 @@
         <attr name="banner_transitionEffect" format="enum">
             <enum name="alpha" value="0" />
             <enum name="rotate" value="1" />
-            <enum name="zoom" value="2" />
-            <enum name="depth" value="3" />
-            <enum name="cube" value="4" />
-            <enum name="flip" value="5" />
-            <enum name="accordion" value="6" />
+            <enum name="cube" value="2" />
+            <enum name="flip" value="3" />
+            <enum name="accordion" value="4" />
         </attr>
     </declare-styleable>
 

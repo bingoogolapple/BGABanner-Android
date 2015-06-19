@@ -21,10 +21,8 @@ import java.util.List;
 import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.AlphaPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.CubePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
 
 public class BGABanner extends RelativeLayout {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
@@ -38,7 +36,7 @@ public class BGABanner extends RelativeLayout {
     private boolean mAutoPlayAble = true;
     private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 2000;
-    private int mPageChangeDuration = 3000;
+    private int mPageChangeDuration = 2000;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
     private int mPointSpacing = 15;
     private int mPointEdgeSpacing = 15;
@@ -170,6 +168,9 @@ public class BGABanner extends RelativeLayout {
     }
 
     public void setViewPagerViews(List<View> views) {
+        if (mAutoPlayAble && views.size() < 3) {
+            throw new RuntimeException("开启指定轮播时至少有三页");
+        }
         mViews = views;
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(new ChangePointListener());
@@ -268,12 +269,6 @@ public class BGABanner extends RelativeLayout {
             case Rotate:
                 mViewPager.setPageTransformer(true, new RotatePageTransformer());
                 break;
-            case Zoom:
-                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
-                break;
-            case Depth:
-                mViewPager.setPageTransformer(true, new DepthPageTransformer());
-                break;
             case Cube:
                 mViewPager.setPageTransformer(true, new CubePageTransformer());
                 break;
@@ -313,16 +308,16 @@ public class BGABanner extends RelativeLayout {
                 view = mViews.get(position);
             }
 
-            if (!container.equals(view.getParent())) {
-                container.addView(view);
+            // 在destroyItem方法中销毁的话，当只有3页时会有问题
+            if (container.equals(view.getParent())) {
+                container.removeView(view);
             }
-
+            container.addView(view);
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
         }
 
         @Override
@@ -350,8 +345,6 @@ public class BGABanner extends RelativeLayout {
     public enum TransitionEffect {
         Alpha,
         Rotate,
-        Zoom,
-        Depth,
         Cube,
         Flip,
         Accordion

@@ -25,25 +25,27 @@ public class MainActivity extends FragmentActivity {
     private BGABanner mRotateBanner;
     @BGAAView(R.id.banner_main_alpha)
     private BGABanner mAlphaBanner;
-    @BGAAView(R.id.banner_main_depth)
-    private BGABanner mDepthBanner;
-    @BGAAView(R.id.banner_main_zoom)
-    private BGABanner mZoomBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BGAA.injectView2Activity(this);
-        mCubeBanner.setViewPagerViews(getDatas());
-        mAccordionBanner.setViewPagerViews(getDatas());
-        mFlipBanner.setViewPagerViews(getDatas());
-        mRotateBanner.setViewPagerViews(getDatas());
-        mAlphaBanner.setViewPagerViews(getDatas());
-        mDepthBanner.setViewPagerViews(getDatas());
-        mZoomBanner.setViewPagerViews(getDatas());
+        mCubeBanner.setViewPagerViews(getThreeDatas());
+        mAccordionBanner.setViewPagerViews(getFourDatas());
+        mFlipBanner.setViewPagerViews(getThreeDatas());
+        mRotateBanner.setViewPagerViews(getFourDatas());
+        mAlphaBanner.setViewPagerViews(getThreeDatas());
     }
 
-    private List<View> getDatas() {
+    private List<View> getThreeDatas() {
+        List<View> datas = new ArrayList<>();
+        datas.add(getLayoutInflater().inflate(R.layout.view_one, null));
+        datas.add(getLayoutInflater().inflate(R.layout.view_two, null));
+        datas.add(getLayoutInflater().inflate(R.layout.view_three, null));
+        return datas;
+    }
+
+    private List<View> getFourDatas() {
         List<View> datas = new ArrayList<>();
         datas.add(getLayoutInflater().inflate(R.layout.view_one, null));
         datas.add(getLayoutInflater().inflate(R.layout.view_two, null));
