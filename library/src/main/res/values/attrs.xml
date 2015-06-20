@@ -2,22 +2,21 @@
 <resources>
 
     <declare-styleable name="BGABanner">
-        <attr name="banner_pointContainerWidth" format="dimension">
-            <enum name="match_parent" value="-1" />
-            <enum name="wrap_content" value="-2" />
-        </attr>
-        <attr name="banner_pointContainerHeight" format="dimension">
-            <enum name="wrap_content" value="-2" />
-        </attr>
-        <attr name="banner_pointContainerBackground" format="reference|color" />
-        <attr name="banner_pointFocusedImg" format="reference" />
-        <attr name="banner_pointUnfocusedImg" format="reference" />
-        <attr name="banner_pointSpacing" format="dimension" />
-        <attr name="banner_pointEdgeSpacing" format="dimension" />
+        <!-- 指示点是否可见 -->
         <attr name="banner_pointVisibility" format="boolean" />
-        <attr name="banner_pointAutoPlayAble" format="boolean" />
-        <attr name="banner_pointAutoPlayInterval" format="integer" />
-        <attr name="banner_pageChangeDuration" format="integer" />
+        <!-- 指示点容器背景 -->
+        <attr name="banner_pointContainerBackground" format="reference|color" />
+        <!-- 指示点选中时的背景 -->
+        <attr name="banner_pointFocusedImg" format="reference" />
+        <!-- 指示点未选中时的背景 -->
+        <attr name="banner_pointUnfocusedImg" format="reference" />
+        <!-- 指示点容器左右内间距 -->
+        <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
+        <!-- 指示点容器上下内间距 -->
+        <attr name="banner_pointContainerTopBottomPadding" format="dimension" />
+        <!-- 两个指示点之间的间距 -->
+        <attr name="banner_pointSpacing" format="dimension" />
+        <!-- 指示点的位置 -->
         <attr name="banner_pointGravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
@@ -25,12 +24,24 @@
             <flag name="right" value="0x05" />
             <flag name="center_horizontal" value="0x01" />
         </attr>
+        <!-- 是否开启自动轮播 -->
+        <attr name="banner_pointAutoPlayAble" format="boolean" />
+        <!-- 自动轮播的时间间隔 -->
+        <attr name="banner_pointAutoPlayInterval" format="integer" />
+        <!-- 页码切换过程的时间长度 -->
+        <attr name="banner_pageChangeDuration" format="integer" />
+        <!-- 页面切换的动画效果 -->
         <attr name="banner_transitionEffect" format="enum">
             <enum name="alpha" value="0" />
             <enum name="rotate" value="1" />
             <enum name="cube" value="2" />
             <enum name="flip" value="3" />
             <enum name="accordion" value="4" />
+            <enum name="zoomFade" value="5" />
+            <enum name="fade" value="6" />
+            <enum name="zoom" value="7" />
+            <enum name="zoomStack" value="8" />
+            <enum name="stack" value="9" />
         </attr>
     </declare-styleable>
 

@@ -11,15 +11,15 @@ import android.view.View;
 public abstract class BGAPageTransformer implements ViewPager.PageTransformer {
 
     public void transformPage(View view, float position) {
-        if (position < -1) {
+        if (position < -1.0f) {
             // [-Infinity,-1)
             // This page is way off-screen to the left.
             handleInvisiblePage(view, position);
-        } else if (position <= 0) {
+        } else if (position <= 0.0f) {
             // [-1,0]
             // Use the default slide transition when moving to the left page
             handleLeftPage(view, position);
-        } else if (position <= 1) {
+        } else if (position <= 1.0f) {
             // (0,1]
             handleRightPage(view, position);
         } else {

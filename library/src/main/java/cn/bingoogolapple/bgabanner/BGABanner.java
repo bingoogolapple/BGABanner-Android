@@ -3,10 +3,12 @@ package cn.bingoogolapple.bgabanner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,27 +23,31 @@ import java.util.List;
 import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.AlphaPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.CubePageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.FadePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.StackPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.ZoomFadePageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
 
 public class BGABanner extends RelativeLayout {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private BGAViewPager mViewPager = null;
-    private List<View> mViews = null;
-    private LinearLayout mPointContainer = null;
-    private List<ImageView> mPoints = null;
+    private BGAViewPager mViewPager;
+    private List<View> mViews;
+    private LinearLayout mPointContainer;
+    private List<ImageView> mPoints;
     private boolean mPointVisibility = true;
     private boolean mAutoPlayAble = true;
     private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 2000;
     private int mPageChangeDuration = 2000;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-    private int mPointSpacing = 15;
-    private int mPointEdgeSpacing = 15;
-    private int mPointContainerWidth = RMP;
-    private int mPointContainerHeight = RWC;
+    private int mPointSpacing;
+    private int mPointContainerLeftRightPadding;
+    private int mPointContainerTopBottomPadding;
     private int mCurrentPoint = 0;
     private Drawable mPointFocusedDrawable;
     private Drawable mPointUnfocusedDrawable;
@@ -62,26 +68,29 @@ public class BGABanner extends RelativeLayout {
 
     public BGABanner(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mViewPager = new BGAViewPager(context);
-        initAttrs(context, attrs);
+        initDefaultAttrs(context);
+        initCustomAttrs(context, attrs);
         initView(context);
-
-        if (mAutoPlayAble) {
-            // 有配置自动轮播才去实例化handler
-            mPagerHandler = new Handler();
-        }
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
+    private void initDefaultAttrs(Context context) {
+        mViewPager = new BGAViewPager(context);
+        mPagerHandler = new Handler();
+        mPointSpacing = dp2px(context, 5);
+        mPointContainerLeftRightPadding = dp2px(context, 15);
+        mPointContainerTopBottomPadding = dp2px(context, 5);
+    }
+
+    private void initCustomAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGABanner);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
-            initAttr(typedArray.getIndex(i), typedArray);
+            initCustomAttr(typedArray.getIndex(i), typedArray);
         }
         typedArray.recycle();
     }
 
-    public void initAttr(int attr, TypedArray typedArray) {
+    private void initCustomAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGABanner_banner_pointFocusedImg) {
             mPointFocusedDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointUnfocusedImg) {
@@ -92,25 +101,13 @@ public class BGABanner extends RelativeLayout {
             /**
              * getDimension和getDimensionPixelOffset的功能差不多,都是获取某个dimen的值,如果是dp或sp的单位,将其乘以density,如果是px,则不乘;两个函数的区别是一个返回float,一个返回int. getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.
              */
-            mPointSpacing = typedArray.getDimensionPixelSize(attr, mPointSpacing);
-        } else if (attr == R.styleable.BGABanner_banner_pointEdgeSpacing) {
-            mPointEdgeSpacing = typedArray.getDimensionPixelSize(attr, mPointEdgeSpacing);
+            mPointSpacing = typedArray.getDimensionPixelOffset(attr, mPointSpacing);
+        } else if (attr == R.styleable.BGABanner_banner_pointContainerLeftRightPadding) {
+            mPointContainerLeftRightPadding = typedArray.getDimensionPixelOffset(attr, mPointContainerLeftRightPadding);
+        } else if (attr == R.styleable.BGABanner_banner_pointContainerTopBottomPadding) {
+            mPointContainerTopBottomPadding = typedArray.getDimensionPixelOffset(attr, mPointContainerTopBottomPadding);
         } else if (attr == R.styleable.BGABanner_banner_pointGravity) {
             mPointGravity = typedArray.getInt(attr, mPointGravity);
-        } else if (attr == R.styleable.BGABanner_banner_pointContainerWidth) {
-            try {
-                mPointContainerWidth = typedArray.getDimensionPixelSize(attr, mPointContainerWidth);
-            } catch (UnsupportedOperationException e) {
-                // 如果是指定的wrap_content或者match_parent会执行下面这一行
-                mPointContainerWidth = typedArray.getInt(attr, mPointContainerWidth);
-            }
-        } else if (attr == R.styleable.BGABanner_banner_pointContainerHeight) {
-            try {
-                mPointContainerHeight = typedArray.getDimensionPixelSize(attr, mPointContainerHeight);
-            } catch (UnsupportedOperationException e) {
-                mPointContainerHeight = typedArray.getInt(attr, mPointContainerHeight);
-            }
-
         } else if (attr == R.styleable.BGABanner_banner_pointVisibility) {
             mPointVisibility = typedArray.getBoolean(attr, mPointVisibility);
         } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayAble) {
@@ -131,17 +128,20 @@ public class BGABanner extends RelativeLayout {
 
         if (mPointVisibility) {
             if (mPointFocusedDrawable == null) {
-                throw new RuntimeException("pointFocusedImg is not allowed to be NULL");
+                throw new RuntimeException("设置显示指示点时pointFocusedImg不能为空");
             } else if (mPointUnfocusedDrawable == null) {
-                throw new RuntimeException("pointUnfocusedImg is not allowed to be NULL");
+                throw new RuntimeException("设置显示指示点时pointUnfocusedImg不能为空");
             }
+
             mPointContainer = new LinearLayout(context);
             mPointContainer.setOrientation(LinearLayout.HORIZONTAL);
-            mPointContainer.setPadding(mPointEdgeSpacing, 0, mPointEdgeSpacing, 0);
-            if (mPointContainerBackgroundDrawable != null) {
+            mPointContainer.setPadding(mPointContainerLeftRightPadding, mPointContainerTopBottomPadding, mPointContainerLeftRightPadding, mPointContainerTopBottomPadding);
+            if (Build.VERSION.SDK_INT >= 16) {
+                mPointContainer.setBackground(mPointContainerBackgroundDrawable);
+            } else {
                 mPointContainer.setBackgroundDrawable(mPointContainerBackgroundDrawable);
             }
-            RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(mPointContainerWidth, mPointContainerHeight);
+            RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(RMP, RWC);
             // 处理圆点在顶部还是底部
             if ((mPointGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
                 pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -157,30 +157,44 @@ public class BGABanner extends RelativeLayout {
             } else {
                 mPointContainer.setGravity(Gravity.CENTER);
             }
+
             addView(mPointContainer, pointContainerLp);
         }
     }
 
+    /**
+     * 设置页码切换过程的时间长度
+     *
+     * @param duration 页码切换过程的时间长度
+     */
     public void setPageChangeDuration(int duration) {
         if (duration > 0 && duration < 5000) {
             mViewPager.setPageChangeDuration(duration);
         }
     }
 
+    /**
+     * 设置每一页的控件
+     *
+     * @param views 每一页的控件
+     */
     public void setViewPagerViews(List<View> views) {
         if (mAutoPlayAble && views.size() < 3) {
-            throw new RuntimeException("开启指定轮播时至少有三页");
+            throw new RuntimeException("开启指定轮播时至少有三个页面");
         }
         mViews = views;
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(new ChangePointListener());
-        if (mPointVisibility) {
-            initPoints();
-            processAutoPlay();
-        }
+
+        initPoints();
+        processAutoPlay();
     }
 
     private void initPoints() {
+        if (!mPointVisibility) {
+            return;
+        }
+
         mPointContainer.removeAllViews();
         mViewPager.removeAllViews();
         if (mPoints != null) {
@@ -219,7 +233,7 @@ public class BGABanner extends RelativeLayout {
             });
             mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size());
         } else {
-            switchToPoint(0);
+            switchToPoint(mCurrentPoint);
         }
     }
 
@@ -256,11 +270,20 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void switchToPoint(int newCurrentPoint) {
+        if (!mPointVisibility) {
+            return;
+        }
+
         mPoints.get(mCurrentPoint).setImageDrawable(mPointUnfocusedDrawable);
         mPoints.get(newCurrentPoint).setImageDrawable(mPointFocusedDrawable);
         mCurrentPoint = newCurrentPoint;
     }
 
+    /**
+     * 设置页面也换动画
+     *
+     * @param effect
+     */
     public void setTransitionEffect(TransitionEffect effect) {
         switch (effect) {
             case Alpha:
@@ -278,11 +301,31 @@ public class BGABanner extends RelativeLayout {
             case Accordion:
                 mViewPager.setPageTransformer(true, new AccordionPageTransformer());
                 break;
+            case ZoomFade:
+                mViewPager.setPageTransformer(true, new ZoomFadePageTransformer());
+                break;
+            case Fade:
+                mViewPager.setPageTransformer(true, new FadePageTransformer());
+                break;
+            case Zoom:
+                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
+                break;
+            case ZoomStack:
+                mViewPager.setPageTransformer(true, new ZoomStackPageTransformer());
+                break;
+            case Stack:
+                mViewPager.setPageTransformer(true, new StackPageTransformer());
+                break;
             default:
                 break;
         }
     }
 
+    /**
+     * 设置自定义页面切换动画
+     *
+     * @param transformer
+     */
     public void setPageTransformer(ViewPager.PageTransformer transformer) {
         if (transformer != null) {
             mViewPager.setPageTransformer(true, transformer);
@@ -299,8 +342,6 @@ public class BGABanner extends RelativeLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            // container容器就是ViewPager, position指的是ViewPager的索引
-            // 从View集合中获取对应索引的元素, 并添加到ViewPager中
             View view;
             if (mAutoPlayAble) {
                 view = mViews.get(position % mViews.size());
@@ -322,8 +363,6 @@ public class BGABanner extends RelativeLayout {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            // view 要关联的页面, object instantiateItem()方法返回的对象
-            // 是否要关联显示页面与 instantiateItem()返回值，这个方法是必须实现的
             return view == object;
         }
     }
@@ -347,7 +386,16 @@ public class BGABanner extends RelativeLayout {
         Rotate,
         Cube,
         Flip,
-        Accordion
+        Accordion,
+        ZoomFade,
+        Fade,
+        Zoom,
+        ZoomStack,
+        Stack
+    }
+
+    public static int dp2px(Context context, float dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
 }

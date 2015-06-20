@@ -7,34 +7,26 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bingoogolapple.bgaannotation.BGAA;
-import cn.bingoogolapple.bgaannotation.BGAALayout;
-import cn.bingoogolapple.bgaannotation.BGAAView;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.BGABanner;
 
-@BGAALayout(R.layout.activity_main)
 public class MainActivity extends FragmentActivity {
-    @BGAAView(R.id.banner_main_cube)
-    private BGABanner mCubeBanner;
-    @BGAAView(R.id.banner_main_accordion)
-    private BGABanner mAccordionBanner;
-    @BGAAView(R.id.banner_main_flip)
-    private BGABanner mFlipBanner;
-    @BGAAView(R.id.banner_main_rotate)
-    private BGABanner mRotateBanner;
-    @BGAAView(R.id.banner_main_alpha)
-    private BGABanner mAlphaBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BGAA.injectView2Activity(this);
-        mCubeBanner.setViewPagerViews(getThreeDatas());
-        mAccordionBanner.setViewPagerViews(getFourDatas());
-        mFlipBanner.setViewPagerViews(getThreeDatas());
-        mRotateBanner.setViewPagerViews(getFourDatas());
-        mAlphaBanner.setViewPagerViews(getThreeDatas());
+        setContentView(R.layout.activity_main);
+
+        ((BGABanner) findViewById(R.id.banner_main_cube)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_accordion)).setViewPagerViews(getThreeDatas());
+        ((BGABanner) findViewById(R.id.banner_main_flip)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_rotate)).setViewPagerViews(getThreeDatas());
+        ((BGABanner) findViewById(R.id.banner_main_alpha)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_zoomFade)).setViewPagerViews(getThreeDatas());
+        ((BGABanner) findViewById(R.id.banner_main_fade)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_zoom)).setViewPagerViews(getThreeDatas());
+        ((BGABanner) findViewById(R.id.banner_main_stack)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_zoomStack)).setViewPagerViews(getThreeDatas());
     }
 
     private List<View> getThreeDatas() {

@@ -1,8 +1,50 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
+    <style name="BannerCommon">
+        <!-- 显示指示点 -->
+        <item name="banner_pointVisibility">true</item>
+        <!-- 指示点容器背景 -->
+        <item name="banner_pointContainerBackground">#99FEC2BD</item>
+        <!-- 指示点选中时的背景 -->
+        <item name="banner_pointFocusedImg">@drawable/point_focused</item>
+        <!-- 指示点未选中时的背景 -->
+        <item name="banner_pointUnfocusedImg">@drawable/point_unfocused</item>
+        <!-- 指示点容器左右内间距 -->
+        <item name="banner_pointContainerLeftRightPadding">15dp</item>
+        <!-- 指示点容器上下内间距 -->
+        <item name="banner_pointContainerTopBottomPadding">4dp</item>
+        <!-- 两个指示点之间的间距 -->
+        <item name="banner_pointSpacing">5dp</item>
+        <!-- 指示点的位置 -->
+        <item name="banner_pointGravity">bottom|center_horizontal</item>
+        <!-- 页码切换过程的时间长度 -->
+        <item name="banner_pageChangeDuration">2000</item>
+    </style>
+
+    <style name="BannerCommon.Splash">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+        <!-- 关闭自动轮播 -->
+        <item name="banner_pointAutoPlayAble">false</item>
+        <!-- 指示点容器上下内间距 -->
+        <item name="banner_pointContainerTopBottomPadding">8dp</item>
+    </style>
+
+    <style name="BannerCommon.Main">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+
+        <!-- 开启自动轮播 -->
+        <item name="banner_pointAutoPlayAble">true</item>
+        <!-- 自动轮播的时间间隔 -->
+        <item name="banner_pointAutoPlayInterval">2000</item>
     </style>
 
 </resources>

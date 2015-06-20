@@ -69,9 +69,9 @@ public class BGAViewPager extends ViewPager {
     }
 
     /**
-     * 设置调用setCurrentItem(int item, boolean smoothScroll)方法时，page切换的时间
+     * 设置调用setCurrentItem(int item, boolean smoothScroll)方法时，page切换的时间长度
      *
-     * @param duration page切换的时间
+     * @param duration page切换的时间长度
      */
     public void setPageChangeDuration(int duration) {
         try {

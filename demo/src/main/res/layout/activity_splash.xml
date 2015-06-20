@@ -1,12 +1,3 @@
 <cn.bingoogolapple.bgabanner.BGABanner xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/banner_splash_pager"
-    style="@style/MatchMatch"
-    app:banner_pointContainerBackground="#99FEC2BD"
-    app:banner_pointContainerHeight="30dp"
-    app:banner_pointContainerWidth="match_parent"
-    app:banner_pointFocusedImg="@drawable/point_focused"
-    app:banner_pointGravity="bottom|center_horizontal"
-    app:banner_pointSpacing="5dp"
-    app:banner_pointAutoPlayAble="false"
-    app:banner_pointUnfocusedImg="@drawable/point_unfocused" />
+    style="@style/BannerCommon.Splash" />

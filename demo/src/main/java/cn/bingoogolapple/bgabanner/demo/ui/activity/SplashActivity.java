@@ -10,24 +10,20 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bingoogolapple.bgaannotation.BGAA;
-import cn.bingoogolapple.bgaannotation.BGAALayout;
-import cn.bingoogolapple.bgaannotation.BGAAView;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.R;
 
-@BGAALayout(R.layout.activity_splash)
 public class SplashActivity extends FragmentActivity {
-
-    @BGAAView(R.id.banner_splash_pager)
-    private BGABanner mBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BGAA.injectView2Activity(this);
-        mBanner.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
-        mBanner.setPageChangeDuration(1000);
+        setContentView(R.layout.activity_splash);
+        BGABanner banner = (BGABanner)findViewById(R.id.banner_splash_pager);
+
+        // 用Java代码方式设置切换动画
+        banner.setTransitionEffect(BGABanner.TransitionEffect.Stack);
+        banner.setPageChangeDuration(1000);
 
         List<View> views = new ArrayList<>();
         views.add(getPageView(R.drawable.guide_1));
@@ -45,7 +41,7 @@ public class SplashActivity extends FragmentActivity {
             }
         });
 
-        mBanner.setViewPagerViews(views);
+        banner.setViewPagerViews(views);
     }
 
     private View getPageView(@DrawableRes int resid) {
