@@ -17,6 +17,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((BGABanner) findViewById(R.id.banner_main_default)).setViewPagerViews(getFourDatas());
         ((BGABanner) findViewById(R.id.banner_main_cube)).setViewPagerViews(getFourDatas());
         ((BGABanner) findViewById(R.id.banner_main_accordion)).setViewPagerViews(getThreeDatas());
         ((BGABanner) findViewById(R.id.banner_main_flip)).setViewPagerViews(getFourDatas());
@@ -24,9 +25,11 @@ public class MainActivity extends FragmentActivity {
         ((BGABanner) findViewById(R.id.banner_main_alpha)).setViewPagerViews(getFourDatas());
         ((BGABanner) findViewById(R.id.banner_main_zoomFade)).setViewPagerViews(getThreeDatas());
         ((BGABanner) findViewById(R.id.banner_main_fade)).setViewPagerViews(getFourDatas());
+        ((BGABanner) findViewById(R.id.banner_main_zoomCenter)).setViewPagerViews(getThreeDatas());
         ((BGABanner) findViewById(R.id.banner_main_zoom)).setViewPagerViews(getThreeDatas());
         ((BGABanner) findViewById(R.id.banner_main_stack)).setViewPagerViews(getFourDatas());
         ((BGABanner) findViewById(R.id.banner_main_zoomStack)).setViewPagerViews(getThreeDatas());
+        ((BGABanner) findViewById(R.id.banner_main_depth)).setViewPagerViews(getFourDatas());
     }
 
     private List<View> getThreeDatas() {

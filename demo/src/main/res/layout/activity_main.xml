@@ -3,6 +3,11 @@
     style="@style/MatchMatch.Vertical">
 
     <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_main_default"
+        style="@style/BannerCommon.Main"
+        app:banner_transitionEffect="defaultEffect" />
+
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_cube"
         style="@style/BannerCommon.Main"
         app:banner_transitionEffect="cube" />
@@ -44,6 +49,11 @@
         app:banner_transitionEffect="fade" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_main_zoomCenter"
+        style="@style/BannerCommon.Main"
+        app:banner_transitionEffect="zoomCenter" />
+
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_zoom"
         style="@style/BannerCommon.Main"
         app:banner_transitionEffect="zoom" />
@@ -58,4 +68,9 @@
         android:id="@+id/banner_main_zoomStack"
         style="@style/BannerCommon.Main"
         app:banner_transitionEffect="zoomStack" />
+
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_main_depth"
+        style="@style/BannerCommon.Main"
+        app:banner_transitionEffect="depth" />
 </LinearLayout>

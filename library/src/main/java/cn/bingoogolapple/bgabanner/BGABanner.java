@@ -23,10 +23,13 @@ import java.util.List;
 import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.AlphaPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.CubePageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.DefaultPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.FadePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.StackPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.ZoomCenterPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomFadePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
@@ -286,6 +289,9 @@ public class BGABanner extends RelativeLayout {
      */
     public void setTransitionEffect(TransitionEffect effect) {
         switch (effect) {
+            case Default:
+                mViewPager.setPageTransformer(true, new DefaultPageTransformer());
+                break;
             case Alpha:
                 mViewPager.setPageTransformer(true, new AlphaPageTransformer());
                 break;
@@ -307,14 +313,20 @@ public class BGABanner extends RelativeLayout {
             case Fade:
                 mViewPager.setPageTransformer(true, new FadePageTransformer());
                 break;
-            case Zoom:
-                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
+            case ZoomCenter:
+                mViewPager.setPageTransformer(true, new ZoomCenterPageTransformer());
                 break;
             case ZoomStack:
                 mViewPager.setPageTransformer(true, new ZoomStackPageTransformer());
                 break;
             case Stack:
                 mViewPager.setPageTransformer(true, new StackPageTransformer());
+                break;
+            case Depth:
+                mViewPager.setPageTransformer(true, new DepthPageTransformer());
+                break;
+            case Zoom:
+                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
                 break;
             default:
                 break;
@@ -382,6 +394,7 @@ public class BGABanner extends RelativeLayout {
     }
 
     public enum TransitionEffect {
+        Default,
         Alpha,
         Rotate,
         Cube,
@@ -389,9 +402,11 @@ public class BGABanner extends RelativeLayout {
         Accordion,
         ZoomFade,
         Fade,
-        Zoom,
+        ZoomCenter,
         ZoomStack,
-        Stack
+        Stack,
+        Depth,
+        Zoom
     }
 
     public static int dp2px(Context context, float dpValue) {
