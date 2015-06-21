@@ -2,8 +2,10 @@
 
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen"></style>
 
-    <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
-    <style name="BannerDefaultStyle" parent="MatchAuto">
+    <style name="BannerDefaultStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
         <!-- 开启自动轮播 -->
         <item name="banner_pointAutoPlayAble">true</item>
         <!-- 自动轮播的时间间隔 -->

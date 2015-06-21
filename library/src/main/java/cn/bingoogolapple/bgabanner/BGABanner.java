@@ -210,8 +210,8 @@ public class BGABanner extends RelativeLayout {
     /**
      * 设置每一页的控件和文案
      *
-     * @param views 每一页的控件
-     * @param tips  每一页的提示文案
+     * @param views 每一页的控件集合
+     * @param tips  每一页的提示文案集合
      */
     public void setViewsAndTips(List<View> views, List<String> tips) {
         if (mAutoPlayAble && views.size() < 3) {
@@ -232,10 +232,22 @@ public class BGABanner extends RelativeLayout {
     /**
      * 设置每一页的控件
      *
-     * @param views 每一页的控件
+     * @param views 每一页的控件集合
      */
     public void setViews(List<View> views) {
         setViewsAndTips(views, null);
+    }
+
+    /**
+     * 设置每一页的提示文案
+     *
+     * @param tips 提示文案集合
+     */
+    public void setTips(List<String> tips) {
+        if (tips != null && mViews != null && tips.size() < mViews.size()) {
+            throw new RuntimeException("提示文案数必须等于页面数量");
+        }
+        mTips = tips;
     }
 
     private void initPoints() {

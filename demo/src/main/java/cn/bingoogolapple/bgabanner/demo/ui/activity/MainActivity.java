@@ -1,86 +1,379 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.R;
+import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
 
 public class MainActivity extends FragmentActivity {
+    private AsyncHttpClient mAsyncHttpClient;
     private BGABanner mDefaultBanner;
+    private List<View> mDefaultViews;
+
+    private BGABanner mCubeBanner;
+    private List<View> mCubeViews;
+
+    private BGABanner mAccordionBanner;
+    private List<View> mAccordionViews;
+
+    private BGABanner mFlipBanner;
+    private List<View> mFlipViews;
+
+    private BGABanner mRotateBanner;
+    private List<View> mRotateViews;
+
+    private BGABanner mAlphaBanner;
+    private List<View> mAlphaViews;
+
+    private BGABanner mZoomFadeBanner;
+    private List<View> mZoomFadeViews;
+
+    private BGABanner mFadeBanner;
+    private List<View> mFadeViews;
+
+    private BGABanner mZoomCenterBanner;
+    private List<View> mZoomCenterViews;
+
+    private BGABanner mZoomBanner;
+    private List<View> mZoomViews;
+
+    private BGABanner mStackBanner;
+    private List<View> mStackViews;
+
+    private BGABanner mZoomStackBanner;
+    private List<View> mZoomStackViews;
+
+    private BGABanner mDepthBanner;
+    private List<View> mDepthViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAsyncHttpClient = new AsyncHttpClient();
 
+        initDefault();
+        initCube();
+        initAccordion();
+        initFlip();
+        initRotate();
+        initAlpha();
+        initZoomFade();
+        initFade();
+        initZoomCenter();
+        initZoom();
+        initStack();
+        initZoomStack();
+        initDepth();
+    }
+
+    private void initDefault() {
         mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
-        mDefaultBanner.setViewsAndTips(getFiveViews(), getFiveTips());
+        mDefaultViews = getViews(5);
+        mDefaultBanner.setViews(mDefaultViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
 
-        ((BGABanner) findViewById(R.id.banner_main_cube)).setViewsAndTips(getFourViews(), getFourTips());
-        ((BGABanner) findViewById(R.id.banner_main_accordion)).setViews(getThreeViews());
-        ((BGABanner) findViewById(R.id.banner_main_flip)).setViewsAndTips(getFourViews(), getFourTips());
-        ((BGABanner) findViewById(R.id.banner_main_rotate)).setViews(getThreeViews());
-        ((BGABanner) findViewById(R.id.banner_main_alpha)).setViewsAndTips(getFourViews(), getFourTips());
-        ((BGABanner) findViewById(R.id.banner_main_zoomFade)).setViews(getThreeViews());
-        ((BGABanner) findViewById(R.id.banner_main_fade)).setViewsAndTips(getFourViews(), getFourTips());
-        ((BGABanner) findViewById(R.id.banner_main_zoomCenter)).setViews(getThreeViews());
-        ((BGABanner) findViewById(R.id.banner_main_zoom)).setViews(getFiveViews());
-        ((BGABanner) findViewById(R.id.banner_main_stack)).setViewsAndTips(getFourViews(), getFourTips());
-        ((BGABanner) findViewById(R.id.banner_main_zoomStack)).setViews(getThreeViews());
-        ((BGABanner) findViewById(R.id.banner_main_depth)).setViews(getFourViews());
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mDefaultViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mDefaultViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mDefaultBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
-    private List<View> getThreeViews() {
-        List<View> datas = new ArrayList<>();
-        datas.add(getLayoutInflater().inflate(R.layout.view_one, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_two, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_three, null));
-        return datas;
+    private void initCube() {
+        mCubeBanner = (BGABanner) findViewById(R.id.banner_main_cube);
+        mCubeViews = getViews(5);
+        mCubeBanner.setViews(mCubeViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mCubeViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mCubeViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mCubeBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
-    private List<View> getFourViews() {
-        List<View> datas = new ArrayList<>();
-        datas.add(getLayoutInflater().inflate(R.layout.view_one, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_two, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_three, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_four, null));
-        return datas;
+    private void initAccordion() {
+        mAccordionBanner = (BGABanner) findViewById(R.id.banner_main_accordion);
+        mAccordionViews = getViews(5);
+        mAccordionBanner.setViews(mAccordionViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mAccordionViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mAccordionViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mAccordionBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
-    private List<View> getFiveViews() {
-        List<View> datas = new ArrayList<>();
-        datas.add(getLayoutInflater().inflate(R.layout.view_one, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_two, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_three, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_four, null));
-        datas.add(getLayoutInflater().inflate(R.layout.view_five, null));
-        return datas;
+    private void initFlip() {
+        mFlipBanner = (BGABanner) findViewById(R.id.banner_main_flip);
+        mFlipViews = getViews(5);
+        mFlipBanner.setViews(mFlipViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mFlipViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mFlipViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mFlipBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
-    private List<String> getFourTips() {
-        List<String> tips = new ArrayList<>();
-        tips.add("第一页提示文案");
-        tips.add("第二页提示文案");
-        tips.add("第三页提示文案");
-        tips.add("第四页提示文案");
-        return tips;
+    private void initRotate() {
+        mRotateBanner = (BGABanner) findViewById(R.id.banner_main_rotate);
+        mRotateViews = getViews(5);
+        mRotateBanner.setViews(mRotateViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mRotateViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mRotateViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mRotateBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
-    private List<String> getFiveTips() {
-        List<String> tips = new ArrayList<>();
-        tips.add("第一页提示文案");
-        tips.add("第二页提示文案");
-        tips.add("第三页提示文案");
-        tips.add("第四页提示文案");
-        tips.add("第五页提示文案");
-        return tips;
+    private void initAlpha() {
+        mAlphaBanner = (BGABanner) findViewById(R.id.banner_main_alpha);
+        mAlphaViews = getViews(5);
+        mAlphaBanner.setViews(mAlphaViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mAlphaViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mAlphaViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mAlphaBanner.setTips(bannerModel.tips);
+            }
+        });
     }
 
+    private void initZoomFade() {
+        mZoomFadeBanner = (BGABanner) findViewById(R.id.banner_main_zoomFade);
+        mZoomFadeViews = getViews(5);
+        mZoomFadeBanner.setViews(mZoomFadeViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mZoomFadeViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mZoomFadeViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mZoomFadeBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initFade() {
+        mFadeBanner = (BGABanner) findViewById(R.id.banner_main_fade);
+        mFadeViews = getViews(5);
+        mFadeBanner.setViews(mFadeViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mFadeViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mFadeViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mFadeBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initZoomCenter() {
+        mZoomCenterBanner = (BGABanner) findViewById(R.id.banner_main_zoomCenter);
+        mZoomCenterViews = getViews(5);
+        mZoomCenterBanner.setViews(mZoomCenterViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mZoomCenterViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mZoomCenterViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mZoomCenterBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initZoom() {
+        mZoomBanner = (BGABanner) findViewById(R.id.banner_main_zoom);
+        mZoomViews = getViews(5);
+        mZoomBanner.setViews(mZoomViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mZoomViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mZoomViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mZoomBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initStack() {
+        mStackBanner = (BGABanner) findViewById(R.id.banner_main_stack);
+        mStackViews = getViews(5);
+        mStackBanner.setViews(mStackViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mStackViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mStackViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mStackBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initZoomStack() {
+        mZoomStackBanner = (BGABanner) findViewById(R.id.banner_main_zoomStack);
+        mZoomStackViews = getViews(5);
+        mZoomStackBanner.setViews(mZoomStackViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mZoomStackViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mZoomStackViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mZoomStackBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private void initDepth() {
+        mDepthBanner = (BGABanner) findViewById(R.id.banner_main_depth);
+        mDepthViews = getViews(5);
+        mDepthBanner.setViews(mDepthViews);
+        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                BannerModel bannerModel = new Gson().fromJson(responseString, BannerModel.class);
+                SimpleDraweeView simpleDraweeView;
+                for (int i = 0; i < mDepthViews.size(); i++) {
+                    simpleDraweeView = (SimpleDraweeView) mDepthViews.get(i);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                }
+                mDepthBanner.setTips(bannerModel.tips);
+            }
+        });
+    }
+
+    private List<View> getViews(int count) {
+        List<View> views = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            views.add(getLayoutInflater().inflate(R.layout.view_image, null));
+        }
+        return views;
+    }
 
     public void onClick(View v) {
         switch (v.getId()) {
