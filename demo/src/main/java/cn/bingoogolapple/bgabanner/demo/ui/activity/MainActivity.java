@@ -85,7 +85,7 @@ public class MainActivity extends FragmentActivity {
         mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
         mDefaultViews = getViews(5);
         mDefaultBanner.setViews(mDefaultViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -105,9 +105,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initCube() {
         mCubeBanner = (BGABanner) findViewById(R.id.banner_main_cube);
-        mCubeViews = getViews(5);
+        mCubeViews = getViews(6);
         mCubeBanner.setViews(mCubeViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/6item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -127,9 +127,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initAccordion() {
         mAccordionBanner = (BGABanner) findViewById(R.id.banner_main_accordion);
-        mAccordionViews = getViews(5);
+        mAccordionViews = getViews(4);
         mAccordionBanner.setViews(mAccordionViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/4item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -149,9 +149,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initFlip() {
         mFlipBanner = (BGABanner) findViewById(R.id.banner_main_flip);
-        mFlipViews = getViews(5);
+        mFlipViews = getViews(3);
         mFlipBanner.setViews(mFlipViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/3item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -171,9 +171,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initRotate() {
         mRotateBanner = (BGABanner) findViewById(R.id.banner_main_rotate);
-        mRotateViews = getViews(5);
+        mRotateViews = getViews(6);
         mRotateBanner.setViews(mRotateViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/6item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -195,7 +195,7 @@ public class MainActivity extends FragmentActivity {
         mAlphaBanner = (BGABanner) findViewById(R.id.banner_main_alpha);
         mAlphaViews = getViews(5);
         mAlphaBanner.setViews(mAlphaViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -215,9 +215,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initZoomFade() {
         mZoomFadeBanner = (BGABanner) findViewById(R.id.banner_main_zoomFade);
-        mZoomFadeViews = getViews(5);
+        mZoomFadeViews = getViews(4);
         mZoomFadeBanner.setViews(mZoomFadeViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/4item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -237,9 +237,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initFade() {
         mFadeBanner = (BGABanner) findViewById(R.id.banner_main_fade);
-        mFadeViews = getViews(5);
+        mFadeViews = getViews(3);
         mFadeBanner.setViews(mFadeViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/3item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -259,9 +259,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initZoomCenter() {
         mZoomCenterBanner = (BGABanner) findViewById(R.id.banner_main_zoomCenter);
-        mZoomCenterViews = getViews(5);
+        mZoomCenterViews = getViews(6);
         mZoomCenterBanner.setViews(mZoomCenterViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/6item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -283,7 +283,7 @@ public class MainActivity extends FragmentActivity {
         mZoomBanner = (BGABanner) findViewById(R.id.banner_main_zoom);
         mZoomViews = getViews(5);
         mZoomBanner.setViews(mZoomViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/5item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -303,9 +303,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initStack() {
         mStackBanner = (BGABanner) findViewById(R.id.banner_main_stack);
-        mStackViews = getViews(5);
+        mStackViews = getViews(4);
         mStackBanner.setViews(mStackViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/4item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -325,9 +325,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initZoomStack() {
         mZoomStackBanner = (BGABanner) findViewById(R.id.banner_main_zoomStack);
-        mZoomStackViews = getViews(5);
+        mZoomStackViews = getViews(3);
         mZoomStackBanner.setViews(mZoomStackViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/3item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -347,9 +347,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initDepth() {
         mDepthBanner = (BGABanner) findViewById(R.id.banner_main_depth);
-        mDepthViews = getViews(5);
+        mDepthViews = getViews(6);
         mDepthBanner.setViews(mDepthViews);
-        mAsyncHttpClient.get("", new TextHttpResponseHandler() {
+        mAsyncHttpClient.get("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/6item.json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }

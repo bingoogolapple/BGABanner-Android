@@ -1,11 +1,11 @@
 {
   "imgs": [
-    "img1",
-    "img2",
-    "img3",
-    "img4",
-    "img5",
-    "img6"
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/1.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/2.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/3.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/4.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/5.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/6.png"
   ],
   "tips": [
     "第一页的提示文案",
