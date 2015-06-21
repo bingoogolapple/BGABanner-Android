@@ -4,7 +4,7 @@
 
     <style name="BannerDefaultStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">100dp</item>
         <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
         <!-- 开启自动轮播 -->
         <item name="banner_pointAutoPlayAble">true</item>
@@ -30,6 +30,14 @@
         <item name="banner_tipTextSize">4sp</item>
         <!-- 提示文案的文字颜色 -->
         <item name="banner_tipTextColor">@android:color/white</item>
+    </style>
+
+    <style name="MainBtn" parent="AutoWrap">
+        <item name="android:onClick">onClick</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">3dp</item>
     </style>
 
 </resources>

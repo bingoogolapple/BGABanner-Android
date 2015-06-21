@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
-        android:background="#11cd6e"
+        android:background="@drawable/selector_btn_orange"
         android:padding="10dp"
         android:text="进入主界面"
         android:textColor="@android:color/white"

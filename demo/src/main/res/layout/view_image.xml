@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/my_image_view"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     app:placeholderImage="@drawable/holder"
     app:placeholderImageScaleType="centerCrop"/>

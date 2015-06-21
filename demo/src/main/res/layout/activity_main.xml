@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchMatch">
+    style="@style/MatchMatch"
+    android:scrollbars="none">
 
     <LinearLayout style="@style/MatchWrap.Vertical">
 
@@ -8,32 +9,27 @@
 
             <Button
                 android:id="@+id/btn_main_1"
-                style="@style/AutoWrap"
-                android:onClick="onClick"
+                style="@style/MainBtn"
                 android:text="第一页" />
 
             <Button
                 android:id="@+id/btn_main_2"
-                style="@style/AutoWrap"
-                android:onClick="onClick"
+                style="@style/MainBtn"
                 android:text="第二页" />
 
             <Button
                 android:id="@+id/btn_main_3"
-                style="@style/AutoWrap"
-                android:onClick="onClick"
+                style="@style/MainBtn"
                 android:text="第三页" />
 
             <Button
                 android:id="@+id/btn_main_4"
-                style="@style/AutoWrap"
-                android:onClick="onClick"
+                style="@style/MainBtn"
                 android:text="第四页" />
 
             <Button
                 android:id="@+id/btn_main_5"
-                style="@style/AutoWrap"
-                android:onClick="onClick"
+                style="@style/MainBtn"
                 android:text="第五页" />
         </LinearLayout>
 
