@@ -2,6 +2,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch.Vertical">
 
+    <LinearLayout style="@style/MatchWrap.Horizontal">
+
+        <Button
+            android:id="@+id/btn_main_1"
+            style="@style/AutoWrap"
+            android:onClick="onClick"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/btn_main_2"
+            style="@style/AutoWrap"
+            android:onClick="onClick"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/btn_main_3"
+            style="@style/AutoWrap"
+            android:onClick="onClick"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/btn_main_4"
+            style="@style/AutoWrap"
+            android:onClick="onClick"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/btn_main_5"
+            style="@style/AutoWrap"
+            android:onClick="onClick"
+            android:text="5" />
+    </LinearLayout>
+
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_default"
         style="@style/BannerCommon.Main"

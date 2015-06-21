@@ -216,6 +216,12 @@ public class BGABanner extends RelativeLayout {
             mPoints.add(imageView);
             mPointContainer.addView(imageView);
         }
+
+//        TextView tipTv = new TextView(getContext());
+//        tipTv.setBackgroundColor(Color.RED);
+//        tipTv.setText("测试文本");
+//        LinearLayout.LayoutParams tipLp = new LinearLayout.LayoutParams(dp2px(getContext(), 50), dp2px(getContext(), 20));
+//        mPointContainer.addView(tipTv, tipLp);
     }
 
     private void processAutoPlay() {
@@ -234,9 +240,38 @@ public class BGABanner extends RelativeLayout {
                     return false;
                 }
             });
-            mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size());
+            int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
+            mViewPager.setCurrentItem(zeroItem);
         } else {
             switchToPoint(mCurrentPoint);
+        }
+    }
+
+    /**
+     * Set the currently selected page.
+     *
+     * @param item Item index to select
+     */
+    public void setCurrentItem(int item) {
+        if (mAutoPlayAble) {
+            int realCurrentItem = mViewPager.getCurrentItem();
+            int currentItem = realCurrentItem % mViews.size();
+            int offset = item - currentItem;
+
+            // 这里要使用循环递增或递减设置，否则会ANR
+            if (offset < 0) {
+                for (int i = -1; i >= offset; i--) {
+                    mViewPager.setCurrentItem(realCurrentItem + i, false);
+                }
+            } else if (offset > 0) {
+                for (int i = 1; i <= offset; i++) {
+                    mViewPager.setCurrentItem(realCurrentItem + i, false);
+                }
+            }
+            stopAutoPlay();
+            startAutoPlay();
+        } else {
+            mViewPager.setCurrentItem(item, false);
         }
     }
 
@@ -348,7 +383,6 @@ public class BGABanner extends RelativeLayout {
 
         @Override
         public int getCount() {
-            // 获取ViewPager的个数，这个方法是必须实现的
             return mAutoPlayAble ? Integer.MAX_VALUE : mViews.size();
         }
 
