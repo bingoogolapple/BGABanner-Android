@@ -37,73 +37,75 @@
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_default"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="defaultEffect" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_cube"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="cube" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_accordion"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_pageChangeDuration="3000"
         app:banner_transitionEffect="accordion" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_flip"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
+        app:banner_pointGravity="bottom|left"
         app:banner_transitionEffect="flip" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_rotate"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_pointFocusedImg="@drawable/shape_point_select"
         app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
         app:banner_transitionEffect="rotate" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_alpha"
-        style="@style/BannerCommon.Main"
-        app:banner_pointContainerBackground="@android:color/transparent"
+        style="@style/BannerDefaultStyle"
         app:banner_pointGravity="bottom|right"
         app:banner_transitionEffect="alpha" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_zoomFade"
-        style="@style/BannerCommon.Main"
-        app:banner_pointVisibility="false"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="zoomFade" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_fade"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="fade" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_zoomCenter"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
+        app:banner_pointFocusedImg="@drawable/point_focused"
+        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
         app:banner_transitionEffect="zoomCenter" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_zoom"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="zoom" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_stack"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_pointGravity="bottom|right"
         app:banner_transitionEffect="stack" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_zoomStack"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
+        app:banner_pointGravity="bottom|left"
         app:banner_transitionEffect="zoomStack" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_main_depth"
-        style="@style/BannerCommon.Main"
+        style="@style/BannerDefaultStyle"
         app:banner_transitionEffect="depth" />
 </LinearLayout>

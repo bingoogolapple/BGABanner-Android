@@ -42,9 +42,9 @@ public class SplashActivity extends FragmentActivity {
             }
         });
 
-        banner.setViewPagerViews(views);
+        banner.setViews(views);
 
-        banner.setCurrentItem(1);
+//        banner.setCurrentItem(1);
     }
 
     private View getPageView(@DrawableRes int resid) {

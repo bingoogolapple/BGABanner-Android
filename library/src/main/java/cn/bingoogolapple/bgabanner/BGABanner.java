@@ -2,11 +2,14 @@ package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -16,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +46,20 @@ public class BGABanner extends RelativeLayout {
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
     private BGAViewPager mViewPager;
     private List<View> mViews;
-    private LinearLayout mPointContainer;
+    private List<String> mTips;
+    private LinearLayout mPointRealContainerLl;
+    private TextView mTipTv;
     private List<ImageView> mPoints;
-    private boolean mPointVisibility = true;
     private boolean mAutoPlayAble = true;
     private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 2000;
     private int mPageChangeDuration = 2000;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-    private int mPointSpacing;
+    private int mPointLeftRightMargin;
+    private int mPointTopBottomMargin;
     private int mPointContainerLeftRightPadding;
-    private int mPointContainerTopBottomPadding;
+    private int mTipTextSize;
+    private int mTipTextColor = Color.WHITE;
     private int mCurrentPoint = 0;
     private Drawable mPointFocusedDrawable;
     private Drawable mPointUnfocusedDrawable;
@@ -79,9 +88,13 @@ public class BGABanner extends RelativeLayout {
     private void initDefaultAttrs(Context context) {
         mViewPager = new BGAViewPager(context);
         mPagerHandler = new Handler();
-        mPointSpacing = dp2px(context, 5);
-        mPointContainerLeftRightPadding = dp2px(context, 15);
-        mPointContainerTopBottomPadding = dp2px(context, 5);
+        mPointLeftRightMargin = dp2px(context, 3);
+        mPointTopBottomMargin = dp2px(context, 6);
+        mPointContainerLeftRightPadding = dp2px(context, 10);
+        mTipTextSize = sp2px(context, 4);
+        mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
+        mPointFocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_select);
+        mPointUnfocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_normal);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -100,19 +113,17 @@ public class BGABanner extends RelativeLayout {
             mPointUnfocusedDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
-        } else if (attr == R.styleable.BGABanner_banner_pointSpacing) {
+        } else if (attr == R.styleable.BGABanner_banner_pointLeftRightMargin) {
             /**
              * getDimension和getDimensionPixelOffset的功能差不多,都是获取某个dimen的值,如果是dp或sp的单位,将其乘以density,如果是px,则不乘;两个函数的区别是一个返回float,一个返回int. getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.
              */
-            mPointSpacing = typedArray.getDimensionPixelOffset(attr, mPointSpacing);
+            mPointLeftRightMargin = typedArray.getDimensionPixelOffset(attr, mPointLeftRightMargin);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerLeftRightPadding) {
             mPointContainerLeftRightPadding = typedArray.getDimensionPixelOffset(attr, mPointContainerLeftRightPadding);
-        } else if (attr == R.styleable.BGABanner_banner_pointContainerTopBottomPadding) {
-            mPointContainerTopBottomPadding = typedArray.getDimensionPixelOffset(attr, mPointContainerTopBottomPadding);
+        } else if (attr == R.styleable.BGABanner_banner_pointTopBottomMargin) {
+            mPointTopBottomMargin = typedArray.getDimensionPixelOffset(attr, mPointTopBottomMargin);
         } else if (attr == R.styleable.BGABanner_banner_pointGravity) {
             mPointGravity = typedArray.getInt(attr, mPointGravity);
-        } else if (attr == R.styleable.BGABanner_banner_pointVisibility) {
-            mPointVisibility = typedArray.getBoolean(attr, mPointVisibility);
         } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayAble) {
             mAutoPlayAble = typedArray.getBoolean(attr, mAutoPlayAble);
         } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayInterval) {
@@ -122,6 +133,10 @@ public class BGABanner extends RelativeLayout {
         } else if (attr == R.styleable.BGABanner_banner_transitionEffect) {
             int ordinal = typedArray.getInt(attr, TransitionEffect.Accordion.ordinal());
             setTransitionEffect(TransitionEffect.values()[ordinal]);
+        } else if (attr == R.styleable.BGABanner_banner_tipTextColor) {
+            mTipTextColor = typedArray.getColor(attr, mTipTextColor);
+        } else if (attr == R.styleable.BGABanner_banner_tipTextSize) {
+            mTipTextSize = typedArray.getDimensionPixelOffset(attr, mTipTextSize);
         }
     }
 
@@ -129,39 +144,55 @@ public class BGABanner extends RelativeLayout {
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
 
-        if (mPointVisibility) {
-            if (mPointFocusedDrawable == null) {
-                throw new RuntimeException("设置显示指示点时pointFocusedImg不能为空");
-            } else if (mPointUnfocusedDrawable == null) {
-                throw new RuntimeException("设置显示指示点时pointUnfocusedImg不能为空");
-            }
+        if (mPointFocusedDrawable == null) {
+            throw new RuntimeException("pointFocusedImg不能为空");
+        } else if (mPointUnfocusedDrawable == null) {
+            throw new RuntimeException("pointUnfocusedImg不能为空");
+        }
 
-            mPointContainer = new LinearLayout(context);
-            mPointContainer.setOrientation(LinearLayout.HORIZONTAL);
-            mPointContainer.setPadding(mPointContainerLeftRightPadding, mPointContainerTopBottomPadding, mPointContainerLeftRightPadding, mPointContainerTopBottomPadding);
-            if (Build.VERSION.SDK_INT >= 16) {
-                mPointContainer.setBackground(mPointContainerBackgroundDrawable);
-            } else {
-                mPointContainer.setBackgroundDrawable(mPointContainerBackgroundDrawable);
-            }
-            RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(RMP, RWC);
-            // 处理圆点在顶部还是底部
-            if ((mPointGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
-                pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            } else {
-                pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            }
-            int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
-            // 处理圆点在左边、右边还是水平居中
-            if (horizontalGravity == Gravity.LEFT) {
-                mPointContainer.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            } else if (horizontalGravity == Gravity.RIGHT) {
-                mPointContainer.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-            } else {
-                mPointContainer.setGravity(Gravity.CENTER);
-            }
+        RelativeLayout pointContainerRl = new RelativeLayout(context);
+        if (Build.VERSION.SDK_INT >= 16) {
+            pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
+        } else {
+            pointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
+        }
+        pointContainerRl.setPadding(mPointContainerLeftRightPadding, 0, mPointContainerLeftRightPadding, 0);
+        RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(RMP, RWC);
+        // 处理圆点在顶部还是底部
+        if ((mPointGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
+            pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        } else {
+            pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        }
+        addView(pointContainerRl, pointContainerLp);
 
-            addView(mPointContainer, pointContainerLp);
+        mPointRealContainerLl = new LinearLayout(context);
+        mPointRealContainerLl.setId(R.id.banner_pointContainerId);
+        mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
+        RelativeLayout.LayoutParams pointRealContainerLp = new RelativeLayout.LayoutParams(RWC, RWC);
+        pointContainerRl.addView(mPointRealContainerLl, pointRealContainerLp);
+
+        RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, mPointFocusedDrawable.getIntrinsicHeight() + 2 * mPointTopBottomMargin);
+        mTipTv = new TextView(context);
+        mTipTv.setGravity(Gravity.CENTER_VERTICAL);
+        mTipTv.setSingleLine(true);
+        mTipTv.setEllipsize(TextUtils.TruncateAt.END);
+        mTipTv.setTextColor(mTipTextColor);
+        mTipTv.setTextSize(mTipTextSize);
+        pointContainerRl.addView(mTipTv, tipLp);
+
+        int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
+        // 处理圆点在左边、右边还是水平居中
+        if (horizontalGravity == Gravity.LEFT) {
+            pointRealContainerLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            tipLp.addRule(RelativeLayout.RIGHT_OF, R.id.banner_pointContainerId);
+            mTipTv.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        } else if (horizontalGravity == Gravity.RIGHT) {
+            pointRealContainerLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
+        } else {
+            pointRealContainerLp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
         }
     }
 
@@ -177,15 +208,20 @@ public class BGABanner extends RelativeLayout {
     }
 
     /**
-     * 设置每一页的控件
+     * 设置每一页的控件和文案
      *
      * @param views 每一页的控件
+     * @param tips  每一页的提示文案
      */
-    public void setViewPagerViews(List<View> views) {
+    public void setViewsAndTips(List<View> views, List<String> tips) {
         if (mAutoPlayAble && views.size() < 3) {
             throw new RuntimeException("开启指定轮播时至少有三个页面");
         }
+        if (tips != null && tips.size() < views.size()) {
+            throw new RuntimeException("提示文案数必须等于页面数量");
+        }
         mViews = views;
+        mTips = tips;
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(new ChangePointListener());
 
@@ -193,12 +229,17 @@ public class BGABanner extends RelativeLayout {
         processAutoPlay();
     }
 
-    private void initPoints() {
-        if (!mPointVisibility) {
-            return;
-        }
+    /**
+     * 设置每一页的控件
+     *
+     * @param views 每一页的控件
+     */
+    public void setViews(List<View> views) {
+        setViewsAndTips(views, null);
+    }
 
-        mPointContainer.removeAllViews();
+    private void initPoints() {
+        mPointRealContainerLl.removeAllViews();
         mViewPager.removeAllViews();
         if (mPoints != null) {
             mPoints.clear();
@@ -206,22 +247,15 @@ public class BGABanner extends RelativeLayout {
             mPoints = new ArrayList<>();
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
-        int margin = mPointSpacing / 2;
-        lp.setMargins(margin, 0, margin, 0);
+        lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
         ImageView imageView;
         for (int i = 0; i < mViews.size(); i++) {
             imageView = new ImageView(getContext());
             imageView.setLayoutParams(lp);
             imageView.setImageDrawable(mPointUnfocusedDrawable);
             mPoints.add(imageView);
-            mPointContainer.addView(imageView);
+            mPointRealContainerLl.addView(imageView);
         }
-
-//        TextView tipTv = new TextView(getContext());
-//        tipTv.setBackgroundColor(Color.RED);
-//        tipTv.setText("测试文本");
-//        LinearLayout.LayoutParams tipLp = new LinearLayout.LayoutParams(dp2px(getContext(), 50), dp2px(getContext(), 20));
-//        mPointContainer.addView(tipTv, tipLp);
     }
 
     private void processAutoPlay() {
@@ -308,13 +342,13 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void switchToPoint(int newCurrentPoint) {
-        if (!mPointVisibility) {
-            return;
-        }
-
         mPoints.get(mCurrentPoint).setImageDrawable(mPointUnfocusedDrawable);
         mPoints.get(newCurrentPoint).setImageDrawable(mPointFocusedDrawable);
         mCurrentPoint = newCurrentPoint;
+
+        if (mTipTv != null && mTips != null) {
+            mTipTv.setText(mTips.get(newCurrentPoint % mTips.size()));
+        }
     }
 
     /**
@@ -388,12 +422,7 @@ public class BGABanner extends RelativeLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view;
-            if (mAutoPlayAble) {
-                view = mViews.get(position % mViews.size());
-            } else {
-                view = mViews.get(position);
-            }
+            View view = mViews.get(position % mViews.size());
 
             // 在destroyItem方法中销毁的话，当只有3页时会有问题
             if (container.equals(view.getParent())) {
@@ -417,11 +446,18 @@ public class BGABanner extends RelativeLayout {
 
         @Override
         public void onPageSelected(int position) {
-            if (mPointVisibility) {
-                if (mAutoPlayAble) {
-                    switchToPoint(position % mViews.size());
+            switchToPoint(position % mViews.size());
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (mTipTv != null && mTips != null) {
+                if (positionOffset > 0.5) {
+                    mTipTv.setText(mTips.get((position + 1) % mTips.size()));
+                    ViewHelper.setAlpha(mTipTv, positionOffset);
                 } else {
-                    switchToPoint(position);
+                    ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
+                    mTipTv.setText(mTips.get(position % mTips.size()));
                 }
             }
         }
@@ -445,6 +481,10 @@ public class BGABanner extends RelativeLayout {
 
     public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
+    }
+
+    public static int sp2px(Context context, float spValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
 }

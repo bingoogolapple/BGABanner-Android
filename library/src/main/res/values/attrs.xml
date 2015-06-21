@@ -2,8 +2,6 @@
 <resources>
 
     <declare-styleable name="BGABanner">
-        <!-- 指示点是否可见 -->
-        <attr name="banner_pointVisibility" format="boolean" />
         <!-- 指示点容器背景 -->
         <attr name="banner_pointContainerBackground" format="reference|color" />
         <!-- 指示点选中时的背景 -->
@@ -12,10 +10,10 @@
         <attr name="banner_pointUnfocusedImg" format="reference" />
         <!-- 指示点容器左右内间距 -->
         <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
-        <!-- 指示点容器上下内间距 -->
-        <attr name="banner_pointContainerTopBottomPadding" format="dimension" />
-        <!-- 两个指示点之间的间距 -->
-        <attr name="banner_pointSpacing" format="dimension" />
+        <!-- 指示点上下外间距 -->
+        <attr name="banner_pointTopBottomMargin" format="dimension" />
+        <!-- 指示点左右外间距 -->
+        <attr name="banner_pointLeftRightMargin" format="dimension" />
         <!-- 指示点的位置 -->
         <attr name="banner_pointGravity">
             <flag name="top" value="0x30" />
@@ -46,6 +44,10 @@
             <enum name="depth" value="11" />
             <enum name="zoom" value="12" />
         </attr>
+        <!-- 提示文案的文字颜色 -->
+        <attr name="banner_tipTextColor" format="reference|color" />
+        <!-- 提示文案的文字大小 -->
+        <attr name="banner_tipTextSize" format="dimension" />
     </declare-styleable>
 
 </resources>
