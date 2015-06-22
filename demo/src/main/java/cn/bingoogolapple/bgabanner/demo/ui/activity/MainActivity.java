@@ -120,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
                     simpleDraweeView = (SimpleDraweeView) mCubeViews.get(i);
                     simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
                 }
-                mCubeBanner.setTips(bannerModel.tips);
+                // 也可以不设置tips
+//                mCubeBanner.setTips(bannerModel.tips);
             }
         });
     }

@@ -43,7 +43,7 @@ def getBintrayApiKeyProperty() {
     return hasProperty('BINTRAY_APIKEY') ? BINTRAY_APIKEY : ""
 }
 
-// gradle bintray
+// gradle bintrayUpload
 bintray {
     user = getBintrayUserProperty()
     key = getBintrayApiKeyProperty()
