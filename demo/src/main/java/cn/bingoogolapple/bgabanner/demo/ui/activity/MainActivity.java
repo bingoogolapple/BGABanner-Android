@@ -2,7 +2,7 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -19,7 +19,7 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     private AsyncHttpClient mAsyncHttpClient;
     private BGABanner mDefaultBanner;
     private List<View> mDefaultViews;
