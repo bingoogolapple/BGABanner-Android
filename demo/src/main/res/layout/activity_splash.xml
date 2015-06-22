@@ -2,11 +2,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/banner_splash_pager"
     style="@style/MatchMatch"
-    app:banner_pointContainerBackground="#4000"
-    app:banner_pointContainerHeight="25dp"
-    app:banner_pointContainerWidth="match_parent"
-    app:banner_pointFocusedImg="@drawable/point_focused"
-    app:banner_pointGravity="bottom|center_horizontal"
-    app:banner_pointSpacing="5dp"
-    app:banner_pointUnfocusedImg="@drawable/point_unfocused"
-    app:banner_pointVisibility="true" />
+    app:banner_pointAutoPlayAble="false"
+    app:banner_pointTopBottomMargin="15dp"/>

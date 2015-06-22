@@ -1,58 +1,110 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchMatch.Vertical">
+    style="@style/MatchMatch"
+    android:scrollbars="none">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:banner_pointAutoPlayAble="true"
-        app:banner_pointAutoPlayInterval="2000"
-        app:banner_pointContainerBackground="#200a"
-        app:banner_pointContainerHeight="20dp"
-        app:banner_pointContainerWidth="match_parent"
-        app:banner_pointEdgeSpacing="10dp"
-        app:banner_pointFocusedImg="@drawable/shape_point_select"
-        app:banner_pointGravity="bottom|center_horizontal"
-        app:banner_pointSpacing="5dp"
-        app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
-        app:banner_pointVisibility="true" />
+    <LinearLayout style="@style/MatchWrap.Vertical">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        app:banner_pointAutoPlayAble="true"
-        app:banner_pointAutoPlayInterval="2000"
-        app:banner_pointContainerBackground="@android:color/transparent"
-        app:banner_pointContainerHeight="20dp"
-        app:banner_pointContainerWidth="match_parent"
-        app:banner_pointEdgeSpacing="10dp"
-        app:banner_pointFocusedImg="@drawable/point_focused"
-        app:banner_pointGravity="bottom|right"
-        app:banner_pointSpacing="5dp"
-        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
-        app:banner_pointVisibility="true" />
+        <LinearLayout style="@style/MatchWrap.Horizontal">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        app:banner_pointAutoPlayAble="true"
-        app:banner_pointAutoPlayInterval="2000"
-        app:banner_pointContainerBackground="#4000"
-        app:banner_pointContainerHeight="20dp"
-        app:banner_pointContainerWidth="match_parent"
-        app:banner_pointEdgeSpacing="10dp"
-        app:banner_pointFocusedImg="@drawable/point_focused"
-        app:banner_pointGravity="bottom|left"
-        app:banner_pointSpacing="5dp"
-        app:banner_pointUnfocusedImg="@drawable/point_unfocused"
-        app:banner_pointVisibility="true" />
+            <Button
+                android:id="@+id/btn_main_1"
+                style="@style/MainBtn"
+                android:text="第一页" />
 
-</LinearLayout>
+            <Button
+                android:id="@+id/btn_main_2"
+                style="@style/MainBtn"
+                android:text="第二页" />
+
+            <Button
+                android:id="@+id/btn_main_3"
+                style="@style/MainBtn"
+                android:text="第三页" />
+
+            <Button
+                android:id="@+id/btn_main_4"
+                style="@style/MainBtn"
+                android:text="第四页" />
+
+            <Button
+                android:id="@+id/btn_main_5"
+                style="@style/MainBtn"
+                android:text="第五页" />
+        </LinearLayout>
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_default"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="defaultEffect" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_cube"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="cube" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_accordion"
+            style="@style/BannerDefaultStyle"
+            app:banner_pageChangeDuration="3000"
+            app:banner_transitionEffect="accordion" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_flip"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointGravity="bottom|left"
+            app:banner_transitionEffect="flip" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_rotate"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointFocusedImg="@drawable/shape_point_select"
+            app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
+            app:banner_transitionEffect="rotate" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_alpha"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointGravity="bottom|right"
+            app:banner_transitionEffect="alpha" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_zoomFade"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="zoomFade" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_fade"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="fade" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_zoomCenter"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointFocusedImg="@drawable/point_focused"
+            app:banner_pointUnfocusedImg="@drawable/point_unfocused"
+            app:banner_transitionEffect="zoomCenter" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_zoom"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="zoom" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_stack"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointGravity="bottom|right"
+            app:banner_transitionEffect="stack" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_zoomStack"
+            style="@style/BannerDefaultStyle"
+            app:banner_pointGravity="bottom|left"
+            app:banner_transitionEffect="zoomStack" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_main_depth"
+            style="@style/BannerDefaultStyle"
+            app:banner_transitionEffect="depth" />
+    </LinearLayout>
+</ScrollView>

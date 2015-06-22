@@ -1,13 +1,43 @@
 <resources>
 
-    <style name="BGA" />
+    <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen"></style>
 
-    <style name="BGA.Theme" parent="Theme.AppCompat.Light.DarkActionBar"/>
+    <style name="BannerDefaultStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <!-- 自定义属性在styles.xml中不需要命名空间,直接用属性名就可以了 -->
+        <!-- 开启自动轮播 -->
+        <item name="banner_pointAutoPlayAble">true</item>
+        <!-- 自动轮播的时间间隔 -->
+        <item name="banner_pointAutoPlayInterval">2000</item>
+        <!-- 指示点容器背景 -->
+        <item name="banner_pointContainerBackground">#44aaaaaa</item>
+        <!-- 指示点选中时的背景 -->
+        <item name="banner_pointFocusedImg">@drawable/banner_shape_point_select</item>
+        <!-- 指示点未选中时的背景 -->
+        <item name="banner_pointUnfocusedImg">@drawable/banner_shape_point_normal</item>
+        <!-- 指示点容器左右内间距 -->
+        <item name="banner_pointContainerLeftRightPadding">10dp</item>
+        <!-- 指示点上下外间距 -->
+        <item name="banner_pointTopBottomMargin">6dp</item>
+        <!-- 指示点左右外间距 -->
+        <item name="banner_pointLeftRightMargin">3dp</item>
+        <!-- 指示点的位置 -->
+        <item name="banner_pointGravity">bottom|center_horizontal</item>
+        <!-- 页码切换过程的时间长度 -->
+        <item name="banner_pageChangeDuration">2000</item>
+        <!-- 提示文案的文字大小 -->
+        <item name="banner_tipTextSize">4sp</item>
+        <!-- 提示文案的文字颜色 -->
+        <item name="banner_tipTextColor">@android:color/white</item>
+    </style>
 
-    <style name="BGA.Theme.Translucent">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
+    <style name="MainBtn" parent="AutoWrap">
+        <item name="android:onClick">onClick</item>
+        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">3dp</item>
     </style>
 
 </resources>

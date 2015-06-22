@@ -1,11 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchMatch"
-    android:background="#80f8" >
+    style="@style/MatchMatch">
+    <!-- 这里采用了.9图片，所以用FIT_XY -->
+    <ImageView
+        style="@style/MatchMatch"
+        android:scaleType="fitXY"
+        android:src="@drawable/guide_4" />
 
     <Button
         android:id="@+id/btn_last_main"
         style="@style/WrapWrap"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/selector_btn_orange"
+        android:padding="10dp"
         android:text="进入主界面"
         android:textColor="@android:color/white"
         android:textSize="20sp" />

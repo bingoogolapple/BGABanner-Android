@@ -1,0 +1,14 @@
+{
+  "imgs": [
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/12.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/13.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/14.png",
+    "https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/develop/testdatas/15.png"
+  ],
+  "tips": [
+    "第一页的提示文案",
+    "第二页的提示文案",
+    "第三页的提示文案",
+    "第四页的提示文案"
+  ]
+}
