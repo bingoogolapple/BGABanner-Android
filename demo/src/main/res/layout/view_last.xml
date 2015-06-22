@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch">
-    <!-- 这里采用了.9图片，所以用FIT_XY -->
     <ImageView
         style="@style/MatchMatch"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/guide_4" />
 
     <Button
