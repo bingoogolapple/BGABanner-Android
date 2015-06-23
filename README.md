@@ -14,9 +14,9 @@ demo中演示了引导页、以及通过fresco、android-async-http、gson实现
 4. 支持选中特定页面、支持只有3页时的轮播功能
 
 ### 效果图
-![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/master/screenshots/banner1.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/master/screenshots/banner2.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/master/screenshots/banner3.gif)
+![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)
+![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner2.gif)
+![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner3.gif)
 
 ### 基本使用
 
