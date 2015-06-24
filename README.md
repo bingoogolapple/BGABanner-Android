@@ -1,5 +1,7 @@
 :running:BGABanner-Android v2.0.0:running:
 ============
+
+[![Join the chat at https://gitter.im/bingoogolapple/BGABanner-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGABanner-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
