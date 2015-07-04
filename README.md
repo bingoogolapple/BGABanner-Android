@@ -1,4 +1,4 @@
-:running:BGABanner-Android v2.0.0:running:
+:running:BGABanner-Android v2.0.1:running:
 ============
 
 [![Join the chat at https://gitter.im/bingoogolapple/BGABanner-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGABanner-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -28,7 +28,7 @@ demo中演示了引导页、以及通过fresco、android-async-http、gson实现
 dependencies {
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-banner:2.0.0@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.0.1@aar'
 }
 ```
 
