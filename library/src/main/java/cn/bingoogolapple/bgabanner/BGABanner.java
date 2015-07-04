@@ -91,7 +91,7 @@ public class BGABanner extends RelativeLayout {
         mPointLeftRightMargin = dp2px(context, 3);
         mPointTopBottomMargin = dp2px(context, 6);
         mPointContainerLeftRightPadding = dp2px(context, 10);
-        mTipTextSize = sp2px(context, 4);
+        mTipTextSize = sp2px(context, 8);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
         mPointFocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_select);
         mPointUnfocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_normal);
@@ -114,14 +114,11 @@ public class BGABanner extends RelativeLayout {
         } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointLeftRightMargin) {
-            /**
-             * getDimension和getDimensionPixelOffset的功能差不多,都是获取某个dimen的值,如果是dp或sp的单位,将其乘以density,如果是px,则不乘;两个函数的区别是一个返回float,一个返回int. getDimensionPixelSize则不管写的是dp还是sp还是px,都会乘以denstiy.
-             */
-            mPointLeftRightMargin = typedArray.getDimensionPixelOffset(attr, mPointLeftRightMargin);
+            mPointLeftRightMargin = typedArray.getDimensionPixelSize(attr, mPointLeftRightMargin);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerLeftRightPadding) {
-            mPointContainerLeftRightPadding = typedArray.getDimensionPixelOffset(attr, mPointContainerLeftRightPadding);
+            mPointContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mPointContainerLeftRightPadding);
         } else if (attr == R.styleable.BGABanner_banner_pointTopBottomMargin) {
-            mPointTopBottomMargin = typedArray.getDimensionPixelOffset(attr, mPointTopBottomMargin);
+            mPointTopBottomMargin = typedArray.getDimensionPixelSize(attr, mPointTopBottomMargin);
         } else if (attr == R.styleable.BGABanner_banner_pointGravity) {
             mPointGravity = typedArray.getInt(attr, mPointGravity);
         } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayAble) {
@@ -136,7 +133,7 @@ public class BGABanner extends RelativeLayout {
         } else if (attr == R.styleable.BGABanner_banner_tipTextColor) {
             mTipTextColor = typedArray.getColor(attr, mTipTextColor);
         } else if (attr == R.styleable.BGABanner_banner_tipTextSize) {
-            mTipTextSize = typedArray.getDimensionPixelOffset(attr, mTipTextSize);
+            mTipTextSize = typedArray.getDimensionPixelSize(attr, mTipTextSize);
         }
     }
 
@@ -178,7 +175,7 @@ public class BGABanner extends RelativeLayout {
         mTipTv.setSingleLine(true);
         mTipTv.setEllipsize(TextUtils.TruncateAt.END);
         mTipTv.setTextColor(mTipTextColor);
-        mTipTv.setTextSize(mTipTextSize);
+        mTipTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTipTextSize);
         pointContainerRl.addView(mTipTv, tipLp);
 
         int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
