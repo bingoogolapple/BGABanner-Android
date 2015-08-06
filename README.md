@@ -90,10 +90,8 @@ public class SplashActivity extends AppCompatActivity {
 <declare-styleable name="BGABanner">
     <!-- 指示点容器背景 -->
     <attr name="banner_pointContainerBackground" format="reference|color" />
-    <!-- 指示点选中时的背景 -->
-    <attr name="banner_pointFocusedImg" format="reference" />
-    <!-- 指示点未选中时的背景 -->
-    <attr name="banner_pointUnfocusedImg" format="reference" />
+    <!-- 指示点的背景 -->
+    <attr name="banner_pointDrawable" format="reference" />
     <!-- 指示点容器左右内间距 -->
     <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
     <!-- 指示点上下外间距 -->

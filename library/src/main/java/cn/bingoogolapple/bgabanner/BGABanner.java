@@ -7,10 +7,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -23,7 +25,6 @@ import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
@@ -41,15 +42,16 @@ import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
 
 public class BGABanner extends RelativeLayout {
+    private static final String TAG = BGABanner.class.getSimpleName();
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
     private List<View> mViews;
     private List<String> mTips;
     private LinearLayout mPointRealContainerLl;
     private TextView mTipTv;
-    private List<ImageView> mPoints;
     private boolean mAutoPlayAble = true;
     private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 2000;
@@ -60,17 +62,16 @@ public class BGABanner extends RelativeLayout {
     private int mPointContainerLeftRightPadding;
     private int mTipTextSize;
     private int mTipTextColor = Color.WHITE;
-    private int mCurrentPoint = 0;
-    private Drawable mPointFocusedDrawable;
-    private Drawable mPointUnfocusedDrawable;
+    private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
     private Drawable mPointContainerBackgroundDrawable;
-    private Handler mPagerHandler;
 
-    private Runnable mAutoPlayTask = new Runnable() {
+    private Handler mAutoPlayHandler = new Handler() {
         @Override
-        public void run() {
+        public void handleMessage(Message msg) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            mPagerHandler.postDelayed(mAutoPlayTask, mAutoPlayInterval);
+            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
+
+            debug("轮播" + mViewPager.getCurrentItem());
         }
     };
 
@@ -87,14 +88,11 @@ public class BGABanner extends RelativeLayout {
 
     private void initDefaultAttrs(Context context) {
         mViewPager = new BGAViewPager(context);
-        mPagerHandler = new Handler();
         mPointLeftRightMargin = dp2px(context, 3);
         mPointTopBottomMargin = dp2px(context, 6);
         mPointContainerLeftRightPadding = dp2px(context, 10);
         mTipTextSize = sp2px(context, 8);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
-        mPointFocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_select);
-        mPointUnfocusedDrawable = getResources().getDrawable(R.drawable.banner_shape_point_normal);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -107,10 +105,8 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.BGABanner_banner_pointFocusedImg) {
-            mPointFocusedDrawable = typedArray.getDrawable(attr);
-        } else if (attr == R.styleable.BGABanner_banner_pointUnfocusedImg) {
-            mPointUnfocusedDrawable = typedArray.getDrawable(attr);
+        if (attr == R.styleable.BGABanner_banner_pointDrawable) {
+            mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.selector_bgabanner_point);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointLeftRightMargin) {
@@ -141,12 +137,6 @@ public class BGABanner extends RelativeLayout {
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
 
-        if (mPointFocusedDrawable == null) {
-            throw new RuntimeException("pointFocusedImg不能为空");
-        } else if (mPointUnfocusedDrawable == null) {
-            throw new RuntimeException("pointUnfocusedImg不能为空");
-        }
-
         RelativeLayout pointContainerRl = new RelativeLayout(context);
         if (Build.VERSION.SDK_INT >= 16) {
             pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
@@ -169,7 +159,7 @@ public class BGABanner extends RelativeLayout {
         RelativeLayout.LayoutParams pointRealContainerLp = new RelativeLayout.LayoutParams(RWC, RWC);
         pointContainerRl.addView(mPointRealContainerLl, pointRealContainerLp);
 
-        RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, mPointFocusedDrawable.getIntrinsicHeight() + 2 * mPointTopBottomMargin);
+        RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, getResources().getDrawable(mPointDrawableResId).getIntrinsicHeight() + 2 * mPointTopBottomMargin);
         mTipTv = new TextView(context);
         mTipTv.setGravity(Gravity.CENTER_VERTICAL);
         mTipTv.setSingleLine(true);
@@ -212,10 +202,10 @@ public class BGABanner extends RelativeLayout {
      */
     public void setViewsAndTips(List<View> views, List<String> tips) {
         if (mAutoPlayAble && views.size() < 3) {
-            throw new RuntimeException("开启指定轮播时至少有三个页面");
+            throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
         }
         if (tips != null && tips.size() < views.size()) {
-            throw new RuntimeException("提示文案数必须等于页面数量");
+            throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mViews = views;
         mTips = tips;
@@ -242,7 +232,7 @@ public class BGABanner extends RelativeLayout {
      */
     public void setTips(List<String> tips) {
         if (tips != null && mViews != null && tips.size() < mViews.size()) {
-            throw new RuntimeException("提示文案数必须等于页面数量");
+            throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mTips = tips;
     }
@@ -250,19 +240,14 @@ public class BGABanner extends RelativeLayout {
     private void initPoints() {
         mPointRealContainerLl.removeAllViews();
         mViewPager.removeAllViews();
-        if (mPoints != null) {
-            mPoints.clear();
-        } else {
-            mPoints = new ArrayList<>();
-        }
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
         lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
         ImageView imageView;
         for (int i = 0; i < mViews.size(); i++) {
             imageView = new ImageView(getContext());
             imageView.setLayoutParams(lp);
-            imageView.setImageDrawable(mPointUnfocusedDrawable);
-            mPoints.add(imageView);
+            imageView.setImageResource(mPointDrawableResId);
             mPointRealContainerLl.addView(imageView);
         }
     }
@@ -277,6 +262,7 @@ public class BGABanner extends RelativeLayout {
                             stopAutoPlay();
                             break;
                         case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
                             startAutoPlay();
                             break;
                     }
@@ -286,7 +272,7 @@ public class BGABanner extends RelativeLayout {
             int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
             mViewPager.setCurrentItem(zeroItem);
         } else {
-            switchToPoint(mCurrentPoint);
+            switchToPoint(0);
         }
     }
 
@@ -331,29 +317,28 @@ public class BGABanner extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mPagerHandler != null) {
-            mPagerHandler.removeCallbacks(mAutoPlayTask);
-        }
+        stopAutoPlay();
     }
 
     private void startAutoPlay() {
         if (mAutoPlayAble && !mIsAutoPlaying) {
             mIsAutoPlaying = true;
-            mPagerHandler.postDelayed(mAutoPlayTask, mAutoPlayInterval);
+            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
         }
     }
 
     private void stopAutoPlay() {
         if (mAutoPlayAble && mIsAutoPlaying) {
             mIsAutoPlaying = false;
-            mPagerHandler.removeCallbacks(mAutoPlayTask);
+            mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
         }
     }
 
     private void switchToPoint(int newCurrentPoint) {
-        mPoints.get(mCurrentPoint).setImageDrawable(mPointUnfocusedDrawable);
-        mPoints.get(newCurrentPoint).setImageDrawable(mPointFocusedDrawable);
-        mCurrentPoint = newCurrentPoint;
+        for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
+            mPointRealContainerLl.getChildAt(i).setEnabled(false);
+        }
+        mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
         if (mTipTv != null && mTips != null) {
             mTipTv.setText(mTips.get(newCurrentPoint % mTips.size()));
@@ -496,4 +481,7 @@ public class BGABanner extends RelativeLayout {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
+    private static void debug(String msg) {
+        Log.i(TAG, msg);
+    }
 }

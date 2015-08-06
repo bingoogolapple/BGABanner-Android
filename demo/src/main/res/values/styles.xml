@@ -16,10 +16,8 @@
         <item name="banner_pointAutoPlayInterval">2000</item>
         <!-- 指示点容器背景 -->
         <item name="banner_pointContainerBackground">#44aaaaaa</item>
-        <!-- 指示点选中时的背景 -->
-        <item name="banner_pointFocusedImg">@drawable/banner_shape_point_select</item>
-        <!-- 指示点未选中时的背景 -->
-        <item name="banner_pointUnfocusedImg">@drawable/banner_shape_point_normal</item>
+        <!-- 指示点背景 -->
+        <item name="banner_pointDrawable">@drawable/selector_banner_point1</item>
         <!-- 指示点容器左右内间距 -->
         <item name="banner_pointContainerLeftRightPadding">10dp</item>
         <!-- 指示点上下外间距 -->
