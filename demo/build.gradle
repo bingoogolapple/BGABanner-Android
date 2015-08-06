@@ -17,7 +17,7 @@ dependencies {
 
     compile 'com.nineoldandroids:library:2.4.0'
 //    compile project(':library')
-    compile 'cn.bingoogolapple:bga-banner:2.0.1@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.0.2@aar'
 
     compile 'com.facebook.fresco:fresco:0.5.2'
     compile 'com.google.code.gson:gson:2.3.1'

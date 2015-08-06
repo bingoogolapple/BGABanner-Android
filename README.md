@@ -1,7 +1,7 @@
-:running:BGABanner-Android v2.0.1:running:
+:running:BGABanner-Android:running:
 ============
 
-[![Join the chat at https://gitter.im/bingoogolapple/BGABanner-Android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bingoogolapple/BGABanner-Android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion)
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
@@ -28,7 +28,7 @@ demo中演示了引导页、以及通过fresco、android-async-http、gson实现
 dependencies {
     // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-banner:2.0.1@aar'
+    compile 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
 ```
 
@@ -90,10 +90,8 @@ public class SplashActivity extends AppCompatActivity {
 <declare-styleable name="BGABanner">
     <!-- 指示点容器背景 -->
     <attr name="banner_pointContainerBackground" format="reference|color" />
-    <!-- 指示点选中时的背景 -->
-    <attr name="banner_pointFocusedImg" format="reference" />
-    <!-- 指示点未选中时的背景 -->
-    <attr name="banner_pointUnfocusedImg" format="reference" />
+    <!-- 指示点的背景 -->
+    <attr name="banner_pointDrawable" format="reference" />
     <!-- 指示点容器左右内间距 -->
     <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
     <!-- 指示点上下外间距 -->

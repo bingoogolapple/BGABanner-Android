@@ -46,7 +46,6 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_accordion"
             style="@style/BannerDefaultStyle"
-            app:banner_pageChangeDuration="3000"
             app:banner_transitionEffect="accordion" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -58,8 +57,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_rotate"
             style="@style/BannerDefaultStyle"
-            app:banner_pointFocusedImg="@drawable/shape_point_select"
-            app:banner_pointUnfocusedImg="@drawable/shape_point_normal"
+            app:banner_pointDrawable="@drawable/selector_banner_point2"
             app:banner_transitionEffect="rotate" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -81,8 +79,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoomCenter"
             style="@style/BannerDefaultStyle"
-            app:banner_pointFocusedImg="@drawable/point_focused"
-            app:banner_pointUnfocusedImg="@drawable/point_unfocused"
+            app:banner_pointDrawable="@drawable/selector_banner_point2"
             app:banner_transitionEffect="zoomCenter" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
