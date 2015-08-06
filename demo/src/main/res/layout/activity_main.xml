@@ -46,7 +46,6 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_accordion"
             style="@style/BannerDefaultStyle"
-            app:banner_pageChangeDuration="3000"
             app:banner_transitionEffect="accordion" />
 
         <cn.bingoogolapple.bgabanner.BGABanner

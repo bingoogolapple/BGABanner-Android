@@ -54,8 +54,8 @@ public class BGABanner extends RelativeLayout {
     private TextView mTipTv;
     private boolean mAutoPlayAble = true;
     private boolean mIsAutoPlaying = false;
-    private int mAutoPlayInterval = 2000;
-    private int mPageChangeDuration = 2000;
+    private int mAutoPlayInterval = 3000;
+    private int mPageChangeDuration = 800;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
     private int mPointLeftRightMargin;
     private int mPointTopBottomMargin;
@@ -187,7 +187,7 @@ public class BGABanner extends RelativeLayout {
      * @param duration 页码切换过程的时间长度
      */
     public void setPageChangeDuration(int duration) {
-        if (duration > 0 && duration < 5000) {
+        if (duration >= 0 && duration <= 2000) {
             mViewPager.setPageChangeDuration(duration);
         }
     }
