@@ -70,8 +70,6 @@ public class BGABanner extends RelativeLayout {
         public void handleMessage(Message msg) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
             mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
-
-            debug("轮播" + mViewPager.getCurrentItem());
         }
     };
 
@@ -216,6 +214,10 @@ public class BGABanner extends RelativeLayout {
         processAutoPlay();
     }
 
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+        mViewPager.addOnPageChangeListener(listener);
+    }
+
     /**
      * 设置每一页的控件
      *
@@ -254,26 +256,29 @@ public class BGABanner extends RelativeLayout {
 
     private void processAutoPlay() {
         if (mAutoPlayAble) {
-            mViewPager.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            stopAutoPlay();
-                            break;
-                        case MotionEvent.ACTION_UP:
-                        case MotionEvent.ACTION_CANCEL:
-                            startAutoPlay();
-                            break;
-                    }
-                    return false;
-                }
-            });
             int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
             mViewPager.setCurrentItem(zeroItem);
+
+            startAutoPlay();
         } else {
             switchToPoint(0);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mAutoPlayAble) {
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    stopAutoPlay();
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    startAutoPlay();
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     /**
@@ -297,6 +302,7 @@ public class BGABanner extends RelativeLayout {
                     mViewPager.setCurrentItem(realCurrentItem + i, false);
                 }
             }
+
             stopAutoPlay();
             startAutoPlay();
         } else {
@@ -320,14 +326,14 @@ public class BGABanner extends RelativeLayout {
         stopAutoPlay();
     }
 
-    private void startAutoPlay() {
+    public void startAutoPlay() {
         if (mAutoPlayAble && !mIsAutoPlaying) {
             mIsAutoPlaying = true;
             mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
         }
     }
 
-    private void stopAutoPlay() {
+    public void stopAutoPlay() {
         if (mAutoPlayAble && mIsAutoPlaying) {
             mIsAutoPlaying = false;
             mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
