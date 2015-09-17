@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDefault() {
         mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
-        mDefaultViews = getViews(3);
+        mDefaultViews = getViews(5);
         mDefaultBanner.setViews(mDefaultViews);
 
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
