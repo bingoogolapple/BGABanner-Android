@@ -3,5 +3,6 @@
     android:id="@+id/my_image_view"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:clickable="true"
     app:placeholderImage="@drawable/holder"
-    app:placeholderImageScaleType="centerCrop"/>
+    app:placeholderImageScaleType="centerCrop" />
