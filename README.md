@@ -26,8 +26,8 @@ demo中演示了引导页、以及通过fresco、android-async-http、gson实现
 
 ```groovy
 dependencies {
-    // 记得添加nineoldandroids
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:support-v4:latestVersion'
     compile 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
 ```

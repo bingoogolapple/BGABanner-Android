@@ -48,7 +48,7 @@ public class BGABanner extends RelativeLayout {
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
     private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
-    private List<View> mViews;
+    private List<? extends View> mViews;
     private List<String> mTips;
     private LinearLayout mPointRealContainerLl;
     private TextView mTipTv;
@@ -198,7 +198,7 @@ public class BGABanner extends RelativeLayout {
      * @param views 每一页的控件集合
      * @param tips  每一页的提示文案集合
      */
-    public void setViewsAndTips(List<View> views, List<String> tips) {
+    public void setViewsAndTips(List<? extends View> views, List<String> tips) {
         if (mAutoPlayAble && views.size() < 3) {
             throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
         }
@@ -223,7 +223,7 @@ public class BGABanner extends RelativeLayout {
      *
      * @param views 每一页的控件集合
      */
-    public void setViews(List<View> views) {
+    public void setViews(List<? extends View> views) {
         setViewsAndTips(views, null);
     }
 
