@@ -1,11 +1,10 @@
 :running:BGABanner-Android:running:
 ============
 
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion)
->关于我<br/>
->微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner)
 
-demo中演示了引导页、以及通过fresco、android-async-http、gson实现广告条的自动轮播效果
+demo中演示了引导页、以及通过glide、retrofit、gson实现广告条的自动轮播效果
 
 **【感谢慕课网的 [千变万化的ViewPager切换动画](http://www.imooc.com/learn/226) 视频教程】**
 
@@ -13,7 +12,7 @@ demo中演示了引导页、以及通过fresco、android-async-http、gson实现
 1. 引导界面导航效果
 2. 广告条循环自动轮播、手指按下暂停自动轮播、自定义指示器位置
 3. ViewPager各种切换动画
-4. 支持选中特定页面、支持只有3页时的轮播功能
+4. 支持选中特定页面、支持大于等于3页时的轮播功能
 
 ### 效果图
 ![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)
@@ -136,6 +135,12 @@ public class SplashActivity extends AppCompatActivity {
 ```
 
 ### 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
+
+### 关于我
+
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## License
 

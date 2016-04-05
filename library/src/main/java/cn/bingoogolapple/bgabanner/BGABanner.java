@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -46,14 +45,12 @@ public class BGABanner extends RelativeLayout {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
     private List<? extends View> mViews;
     private List<String> mTips;
     private LinearLayout mPointRealContainerLl;
     private TextView mTipTv;
     private boolean mAutoPlayAble = true;
-    private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 3000;
     private int mPageChangeDuration = 800;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
@@ -65,13 +62,7 @@ public class BGABanner extends RelativeLayout {
     private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
     private Drawable mPointContainerBackgroundDrawable;
 
-    private Handler mAutoPlayHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
-        }
-    };
+    private AutoPlayHandlerTask mAutoPlayHandlerTask;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -82,6 +73,8 @@ public class BGABanner extends RelativeLayout {
         initDefaultAttrs(context);
         initCustomAttrs(context, attrs);
         initView(context);
+
+        mAutoPlayHandlerTask = new AutoPlayHandlerTask();
     }
 
     private void initDefaultAttrs(Context context) {
@@ -266,7 +259,7 @@ public class BGABanner extends RelativeLayout {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (mAutoPlayAble) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -278,7 +271,7 @@ public class BGABanner extends RelativeLayout {
                     break;
             }
         }
-        return super.dispatchTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
     }
 
     /**
@@ -303,7 +296,6 @@ public class BGABanner extends RelativeLayout {
                 }
             }
 
-            stopAutoPlay();
             startAutoPlay();
         } else {
             mViewPager.setCurrentItem(item, false);
@@ -327,16 +319,15 @@ public class BGABanner extends RelativeLayout {
     }
 
     public void startAutoPlay() {
-        if (mAutoPlayAble && !mIsAutoPlaying) {
-            mIsAutoPlaying = true;
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
+        stopAutoPlay();
+        if (mAutoPlayAble) {
+            mAutoPlayHandlerTask.startAutoPlay();
         }
     }
 
     public void stopAutoPlay() {
-        if (mAutoPlayAble && mIsAutoPlaying) {
-            mIsAutoPlaying = false;
-            mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
+        if (mAutoPlayAble) {
+            mAutoPlayHandlerTask.stopAutoPlay();
         }
     }
 
@@ -439,6 +430,24 @@ public class BGABanner extends RelativeLayout {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+    }
+
+    private final class AutoPlayHandlerTask extends Handler implements Runnable {
+
+        @Override
+        public void run() {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+            startAutoPlay();
+        }
+
+        public void startAutoPlay() {
+            stopAutoPlay();
+            postDelayed(this, mAutoPlayInterval);
+        }
+
+        public void stopAutoPlay() {
+            removeCallbacksAndMessages(null);
         }
     }
 
