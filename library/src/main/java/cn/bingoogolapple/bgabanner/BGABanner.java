@@ -48,12 +48,11 @@ public class BGABanner extends RelativeLayout {
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
     private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
-    private List<View> mViews;
+    private List<? extends View> mViews;
     private List<String> mTips;
     private LinearLayout mPointRealContainerLl;
     private TextView mTipTv;
     private boolean mAutoPlayAble = true;
-    private boolean mIsAutoPlaying = false;
     private int mAutoPlayInterval = 3000;
     private int mPageChangeDuration = 800;
     private int mPointGravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
@@ -198,11 +197,11 @@ public class BGABanner extends RelativeLayout {
      * @param views 每一页的控件集合
      * @param tips  每一页的提示文案集合
      */
-    public void setViewsAndTips(List<View> views, List<String> tips) {
+    public void setViewsAndTips(List<? extends View> views, List<String> tips) {
         if (mAutoPlayAble && views.size() < 3) {
             throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
         }
-        if (tips != null && tips.size() < views.size()) {
+        if (tips != null && tips.size() != views.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mViews = views;
@@ -223,7 +222,7 @@ public class BGABanner extends RelativeLayout {
      *
      * @param views 每一页的控件集合
      */
-    public void setViews(List<View> views) {
+    public void setViews(List<? extends View> views) {
         setViewsAndTips(views, null);
     }
 
@@ -233,7 +232,7 @@ public class BGABanner extends RelativeLayout {
      * @param tips 提示文案集合
      */
     public void setTips(List<String> tips) {
-        if (tips != null && mViews != null && tips.size() < mViews.size()) {
+        if (tips != null && mViews != null && tips.size() != mViews.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mTips = tips;
@@ -303,7 +302,6 @@ public class BGABanner extends RelativeLayout {
                 }
             }
 
-            stopAutoPlay();
             startAutoPlay();
         } else {
             mViewPager.setCurrentItem(item, false);
@@ -327,15 +325,14 @@ public class BGABanner extends RelativeLayout {
     }
 
     public void startAutoPlay() {
-        if (mAutoPlayAble && !mIsAutoPlaying) {
-            mIsAutoPlaying = true;
+        stopAutoPlay();
+        if (mAutoPlayAble) {
             mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
         }
     }
 
     public void stopAutoPlay() {
-        if (mAutoPlayAble && mIsAutoPlaying) {
-            mIsAutoPlaying = false;
+        if (mAutoPlayAble) {
             mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
         }
     }

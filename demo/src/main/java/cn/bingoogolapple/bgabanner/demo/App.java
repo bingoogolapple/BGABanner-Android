@@ -2,11 +2,9 @@ package cn.bingoogolapple.bgabanner.demo;
 
 import android.app.Application;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -26,8 +24,6 @@ public class App extends Application {
                 .baseUrl("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(Engine.class);
-
-        Fresco.initialize(this);
     }
 
 

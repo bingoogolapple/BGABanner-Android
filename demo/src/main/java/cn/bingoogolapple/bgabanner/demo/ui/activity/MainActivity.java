@@ -1,12 +1,12 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
-import android.net.Uri;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,48 +16,49 @@ import cn.bingoogolapple.bgabanner.demo.App;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
 import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
-import retrofit.Callback;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private BGABanner mDefaultBanner;
-    private List<View> mDefaultViews;
+    private List<ImageView> mDefaultViews;
 
     private BGABanner mCubeBanner;
-    private List<View> mCubeViews;
+    private List<ImageView> mCubeViews;
 
     private BGABanner mAccordionBanner;
-    private List<View> mAccordionViews;
+    private List<ImageView> mAccordionViews;
 
     private BGABanner mFlipBanner;
-    private List<View> mFlipViews;
+    private List<ImageView> mFlipViews;
 
     private BGABanner mRotateBanner;
-    private List<View> mRotateViews;
+    private List<ImageView> mRotateViews;
 
     private BGABanner mAlphaBanner;
-    private List<View> mAlphaViews;
+    private List<ImageView> mAlphaViews;
 
     private BGABanner mZoomFadeBanner;
-    private List<View> mZoomFadeViews;
+    private List<ImageView> mZoomFadeViews;
 
     private BGABanner mFadeBanner;
-    private List<View> mFadeViews;
+    private List<ImageView> mFadeViews;
 
     private BGABanner mZoomCenterBanner;
-    private List<View> mZoomCenterViews;
+    private List<ImageView> mZoomCenterViews;
 
     private BGABanner mZoomBanner;
-    private List<View> mZoomViews;
+    private List<ImageView> mZoomViews;
 
     private BGABanner mStackBanner;
-    private List<View> mStackViews;
+    private List<ImageView> mStackViews;
 
     private BGABanner mZoomStackBanner;
-    private List<View> mZoomStackViews;
+    private List<ImageView> mZoomStackViews;
 
     private BGABanner mDepthBanner;
-    private List<View> mDepthViews;
+    private List<ImageView> mDepthViews;
 
     private Engine mEngine;
 
@@ -90,16 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
+                ImageView imageView;
                 for (int i = 0; i < mDefaultViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mDefaultViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    imageView = mDefaultViews.get(i);
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(imageView);
 
                     // 为每一页添加点击事件
                     final int finalPosition = i;
-                    simpleDraweeView.setOnClickListener(new View.OnClickListener() {
+                    imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(App.getInstance(), "点击了第" + (finalPosition + 1) + "页", Toast.LENGTH_SHORT).show();
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -122,19 +123,17 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.sixItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mCubeViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mCubeViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mCubeViews.get(i));
                 }
                 // 也可以不设置tips
 //                mCubeBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -146,18 +145,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fourItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mAccordionViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mAccordionViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mAccordionViews.get(i));
                 }
                 mAccordionBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -169,18 +166,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.threeItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mFlipViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mFlipViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mFlipViews.get(i));
                 }
                 mFlipBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -192,18 +187,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.sixItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mRotateViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mRotateViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mRotateViews.get(i));
                 }
                 mRotateBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -215,18 +208,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mAlphaViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mAlphaViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mAlphaViews.get(i));
                 }
                 mAlphaBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -238,18 +229,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fourItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mZoomFadeViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mZoomFadeViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomFadeViews.get(i));
                 }
                 mZoomFadeBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -261,18 +250,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.threeItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mFadeViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mFadeViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mFadeViews.get(i));
                 }
                 mFadeBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -284,18 +271,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.sixItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mZoomCenterViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mZoomCenterViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomCenterViews.get(i));
                 }
                 mZoomCenterBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -307,18 +292,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mZoomViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mZoomViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomViews.get(i));
                 }
                 mZoomBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -330,18 +313,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.fourItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mStackViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mStackViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mStackViews.get(i));
                 }
                 mStackBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -353,18 +334,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.threeItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mZoomStackViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mZoomStackViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomStackViews.get(i));
                 }
                 mZoomStackBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
@@ -376,26 +355,24 @@ public class MainActivity extends AppCompatActivity {
 
         mEngine.sixItem().enqueue(new Callback<BannerModel>() {
             @Override
-            public void onResponse(Response<BannerModel> response) {
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                SimpleDraweeView simpleDraweeView;
                 for (int i = 0; i < mDepthViews.size(); i++) {
-                    simpleDraweeView = (SimpleDraweeView) mDepthViews.get(i);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerModel.imgs.get(i)));
+                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mDepthViews.get(i));
                 }
                 mDepthBanner.setTips(bannerModel.tips);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<BannerModel> call, Throwable t) {
             }
         });
     }
 
-    private List<View> getViews(int count) {
-        List<View> views = new ArrayList<>();
+    private List<ImageView> getViews(int count) {
+        List<ImageView> views = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            views.add(getLayoutInflater().inflate(R.layout.view_image, null));
+            views.add((ImageView) getLayoutInflater().inflate(R.layout.view_image, null));
         }
         return views;
     }
