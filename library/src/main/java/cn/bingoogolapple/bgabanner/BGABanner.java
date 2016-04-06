@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -45,6 +46,7 @@ public class BGABanner extends RelativeLayout {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
     private List<? extends View> mViews;
     private List<String> mTips;
@@ -62,7 +64,13 @@ public class BGABanner extends RelativeLayout {
     private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
     private Drawable mPointContainerBackgroundDrawable;
 
-    private AutoPlayHandlerTask mAutoPlayHandlerTask;
+    private Handler mAutoPlayHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
+        }
+    };
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -73,8 +81,6 @@ public class BGABanner extends RelativeLayout {
         initDefaultAttrs(context);
         initCustomAttrs(context, attrs);
         initView(context);
-
-        mAutoPlayHandlerTask = new AutoPlayHandlerTask();
     }
 
     private void initDefaultAttrs(Context context) {
@@ -195,7 +201,7 @@ public class BGABanner extends RelativeLayout {
         if (mAutoPlayAble && views.size() < 3) {
             throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
         }
-        if (tips != null && tips.size() < views.size()) {
+        if (tips != null && tips.size() != views.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mViews = views;
@@ -226,7 +232,7 @@ public class BGABanner extends RelativeLayout {
      * @param tips 提示文案集合
      */
     public void setTips(List<String> tips) {
-        if (tips != null && mViews != null && tips.size() < mViews.size()) {
+        if (tips != null && mViews != null && tips.size() != mViews.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mTips = tips;
@@ -259,7 +265,7 @@ public class BGABanner extends RelativeLayout {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(MotionEvent ev) {
         if (mAutoPlayAble) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -271,7 +277,7 @@ public class BGABanner extends RelativeLayout {
                     break;
             }
         }
-        return super.onInterceptTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
     }
 
     /**
@@ -321,13 +327,13 @@ public class BGABanner extends RelativeLayout {
     public void startAutoPlay() {
         stopAutoPlay();
         if (mAutoPlayAble) {
-            mAutoPlayHandlerTask.startAutoPlay();
+            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
         }
     }
 
     public void stopAutoPlay() {
         if (mAutoPlayAble) {
-            mAutoPlayHandlerTask.stopAutoPlay();
+            mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
         }
     }
 
@@ -430,24 +436,6 @@ public class BGABanner extends RelativeLayout {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
-        }
-    }
-
-    private final class AutoPlayHandlerTask extends Handler implements Runnable {
-
-        @Override
-        public void run() {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            startAutoPlay();
-        }
-
-        public void startAutoPlay() {
-            stopAutoPlay();
-            postDelayed(this, mAutoPlayInterval);
-        }
-
-        public void stopAutoPlay() {
-            removeCallbacksAndMessages(null);
         }
     }
 
