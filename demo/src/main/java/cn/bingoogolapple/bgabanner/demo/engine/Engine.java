@@ -1,8 +1,9 @@
 package cn.bingoogolapple.bgabanner.demo.engine;
 
 import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
-import retrofit.Call;
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.http.GET;
+
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com

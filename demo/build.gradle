@@ -13,13 +13,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.1'
 
+    // -------------------- 以下三个库是必须依赖的 ----------------------------
+    compile 'cn.bingoogolapple:bga-banner:2.0.4@aar'
+    compile 'com.android.support:support-v4:23.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
-//    compile project(':library')
-    compile 'cn.bingoogolapple:bga-banner:2.0.3@aar'
+    // -------------------- 以上三个库是必须依赖的 ----------------------------
 
-    compile 'com.facebook.fresco:fresco:0.5.2'
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
-    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta1'
+    // 以下几个库是演示案例所使用到的
+//    compile project(':library')
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 }
