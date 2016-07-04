@@ -11,8 +11,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.nineoldandroids:library:2.4.0'
+    provided 'com.android.support:support-v4:24.0.0'
+    provided 'com.nineoldandroids:library:2.4.0'
 }
 
 // gradle uploadArchives

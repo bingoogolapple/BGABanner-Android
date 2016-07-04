@@ -213,10 +213,6 @@ public class BGABanner extends RelativeLayout {
         processAutoPlay();
     }
 
-    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mViewPager.addOnPageChangeListener(listener);
-    }
-
     /**
      * 设置每一页的控件
      *
@@ -236,6 +232,14 @@ public class BGABanner extends RelativeLayout {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mTips = tips;
+    }
+
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+        mViewPager.addOnPageChangeListener(listener);
+    }
+
+    public BGAViewPager getViewPager() {
+        return mViewPager;
     }
 
     private void initPoints() {
