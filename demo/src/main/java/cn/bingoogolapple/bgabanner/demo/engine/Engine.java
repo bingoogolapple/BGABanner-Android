@@ -3,6 +3,7 @@ package cn.bingoogolapple.bgabanner.demo.engine;
 import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 
 /**
@@ -11,6 +12,11 @@ import retrofit2.http.GET;
  * 描述:
  */
 public interface Engine {
+    @GET("1item.json")
+    Call<BannerModel> oneItem();
+
+    @GET("2item.json")
+    Call<BannerModel> twoItem();
 
     @GET("3item.json")
     Call<BannerModel> threeItem();
@@ -24,4 +30,6 @@ public interface Engine {
     @GET("6item.json")
     Call<BannerModel> sixItem();
 
+    @GET("{itemCount}item.json")
+    Call<BannerModel> fetchItemsWithItemCount(@Path("itemCount") int itemCount);
 }

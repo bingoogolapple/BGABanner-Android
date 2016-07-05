@@ -6,30 +6,49 @@
     <LinearLayout style="@style/MatchWrap.Vertical">
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
+            <Button
+                android:id="@+id/btn_main_get_item_count"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="获取广告总页数" />
+
+            <Button
+                android:id="@+id/btn_main_get_current_item"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="获取广告当前索引位置" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/MatchWrap.Horizontal">
 
             <Button
                 android:id="@+id/btn_main_1"
-                style="@style/MainBtn"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
                 android:text="第一页" />
 
             <Button
                 android:id="@+id/btn_main_2"
-                style="@style/MainBtn"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
                 android:text="第二页" />
 
             <Button
                 android:id="@+id/btn_main_3"
-                style="@style/MainBtn"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
                 android:text="第三页" />
 
             <Button
                 android:id="@+id/btn_main_4"
-                style="@style/MainBtn"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
                 android:text="第四页" />
 
             <Button
                 android:id="@+id/btn_main_5"
-                style="@style/MainBtn"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
                 android:text="第五页" />
         </LinearLayout>
 

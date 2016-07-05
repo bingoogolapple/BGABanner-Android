@@ -276,7 +276,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @return
      */
     public int getCurrentItem() {
-        return mViewPager.getCurrentItem();
+        return mViewPager.getCurrentItem() % mViews.size();
+    }
+
+    /**
+     * 获取广告页面总个数
+     *
+     * @return
+     */
+    public int getItemCount() {
+        return mViews == null ? 0 : mViews.size();
+    }
+
+    public List<? extends View> getViews() {
+        return mViews;
+    }
+
+    public List<String> getTips() {
+        return mTips;
     }
 
     public BGAViewPager getViewPager() {

@@ -115,10 +115,10 @@ public class MainActivity extends Activity {
 
     private void initCube() {
         mCubeBanner = (BGABanner) findViewById(R.id.banner_main_cube);
-        mCubeViews = getViews(6);
+        mCubeViews = getViews(1);
         mCubeBanner.setViews(mCubeViews);
 
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
+        mEngine.oneItem().enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -374,6 +374,7 @@ public class MainActivity extends Activity {
         return views;
     }
 
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_main_1:
@@ -390,6 +391,12 @@ public class MainActivity extends Activity {
                 break;
             case R.id.btn_main_5:
                 mDefaultBanner.setCurrentItem(4);
+                break;
+            case R.id.btn_main_get_item_count:
+                Toast.makeText(App.getInstance(), "广告条总页数为 " + mDefaultBanner.getItemCount(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_main_get_current_item:
+                Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
