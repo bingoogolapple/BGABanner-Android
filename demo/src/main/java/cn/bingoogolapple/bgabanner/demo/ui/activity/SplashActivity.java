@@ -41,6 +41,8 @@ public class SplashActivity extends Activity {
         });
         banner.setViews(views);
         // banner.setCurrentItem(1);
+
+//        banner.setAllowUserScrollable(false);
     }
 
     private View getPageView(@DrawableRes int resid) {

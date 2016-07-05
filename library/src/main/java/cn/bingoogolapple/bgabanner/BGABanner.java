@@ -6,13 +6,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -25,6 +22,7 @@ import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
@@ -42,11 +40,9 @@ import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
 
 public class BGABanner extends RelativeLayout {
-    private static final String TAG = BGABanner.class.getSimpleName();
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private static final int WHAT_AUTO_PLAY = 1000;
     private BGAViewPager mViewPager;
     private List<? extends View> mViews;
     private List<String> mTips;
@@ -63,14 +59,7 @@ public class BGABanner extends RelativeLayout {
     private int mTipTextColor = Color.WHITE;
     private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
     private Drawable mPointContainerBackgroundDrawable;
-
-    private Handler mAutoPlayHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
-        }
-    };
+    private AutoPlayTask mAutoPlayTask;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -84,11 +73,12 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initDefaultAttrs(Context context) {
+        mAutoPlayTask = new AutoPlayTask(this);
         mViewPager = new BGAViewPager(context);
-        mPointLeftRightMargin = dp2px(context, 3);
-        mPointTopBottomMargin = dp2px(context, 6);
-        mPointContainerLeftRightPadding = dp2px(context, 10);
-        mTipTextSize = sp2px(context, 8);
+        mPointLeftRightMargin = BGABannerUtil.dp2px(context, 3);
+        mPointTopBottomMargin = BGABannerUtil.dp2px(context, 6);
+        mPointContainerLeftRightPadding = BGABannerUtil.dp2px(context, 10);
+        mTipTextSize = BGABannerUtil.sp2px(context, 8);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
     }
 
@@ -131,6 +121,7 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initView(Context context) {
+        mViewPager.setAutoPlayAble(mAutoPlayAble);
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
 
@@ -234,6 +225,15 @@ public class BGABanner extends RelativeLayout {
         mTips = tips;
     }
 
+    /**
+     * 设置是否允许用户手指滑动
+     *
+     * @param scrollable true表示允许跟随用户触摸滑动，false反之
+     */
+    public void setAllowUserScrollable(boolean scrollable) {
+        mViewPager.setAllowUserScrollable(scrollable);
+    }
+
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         mViewPager.addOnPageChangeListener(listener);
     }
@@ -331,13 +331,13 @@ public class BGABanner extends RelativeLayout {
     public void startAutoPlay() {
         stopAutoPlay();
         if (mAutoPlayAble) {
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
+            postDelayed(mAutoPlayTask, mAutoPlayInterval);
         }
     }
 
     public void stopAutoPlay() {
         if (mAutoPlayAble) {
-            mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
+            removeCallbacks(mAutoPlayTask);
         }
     }
 
@@ -414,7 +414,14 @@ public class BGABanner extends RelativeLayout {
         }
     }
 
-    private final class PageAdapter extends PagerAdapter {
+    /**
+     * 切换到下一页
+     */
+    private void switchToNextPage() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+    }
+
+    private class PageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -426,15 +433,21 @@ public class BGABanner extends RelativeLayout {
             View view = mViews.get(position % mViews.size());
 
             // 在destroyItem方法中销毁的话，当只有3页时会有问题
-            if (container.equals(view.getParent())) {
+            if (mAutoPlayAble && mViews.size() < 4 && container.equals(view.getParent())) {
                 container.removeView(view);
             }
+
             container.addView(view);
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
+            if (mAutoPlayAble && mViews.size() < 4) {
+                return;
+            }
+
+            container.removeView((View) object);
         }
 
         @Override
@@ -443,7 +456,7 @@ public class BGABanner extends RelativeLayout {
         }
     }
 
-    private final class ChangePointListener extends BGAViewPager.SimpleOnPageChangeListener {
+    private class ChangePointListener extends BGAViewPager.SimpleOnPageChangeListener {
 
         @Override
         public void onPageSelected(int position) {
@@ -464,6 +477,23 @@ public class BGABanner extends RelativeLayout {
         }
     }
 
+    private static class AutoPlayTask implements Runnable {
+        private final WeakReference<BGABanner> mBanner;
+
+        private AutoPlayTask(BGABanner banner) {
+            mBanner = new WeakReference<>(banner);
+        }
+
+        @Override
+        public void run() {
+            BGABanner banner = mBanner.get();
+            if (banner != null) {
+                banner.switchToNextPage();
+                banner.startAutoPlay();
+            }
+        }
+    }
+
     public enum TransitionEffect {
         Default,
         Alpha,
@@ -478,17 +508,5 @@ public class BGABanner extends RelativeLayout {
         Stack,
         Depth,
         Zoom
-    }
-
-    public static int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    public static int sp2px(Context context, float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
-    }
-
-    private static void debug(String msg) {
-        Log.i(TAG, msg);
     }
 }

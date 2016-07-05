@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  */
 public class BGAViewPager extends ViewPager {
     private boolean mScrollable = true;
+    private boolean mAutoPlayAble = true;
 
     public BGAViewPager(Context context) {
         super(context);
@@ -94,9 +95,9 @@ public class BGAViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(MotionEvent ev) {
         if (mScrollable) {
-            return super.onInterceptTouchEvent(ev);
+            return super.dispatchTouchEvent(ev);
         } else {
             return false;
         }
@@ -109,5 +110,9 @@ public class BGAViewPager extends ViewPager {
         } else {
             return false;
         }
+    }
+
+    public void setAutoPlayAble(boolean autoPlayAble) {
+        mAutoPlayAble = autoPlayAble;
     }
 }
