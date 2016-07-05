@@ -196,9 +196,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param tips  每一页的提示文案集合
      */
     public void setViewsAndTips(List<? extends View> views, List<String> tips) {
-        if (mAutoPlayAble && views.size() < 3) {
-            throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
+        if (mAutoPlayAble && views.size() < 2) {
+            mAutoPlayAble = false;
         }
+
         if (tips != null && tips.size() != views.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
