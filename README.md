@@ -5,9 +5,11 @@
 
 ## 主要功能：
 - [x] 引导界面导航效果
-- [x] 广告条循环自动轮播、手指按下暂停自动轮播、自定义指示器位置
-- [x] ViewPager各种切换动画
-- [x] 支持选中特定页面、支持大于等于2页时的轮播功能
+- [x] 支持根据服务端返回的数据动态设置广告条的总页数
+- [x] 支持大于等于2页时的无限循环自动轮播、手指按下暂停轮播、抬起手指开始轮播
+- [x] 支持自定义指示器位置和广告文案位置
+- [x] 支持 ViewPager 各种切换动画
+- [x] 支持选中特定页面
 
 ### 效果图
 ![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)

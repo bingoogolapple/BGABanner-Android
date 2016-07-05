@@ -92,19 +92,18 @@ public class MainActivity extends Activity {
                 Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
             }
         });
-        mDefaultViews = getViews(5);
-        mDefaultBanner.setViews(mDefaultViews);
 
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(5).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
+                mDefaultViews = getViews(bannerModel.imgs.size());
+                mDefaultBanner.setViewsAndTips(mDefaultViews, bannerModel.tips);
                 ImageView imageView;
                 for (int i = 0; i < mDefaultViews.size(); i++) {
                     imageView = mDefaultViews.get(i);
                     Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(imageView);
                 }
-                mDefaultBanner.setTips(bannerModel.tips);
             }
 
             @Override
@@ -118,7 +117,7 @@ public class MainActivity extends Activity {
         mCubeViews = getViews(1);
         mCubeBanner.setViews(mCubeViews);
 
-        mEngine.oneItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mCubeViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -140,7 +139,7 @@ public class MainActivity extends Activity {
         mAccordionViews = getViews(4);
         mAccordionBanner.setViews(mAccordionViews);
 
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mAccordionViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -161,7 +160,7 @@ public class MainActivity extends Activity {
         mFlipViews = getViews(3);
         mFlipBanner.setViews(mFlipViews);
 
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mFlipViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -182,7 +181,7 @@ public class MainActivity extends Activity {
         mRotateViews = getViews(6);
         mRotateBanner.setViews(mRotateViews);
 
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mRotateViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -203,7 +202,7 @@ public class MainActivity extends Activity {
         mAlphaViews = getViews(5);
         mAlphaBanner.setViews(mAlphaViews);
 
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mAlphaViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -224,7 +223,7 @@ public class MainActivity extends Activity {
         mZoomFadeViews = getViews(4);
         mZoomFadeBanner.setViews(mZoomFadeViews);
 
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mZoomFadeViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -245,7 +244,7 @@ public class MainActivity extends Activity {
         mFadeViews = getViews(3);
         mFadeBanner.setViews(mFadeViews);
 
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mFadeViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -266,7 +265,7 @@ public class MainActivity extends Activity {
         mZoomCenterViews = getViews(6);
         mZoomCenterBanner.setViews(mZoomCenterViews);
 
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mZoomCenterViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -287,7 +286,7 @@ public class MainActivity extends Activity {
         mZoomViews = getViews(5);
         mZoomBanner.setViews(mZoomViews);
 
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mZoomViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -308,7 +307,7 @@ public class MainActivity extends Activity {
         mStackViews = getViews(4);
         mStackBanner.setViews(mStackViews);
 
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mStackViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -329,7 +328,7 @@ public class MainActivity extends Activity {
         mZoomStackViews = getViews(3);
         mZoomStackBanner.setViews(mZoomStackViews);
 
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mZoomStackViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
@@ -350,7 +349,7 @@ public class MainActivity extends Activity {
         mDepthViews = getViews(6);
         mDepthBanner.setViews(mDepthViews);
 
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
+        mEngine.fetchItemsWithItemCount(mDepthViews.size()).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();

@@ -12,24 +12,8 @@ import retrofit2.http.Path;
  * 描述:
  */
 public interface Engine {
-    @GET("1item.json")
-    Call<BannerModel> oneItem();
-
-    @GET("2item.json")
-    Call<BannerModel> twoItem();
-
-    @GET("3item.json")
-    Call<BannerModel> threeItem();
-
-    @GET("4item.json")
-    Call<BannerModel> fourItem();
-
-    @GET("5item.json")
-    Call<BannerModel> fiveItem();
-
-    @GET("6item.json")
-    Call<BannerModel> sixItem();
 
     @GET("{itemCount}item.json")
     Call<BannerModel> fetchItemsWithItemCount(@Path("itemCount") int itemCount);
+
 }

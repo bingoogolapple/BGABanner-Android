@@ -65,6 +65,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private int mPageScrollPosition;
     private float mPageScrollPositionOffset;
     private Delegate mDelegate;
+    private TransitionEffect mTransitionEffect;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -79,13 +80,13 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     private void initDefaultAttrs(Context context) {
         mAutoPlayTask = new AutoPlayTask(this);
-        mViewPager = new BGAViewPager(context);
-        mViewPager.setOffscreenPageLimit(1);
+
         mPointLeftRightMargin = BGABannerUtil.dp2px(context, 3);
         mPointTopBottomMargin = BGABannerUtil.dp2px(context, 6);
         mPointContainerLeftRightPadding = BGABannerUtil.dp2px(context, 10);
         mTipTextSize = BGABannerUtil.sp2px(context, 8);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
+        mTransitionEffect = TransitionEffect.Default;
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -118,7 +119,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
         } else if (attr == R.styleable.BGABanner_banner_transitionEffect) {
             int ordinal = typedArray.getInt(attr, TransitionEffect.Accordion.ordinal());
-            setTransitionEffect(TransitionEffect.values()[ordinal]);
+            mTransitionEffect = TransitionEffect.values()[ordinal];
         } else if (attr == R.styleable.BGABanner_banner_tipTextColor) {
             mTipTextColor = typedArray.getColor(attr, mTipTextColor);
         } else if (attr == R.styleable.BGABanner_banner_tipTextSize) {
@@ -127,12 +128,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     private void initView(Context context) {
-        if (mAutoPlayAble) {
-            mViewPager.setAutoPlayDelegate(this);
-        }
-        addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
-        setPageChangeDuration(mPageChangeDuration);
-
         RelativeLayout pointContainerRl = new RelativeLayout(context);
         if (Build.VERSION.SDK_INT >= 16) {
             pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
@@ -186,7 +181,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      */
     public void setPageChangeDuration(int duration) {
         if (duration >= 0 && duration <= 2000) {
-            mViewPager.setPageChangeDuration(duration);
+            mPageChangeDuration = duration;
+            if (mViewPager != null) {
+                mViewPager.setPageChangeDuration(duration);
+            }
         }
     }
 
@@ -224,11 +222,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
         mViews = views;
         mTips = tips;
-        mViewPager.setAdapter(new PageAdapter());
-        mViewPager.addOnPageChangeListener(this);
 
         initPoints();
-        processAutoPlay();
+        initViewPager();
     }
 
     /**
@@ -302,7 +298,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     private void initPoints() {
         mPointRealContainerLl.removeAllViews();
-        mViewPager.removeAllViews();
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
         lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
@@ -315,8 +310,23 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    private void processAutoPlay() {
+    private void initViewPager() {
+        if (mViewPager != null && this.equals(mViewPager.getParent())) {
+            this.removeView(mViewPager);
+            mViewPager = null;
+        }
+
+        mViewPager = new BGAViewPager(getContext());
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setAdapter(new PageAdapter());
+        mViewPager.addOnPageChangeListener(this);
+        setTransitionEffect(mTransitionEffect);
+        addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
+        setPageChangeDuration(mPageChangeDuration);
+
         if (mAutoPlayAble) {
+            mViewPager.setAutoPlayDelegate(this);
+
             int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
             mViewPager.setCurrentItem(zeroItem);
 
@@ -406,7 +416,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
         if (mTipTv != null && mTips != null) {
-            mTipTv.setText(mTips.get(newCurrentPoint % mTips.size()));
+            mTipTv.setText(mTips.get(newCurrentPoint));
         }
     }
 
@@ -416,6 +426,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param effect
      */
     public void setTransitionEffect(TransitionEffect effect) {
+        mTransitionEffect = effect;
+        if (mViewPager == null) {
+            return;
+        }
+
         switch (effect) {
             case Default:
                 mViewPager.setPageTransformer(true, new DefaultPageTransformer());
@@ -530,7 +545,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         @Override
         public int getCount() {
-            return mAutoPlayAble ? Integer.MAX_VALUE : mViews.size();
+            return mViews == null ? 0 : (mAutoPlayAble ? Integer.MAX_VALUE : mViews.size());
         }
 
         @Override
@@ -539,7 +554,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             View view = mViews.get(finalPosition);
 
             // 在destroyItem方法中销毁的话，当只有3页时会有问题
-            if (mAutoPlayAble && mViews.size() < 4 && container.equals(view.getParent())) {
+            if (mAutoPlayAble && container.equals(view.getParent())) {
                 container.removeView(view);
             }
 
@@ -558,7 +573,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if (mAutoPlayAble && mViews.size() < 4) {
+            if (mAutoPlayAble) {
                 return;
             }
 
