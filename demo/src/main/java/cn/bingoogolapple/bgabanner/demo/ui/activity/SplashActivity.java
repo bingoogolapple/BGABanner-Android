@@ -12,6 +12,7 @@ import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.R;
+import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
 
 public class SplashActivity extends Activity {
 
@@ -21,7 +22,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         BGABanner banner = (BGABanner)findViewById(R.id.banner_splash_pager);
         // 用Java代码方式设置切换动画
-        banner.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
+        banner.setTransitionEffect(TransitionEffect.Rotate);
         // banner.setPageTransformer(new RotatePageTransformer());
         // 设置page切换时长
         banner.setPageChangeDuration(1000);

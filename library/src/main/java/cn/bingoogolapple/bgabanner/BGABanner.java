@@ -34,15 +34,17 @@ import cn.bingoogolapple.bgabanner.transformer.FadePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.StackPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
 import cn.bingoogolapple.bgabanner.transformer.ZoomCenterPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomFadePageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
 
-public class BGABanner extends RelativeLayout {
+public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDelegate, ViewPager.OnPageChangeListener {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private static final int VEL_THRESHOLD = 400;
     private BGAViewPager mViewPager;
     private List<? extends View> mViews;
     private List<String> mTips;
@@ -60,6 +62,8 @@ public class BGABanner extends RelativeLayout {
     private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
     private Drawable mPointContainerBackgroundDrawable;
     private AutoPlayTask mAutoPlayTask;
+    private int mPageScrollPosition;
+    private float mPageScrollPositionOffset;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -75,6 +79,7 @@ public class BGABanner extends RelativeLayout {
     private void initDefaultAttrs(Context context) {
         mAutoPlayTask = new AutoPlayTask(this);
         mViewPager = new BGAViewPager(context);
+        mViewPager.setOffscreenPageLimit(1);
         mPointLeftRightMargin = BGABannerUtil.dp2px(context, 3);
         mPointTopBottomMargin = BGABannerUtil.dp2px(context, 6);
         mPointContainerLeftRightPadding = BGABannerUtil.dp2px(context, 10);
@@ -121,7 +126,9 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initView(Context context) {
-        mViewPager.setAutoPlayAble(mAutoPlayAble);
+        if (mAutoPlayAble) {
+            mViewPager.setAutoPlayDelegate(this);
+        }
         addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
 
@@ -198,7 +205,7 @@ public class BGABanner extends RelativeLayout {
         mViews = views;
         mTips = tips;
         mViewPager.setAdapter(new PageAdapter());
-        mViewPager.addOnPageChangeListener(new ChangePointListener());
+        mViewPager.addOnPageChangeListener(this);
 
         initPoints();
         processAutoPlay();
@@ -234,8 +241,22 @@ public class BGABanner extends RelativeLayout {
         mViewPager.setAllowUserScrollable(scrollable);
     }
 
+    /**
+     * 添加ViewPager滚动监听器
+     *
+     * @param listener
+     */
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         mViewPager.addOnPageChangeListener(listener);
+    }
+
+    /**
+     * 获取当前选中界面索引
+     *
+     * @return
+     */
+    public int getCurrentItem() {
+        return mViewPager.getCurrentItem();
     }
 
     public BGAViewPager getViewPager() {
@@ -421,6 +442,49 @@ public class BGABanner extends RelativeLayout {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
 
+    @Override
+    public void handleAutoPlayActionUpOrCancel(float xVelocity) {
+        if (mPageScrollPosition < mViewPager.getCurrentItem()) {
+            // 往右滑
+            if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+            } else {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
+            }
+        } else {
+            // 往左滑
+            if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
+            } else {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+            }
+        }
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switchToPoint(position % mViews.size());
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mPageScrollPosition = position;
+        mPageScrollPositionOffset = positionOffset;
+        if (mTipTv != null && mTips != null) {
+            if (positionOffset > 0.5) {
+                mTipTv.setText(mTips.get((position + 1) % mTips.size()));
+                ViewHelper.setAlpha(mTipTv, positionOffset);
+            } else {
+                ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
+                mTipTv.setText(mTips.get(position % mTips.size()));
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
     private class PageAdapter extends PagerAdapter {
 
         @Override
@@ -454,26 +518,10 @@ public class BGABanner extends RelativeLayout {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
-    }
-
-    private class ChangePointListener extends BGAViewPager.SimpleOnPageChangeListener {
 
         @Override
-        public void onPageSelected(int position) {
-            switchToPoint(position % mViews.size());
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (mTipTv != null && mTips != null) {
-                if (positionOffset > 0.5) {
-                    mTipTv.setText(mTips.get((position + 1) % mTips.size()));
-                    ViewHelper.setAlpha(mTipTv, positionOffset);
-                } else {
-                    ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
-                    mTipTv.setText(mTips.get(position % mTips.size()));
-                }
-            }
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 
@@ -492,21 +540,5 @@ public class BGABanner extends RelativeLayout {
                 banner.startAutoPlay();
             }
         }
-    }
-
-    public enum TransitionEffect {
-        Default,
-        Alpha,
-        Rotate,
-        Cube,
-        Flip,
-        Accordion,
-        ZoomFade,
-        Fade,
-        ZoomCenter,
-        ZoomStack,
-        Stack,
-        Depth,
-        Zoom
     }
 }

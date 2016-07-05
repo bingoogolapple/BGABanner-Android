@@ -1,9 +1,12 @@
 package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
+import android.support.v4.view.VelocityTrackerCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,8 +17,8 @@ import java.lang.reflect.Method;
  * 描述:继承ViewPager，通过反射方式实现支持低版本上切换动画
  */
 public class BGAViewPager extends ViewPager {
-    private boolean mScrollable = true;
-    private boolean mAutoPlayAble = true;
+    private boolean mAllowUserScrollable = true;
+    private AutoPlayDelegate mAutoPlayDelegate;
 
     public BGAViewPager(Context context) {
         super(context);
@@ -66,7 +69,6 @@ public class BGAViewPager extends ViewPager {
                 populateMethod.invoke(this);
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -79,24 +81,40 @@ public class BGAViewPager extends ViewPager {
         try {
             Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
             scrollerField.setAccessible(true);
-            scrollerField.set(this, new PageChangeDurationScroller(getContext(), duration));
+            scrollerField.set(this, new BGABannerScroller(getContext(), duration));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
+     * 切换到指定索引的页面，主要用于自动轮播
+     *
+     * @param position
+     */
+    public void setBannerCurrentItemInternal(int position) {
+        Class viewpagerClass = ViewPager.class;
+        try {
+            Method setCurrentItemInternalMethod = viewpagerClass.getDeclaredMethod("setCurrentItemInternal", int.class, boolean.class, boolean.class);
+            setCurrentItemInternalMethod.setAccessible(true);
+            setCurrentItemInternalMethod.invoke(this, position, true, true);
+            ViewCompat.postInvalidateOnAnimation(this);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * 设置是否允许用户手指滑动
      *
-     * @param scrollable true表示允许跟随用户触摸滑动，false反之
+     * @param allowUserScrollable true表示允许跟随用户触摸滑动，false反之
      */
-    public void setAllowUserScrollable(boolean scrollable) {
-        mScrollable = scrollable;
+    public void setAllowUserScrollable(boolean allowUserScrollable) {
+        mAllowUserScrollable = allowUserScrollable;
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mScrollable) {
+        if (mAllowUserScrollable) {
             return super.dispatchTouchEvent(ev);
         } else {
             return false;
@@ -105,14 +123,45 @@ public class BGAViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (mScrollable) {
-            return super.onTouchEvent(ev);
+        if (mAllowUserScrollable) {
+            if (mAutoPlayDelegate != null && (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)) {
+                mAutoPlayDelegate.handleAutoPlayActionUpOrCancel(getXVelocity());
+                return false;
+            } else {
+                return super.onTouchEvent(ev);
+            }
         } else {
             return false;
         }
     }
 
-    public void setAutoPlayAble(boolean autoPlayAble) {
-        mAutoPlayAble = autoPlayAble;
+    private float getXVelocity() {
+        float xVelocity = 0;
+        Class viewpagerClass = ViewPager.class;
+        try {
+            Field velocityTrackerField = viewpagerClass.getDeclaredField("mVelocityTracker");
+            velocityTrackerField.setAccessible(true);
+            VelocityTracker velocityTracker = (VelocityTracker) velocityTrackerField.get(this);
+
+            Field activePointerIdField = viewpagerClass.getDeclaredField("mActivePointerId");
+            activePointerIdField.setAccessible(true);
+
+            Field maximumVelocityField = viewpagerClass.getDeclaredField("mMaximumVelocity");
+            maximumVelocityField.setAccessible(true);
+            int maximumVelocity = maximumVelocityField.getInt(this);
+
+            velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
+            xVelocity = VelocityTrackerCompat.getXVelocity(velocityTracker, activePointerIdField.getInt(this));
+        } catch (Exception e) {
+        }
+        return xVelocity;
+    }
+
+    public void setAutoPlayDelegate(AutoPlayDelegate autoPlayDelegate) {
+        mAutoPlayDelegate = autoPlayDelegate;
+    }
+
+    public interface AutoPlayDelegate {
+        void handleAutoPlayActionUpOrCancel(float xVelocity);
     }
 }
