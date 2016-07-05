@@ -1,18 +1,13 @@
 :running:BGABanner-Android:running:
 ============
 
-[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner)
 
-demo中演示了引导页、以及通过glide、retrofit、gson实现广告条的自动轮播效果
-
-**【感谢慕课网的 [千变万化的ViewPager切换动画](http://www.imooc.com/learn/226) 视频教程】**
-
-### 主要功能：
-1. 引导界面导航效果
-2. 广告条循环自动轮播、手指按下暂停自动轮播、自定义指示器位置
-3. ViewPager各种切换动画
-4. 支持选中特定页面、支持大于等于3页时的轮播功能
+## 主要功能：
+- [x] 引导界面导航效果
+- [x] 广告条循环自动轮播、手指按下暂停自动轮播、自定义指示器位置
+- [x] ViewPager各种切换动画
+- [x] 支持选中特定页面、支持大于等于2页时的轮播功能
 
 ### 效果图
 ![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)

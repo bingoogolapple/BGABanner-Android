@@ -64,6 +64,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private AutoPlayTask mAutoPlayTask;
     private int mPageScrollPosition;
     private float mPageScrollPositionOffset;
+    private Delegate mDelegate;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -187,6 +188,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (duration >= 0 && duration <= 2000) {
             mViewPager.setPageChangeDuration(duration);
         }
+    }
+
+    /**
+     * 设置是否开启自动轮播
+     *
+     * @param autoPlayAble
+     */
+    public void setAutoPlayAble(boolean autoPlayAble) {
+        mAutoPlayAble = autoPlayAble;
+    }
+
+    /**
+     * 设置自动轮播的时间间隔
+     *
+     * @param autoPlayInterval
+     */
+    public void setAutoPlayInterval(int autoPlayInterval) {
+        mAutoPlayInterval = autoPlayInterval;
     }
 
     /**
@@ -486,6 +505,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     public void onPageScrollStateChanged(int state) {
     }
 
+    public void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
+    }
+
     private class PageAdapter extends PagerAdapter {
 
         @Override
@@ -495,11 +518,21 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = mViews.get(position % mViews.size());
+            final int finalPosition = position % mViews.size();
+            View view = mViews.get(finalPosition);
 
             // 在destroyItem方法中销毁的话，当只有3页时会有问题
             if (mAutoPlayAble && mViews.size() < 4 && container.equals(view.getParent())) {
                 container.removeView(view);
+            }
+
+            if (mDelegate != null) {
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDelegate.onClickBannerItem(finalPosition);
+                    }
+                });
             }
 
             container.addView(view);
@@ -541,5 +574,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                 banner.startAutoPlay();
             }
         }
+    }
+
+    public interface Delegate {
+        void onClickBannerItem(int position);
     }
 }

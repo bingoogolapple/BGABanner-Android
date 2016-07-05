@@ -86,6 +86,12 @@ public class MainActivity extends Activity {
 
     private void initDefault() {
         mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
+        mDefaultBanner.setDelegate(new BGABanner.Delegate() {
+            @Override
+            public void onClickBannerItem(int position) {
+                Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
+            }
+        });
         mDefaultViews = getViews(5);
         mDefaultBanner.setViews(mDefaultViews);
 
@@ -97,15 +103,6 @@ public class MainActivity extends Activity {
                 for (int i = 0; i < mDefaultViews.size(); i++) {
                     imageView = mDefaultViews.get(i);
                     Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(imageView);
-
-                    // 为每一页添加点击事件
-                    final int finalPosition = i;
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(App.getInstance(), "点击了第" + (finalPosition + 1) + "页", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
                 mDefaultBanner.setTips(bannerModel.tips);
             }
