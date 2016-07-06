@@ -16,45 +16,55 @@
             <TextView
                 android:id="@+id/tv_main_get_current_item"
                 style="@style/AutoWrapTv"
-                android:text="当前索引位置" />
+                android:text="当前索引" />
+
+            <TextView
+                android:id="@+id/tv_main_load_one_item"
+                style="@style/AutoWrapTv"
+                android:text="加载1页" />
+
+            <TextView
+                android:id="@+id/tv_main_load_two_item"
+                style="@style/AutoWrapTv"
+                android:text="加载2页" />
 
             <TextView
                 android:id="@+id/tv_main_load_three_item"
                 style="@style/AutoWrapTv"
-                android:text="加载3页数据" />
+                android:text="加载3页" />
 
             <TextView
                 android:id="@+id/tv_main_load_five_item"
                 style="@style/AutoWrapTv"
-                android:text="加载5页数据" />
+                android:text="加载5页" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
 
             <TextView
-                android:id="@+id/tv_main_1"
+                android:id="@+id/tv_main_select_page_one"
                 style="@style/AutoWrapTv"
-                android:text="第一页" />
+                android:text="选择第1页" />
 
             <TextView
-                android:id="@+id/tv_main_2"
+                android:id="@+id/tv_main_select_page_two"
                 style="@style/AutoWrapTv"
-                android:text="第二页" />
+                android:text="选择第2页" />
 
             <TextView
-                android:id="@+id/tv_main_3"
+                android:id="@+id/tv_main_select_page_three"
                 style="@style/AutoWrapTv"
-                android:text="第三页" />
+                android:text="选择第3页" />
 
             <TextView
-                android:id="@+id/tv_main_4"
+                android:id="@+id/tv_main_select_page_four"
                 style="@style/AutoWrapTv"
-                android:text="第四页" />
+                android:text="选择第4页" />
 
             <TextView
-                android:id="@+id/tv_main_5"
+                android:id="@+id/tv_main_select_page_five"
                 style="@style/AutoWrapTv"
-                android:text="第五页" />
+                android:text="选择第5页" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">

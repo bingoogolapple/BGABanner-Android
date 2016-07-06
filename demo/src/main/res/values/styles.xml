@@ -54,22 +54,12 @@
         <item name="banner_placeholderDrawable">@drawable/holder</item>
     </style>
 
-    <style name="MatchWrapTv" parent="MatchWrap">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/selector_btn_test</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:onClick">onClick</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
     <style name="AutoWrapTv" parent="AutoWrap">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/selector_btn_test</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">4dp</item>
         <item name="android:onClick">onClick</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">4dp</item>

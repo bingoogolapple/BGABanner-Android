@@ -16,7 +16,7 @@ dependencies {
 //    compile project(':library')
 
     // -------------------- 以下三个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-banner:2.0.5@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.0.6@aar'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     // -------------------- 以上三个库是必须依赖的 ----------------------------
