@@ -10,15 +10,21 @@
 - [x] 支持自定义指示器位置和广告文案位置
 - [x] 支持 ViewPager 各种切换动画
 - [x] 支持选中特定页面
+- [x] 加载网络数据时支持暂未图设置，避免出现空白
+- [ ] 多个 ViewPager 跟随滚动
 
-### 效果图
-![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner2.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner3.gif)
+## 效果图与示例 apk
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner1.gif)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner2.gif)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner3.gif)
 
-### 基本使用
+[点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
-#### 1.添加Gradle依赖
+![BGABannerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com/banner/BGABannerDemo.png)
+
+## 基本使用
+
+#### 1.添加Gradle依赖 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner)
 
 ```groovy
 dependencies {
@@ -31,62 +37,35 @@ dependencies {
 #### 2.在布局文件中添加BGABanner
 
 ```xml
-<cn.bingoogolapple.bgabanner.BGABanner xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/banner_splash_pager"
+<cn.bingoogolapple.bgabanner.BGABanner
+    android:id="@+id/banner_guide_content"
     style="@style/MatchMatch"
+    app:banner_pageChangeDuration="1000"
     app:banner_pointAutoPlayAble="false"
-    app:banner_pointTopBottomMargin="15dp"/>
+    app:banner_pointContainerBackground="@android:color/transparent"
+    app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+    app:banner_pointTopBottomMargin="15dp"
+    app:banner_transitionEffect="alpha" />
 ```
 
 #### 3.在Activity或者Fragment中配置BGABanner
 
 ```java
-public class SplashActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        BGABanner banner = (BGABanner)findViewById(R.id.banner_splash_pager);
-        // 用Java代码方式设置切换动画
-        banner.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
-        // banner.setPageTransformer(new RotatePageTransformer());
-        // 设置page切换时长
-        banner.setPageChangeDuration(1000);
-        List<View> views = new ArrayList<>();
-        views.add(getPageView(R.drawable.guide_1));
-        views.add(getPageView(R.drawable.guide_2));
-        views.add(getPageView(R.drawable.guide_3));
-
-        View lastView = getLayoutInflater().inflate(R.layout.view_last, null);
-        views.add(lastView);
-        lastView.findViewById(R.id.btn_last_main).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        banner.setViews(views);
-        // banner.setCurrentItem(1);
-    }
-
-    private View getPageView(@DrawableRes int resid) {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resid);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        return imageView;
-    }
-}
+mContentBanner = (BGABanner) findViewById(R.id.banner_guide_content);
+List<View> topViews = new ArrayList<>();
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+mContentBanner.setViews(topViews);
+mContentBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
 ```
 
-### 自定义属性说明
+## 自定义属性说明
 ```xml
 <declare-styleable name="BGABanner">
     <!-- 指示点容器背景 -->
     <attr name="banner_pointContainerBackground" format="reference|color" />
-    <!-- 指示点的背景 -->
+    <!-- 指示点背景 -->
     <attr name="banner_pointDrawable" format="reference" />
     <!-- 指示点容器左右内间距 -->
     <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
@@ -128,10 +107,12 @@ public class SplashActivity extends AppCompatActivity {
     <attr name="banner_tipTextColor" format="reference|color" />
     <!-- 提示文案的文字大小 -->
     <attr name="banner_tipTextSize" format="dimension" />
+    <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
+    <attr name="banner_placeholderDrawable" format="reference" />
 </declare-styleable>
 ```
 
-### 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
+## 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
 
 ## 关于我
 

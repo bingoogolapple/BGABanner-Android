@@ -13,6 +13,7 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:24.0.0'
 
     // -------------------- 以下三个库是必须依赖的 ----------------------------
     compile project(':library')

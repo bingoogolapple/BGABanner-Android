@@ -10,6 +10,7 @@
         app:banner_pageChangeDuration="1000"
         app:banner_pointAutoPlayAble="false"
         app:banner_pointContainerBackground="@android:color/transparent"
+        app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
         app:banner_pointTopBottomMargin="15dp"
         app:banner_transitionEffect="alpha" />
 
@@ -31,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
-        android:background="@drawable/selector_btn_orange"
+        android:background="@drawable/selector_btn_test"
         android:padding="8dp"
         android:text="进入主界面"
         android:textColor="@android:color/white"

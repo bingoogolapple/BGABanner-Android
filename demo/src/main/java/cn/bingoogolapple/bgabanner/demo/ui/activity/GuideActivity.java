@@ -35,12 +35,11 @@ public class GuideActivity extends Activity implements View.OnClickListener {
         mEnterBtn = (Button) findViewById(R.id.btn_guide_enter);
 
         mContentBanner = (BGABanner) findViewById(R.id.banner_guide_content);
-        List<View> views = new ArrayList<>();
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.guide_1));
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.guide_2));
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.guide_3));
-        views.add(BGABannerUtil.getItemImageView(this, R.drawable.guide_4));
-        mContentBanner.setViews(views);
+        List<View> topViews = new ArrayList<>();
+        topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
+        topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
+        topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+        mContentBanner.setViews(topViews);
         mContentBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
     }
 
@@ -80,5 +79,11 @@ public class GuideActivity extends Activity implements View.OnClickListener {
             startActivity(new Intent(GuideActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mContentBanner.setBackgroundResource(android.R.color.white);
     }
 }

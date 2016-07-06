@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadData() {
+        loadData(mDefaultBanner, 2);
         loadData(mCubeBanner, 2);
         loadData(mAccordionBanner, 3);
         loadData(mFlipBanner, 4);
@@ -120,46 +121,46 @@ public class MainActivity extends Activity {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_main_1:
+            case R.id.tv_main_1:
                 mDefaultBanner.setCurrentItem(0);
                 break;
-            case R.id.btn_main_2:
+            case R.id.tv_main_2:
                 mDefaultBanner.setCurrentItem(1);
                 break;
-            case R.id.btn_main_3:
+            case R.id.tv_main_3:
                 mDefaultBanner.setCurrentItem(2);
                 break;
-            case R.id.btn_main_4:
+            case R.id.tv_main_4:
                 mDefaultBanner.setCurrentItem(3);
                 break;
-            case R.id.btn_main_5:
+            case R.id.tv_main_5:
                 mDefaultBanner.setCurrentItem(4);
                 break;
-            case R.id.btn_main_get_item_count:
+            case R.id.tv_main_get_item_count:
                 Toast.makeText(App.getInstance(), "广告条总页数为 " + mDefaultBanner.getItemCount(), Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btn_main_get_current_item:
+            case R.id.tv_main_get_current_item:
                 Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btn_main_load_three_item:
+            case R.id.tv_main_load_three_item:
                 loadData(mDefaultBanner, 3);
                 break;
-            case R.id.btn_main_load_five_item:
+            case R.id.tv_main_load_five_item:
                 loadData(mDefaultBanner, 5);
                 break;
-            case R.id.btn_main_cube:
+            case R.id.tv_main_cube:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Cube);
                 break;
-            case R.id.btn_main_depth:
+            case R.id.tv_main_depth:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Depth);
                 break;
-            case R.id.btn_main_flip:
+            case R.id.tv_main_flip:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Flip);
                 break;
-            case R.id.btn_main_rotate:
+            case R.id.tv_main_rotate:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Rotate);
                 break;
-            case R.id.btn_main_alpha:
+            case R.id.tv_main_alpha:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Alpha);
                 break;
             default:

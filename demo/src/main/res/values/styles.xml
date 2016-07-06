@@ -1,6 +1,24 @@
 <resources>
 
-    <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--避免第一次进来白屏或黑屏-->
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.Splash.Fullscreen">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -17,7 +35,7 @@
         <!-- 指示点容器背景 -->
         <item name="banner_pointContainerBackground">#44aaaaaa</item>
         <!-- 指示点背景 -->
-        <item name="banner_pointDrawable">@drawable/selector_banner_point1</item>
+        <item name="banner_pointDrawable">@drawable/bga_banner_selector_point_hollow</item>
         <!-- 指示点容器左右内间距 -->
         <item name="banner_pointContainerLeftRightPadding">10dp</item>
         <!-- 指示点上下外间距 -->
@@ -32,13 +50,15 @@
         <item name="banner_tipTextSize">10sp</item>
         <!-- 提示文案的文字颜色 -->
         <item name="banner_tipTextColor">@android:color/white</item>
+        <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
+        <item name="banner_placeholderDrawable">@drawable/holder</item>
     </style>
 
     <style name="MatchWrapTv" parent="MatchWrap">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:background">@drawable/selector_btn_test</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:onClick">onClick</item>
         <item name="android:padding">8dp</item>
@@ -48,7 +68,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/selector_btn_orange</item>
+        <item name="android:background">@drawable/selector_btn_test</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:onClick">onClick</item>
         <item name="android:paddingLeft">4dp</item>
