@@ -6,7 +6,7 @@
         android:src="@drawable/guide_4" />
 
     <Button
-        android:id="@+id/btn_last_main"
+        android:id="@+id/btn_item_splash_last_main"
         style="@style/WrapWrap"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

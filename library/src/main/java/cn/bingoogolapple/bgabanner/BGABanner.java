@@ -25,20 +25,8 @@ import com.nineoldandroids.view.ViewHelper;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.AlphaPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.CubePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.DefaultPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.FadePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.StackPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.BGAPageTransformer;
 import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
-import cn.bingoogolapple.bgabanner.transformer.ZoomCenterPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomFadePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
 
 public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDelegate, ViewPager.OnPageChangeListener {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
@@ -272,7 +260,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @return
      */
     public int getCurrentItem() {
-        return mViewPager.getCurrentItem() % mViews.size();
+        if (mViewPager == null || mViews == null) {
+            return 0;
+        } else {
+            return mViewPager.getCurrentItem() % mViews.size();
+        }
     }
 
     /**
@@ -286,6 +278,14 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     public List<? extends View> getViews() {
         return mViews;
+    }
+
+    public <VT extends View> VT getItemView(int position) {
+        return mViews == null ? null : (VT) mViews.get(position);
+    }
+
+    public ImageView getItemImageView(int position) {
+        return getItemView(position);
     }
 
     public List<String> getTips() {
@@ -320,7 +320,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(this);
-        setTransitionEffect(mTransitionEffect);
+        mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
+
         addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
 
@@ -352,12 +353,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         return super.dispatchTouchEvent(ev);
     }
 
-    /**
-     * Set the currently selected page.
-     *
-     * @param item Item index to select
-     */
     public void setCurrentItem(int item) {
+        if (mViewPager == null || mViews == null || item > getItemCount() - 1) {
+            return;
+        }
+
         if (mAutoPlayAble) {
             int realCurrentItem = mViewPager.getCurrentItem();
             int currentItem = realCurrentItem % mViews.size();
@@ -421,58 +421,15 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置页面也换动画
+     * 设置页面切换换动画
      *
      * @param effect
      */
     public void setTransitionEffect(TransitionEffect effect) {
         mTransitionEffect = effect;
-        if (mViewPager == null) {
-            return;
-        }
-
-        switch (effect) {
-            case Default:
-                mViewPager.setPageTransformer(true, new DefaultPageTransformer());
-                break;
-            case Alpha:
-                mViewPager.setPageTransformer(true, new AlphaPageTransformer());
-                break;
-            case Rotate:
-                mViewPager.setPageTransformer(true, new RotatePageTransformer());
-                break;
-            case Cube:
-                mViewPager.setPageTransformer(true, new CubePageTransformer());
-                break;
-            case Flip:
-                mViewPager.setPageTransformer(true, new FlipPageTransformer());
-                break;
-            case Accordion:
-                mViewPager.setPageTransformer(true, new AccordionPageTransformer());
-                break;
-            case ZoomFade:
-                mViewPager.setPageTransformer(true, new ZoomFadePageTransformer());
-                break;
-            case Fade:
-                mViewPager.setPageTransformer(true, new FadePageTransformer());
-                break;
-            case ZoomCenter:
-                mViewPager.setPageTransformer(true, new ZoomCenterPageTransformer());
-                break;
-            case ZoomStack:
-                mViewPager.setPageTransformer(true, new ZoomStackPageTransformer());
-                break;
-            case Stack:
-                mViewPager.setPageTransformer(true, new StackPageTransformer());
-                break;
-            case Depth:
-                mViewPager.setPageTransformer(true, new DepthPageTransformer());
-                break;
-            case Zoom:
-                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
-                break;
-            default:
-                break;
+        if (mViewPager != null) {
+            initViewPager();
+            BGABannerUtil.resetPageTransformer(mViews);
         }
     }
 
@@ -482,7 +439,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param transformer
      */
     public void setPageTransformer(ViewPager.PageTransformer transformer) {
-        if (transformer != null) {
+        if (transformer != null && mViewPager != null) {
             mViewPager.setPageTransformer(true, transformer);
         }
     }
@@ -491,12 +448,14 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * 切换到下一页
      */
     private void switchToNextPage() {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        }
     }
 
     @Override
     public void handleAutoPlayActionUpOrCancel(float xVelocity) {
-        if (mPageScrollPosition < mViewPager.getCurrentItem()) {
+        if (mViewPager != null && mPageScrollPosition < mViewPager.getCurrentItem()) {
             // 往右滑
             if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
                 mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);

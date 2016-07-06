@@ -25,6 +25,7 @@ public class AccordionPageTransformer extends BGAPageTransformer {
     public void handleRightPage(View view, float position) {
         ViewHelper.setPivotX(view, 0);
         ViewHelper.setScaleX(view, 1.0f - position);
+        ViewHelper.setAlpha(view, 1);
     }
 
 }

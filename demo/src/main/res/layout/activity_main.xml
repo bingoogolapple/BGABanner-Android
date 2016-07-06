@@ -6,17 +6,30 @@
     <LinearLayout style="@style/MatchWrap.Vertical">
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
+
             <Button
                 android:id="@+id/btn_main_get_item_count"
                 style="@style/AutoWrapTv"
                 android:onClick="onClick"
-                android:text="获取广告总页数" />
+                android:text="总页数" />
 
             <Button
                 android:id="@+id/btn_main_get_current_item"
                 style="@style/AutoWrapTv"
                 android:onClick="onClick"
-                android:text="获取广告当前索引位置" />
+                android:text="当前索引位置" />
+
+            <Button
+                android:id="@+id/btn_main_load_three_item"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="加载3页数据" />
+
+            <Button
+                android:id="@+id/btn_main_load_five_item"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="加载5页数据" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -50,6 +63,39 @@
                 style="@style/AutoWrapTv"
                 android:onClick="onClick"
                 android:text="第五页" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/MatchWrap.Horizontal">
+
+            <Button
+                android:id="@+id/btn_main_cube"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="Cube" />
+
+            <Button
+                android:id="@+id/btn_main_depth"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="Depth" />
+
+            <Button
+                android:id="@+id/btn_main_flip"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="Flip" />
+
+            <Button
+                android:id="@+id/btn_main_rotate"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="Rotate" />
+
+            <Button
+                android:id="@+id/btn_main_alpha"
+                style="@style/AutoWrapTv"
+                android:onClick="onClick"
+                android:text="Alpha..." />
         </LinearLayout>
 
         <cn.bingoogolapple.bgabanner.BGABanner

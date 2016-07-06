@@ -1,8 +1,14 @@
 package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.DrawableRes;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.nineoldandroids.view.ViewHelper;
+
+import java.util.List;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -10,7 +16,6 @@ import android.util.TypedValue;
  * 描述:
  */
 public class BGABannerUtil {
-    private static final String TAG = BGABanner.class.getSimpleName();
 
     private BGABannerUtil() {
     }
@@ -23,8 +28,28 @@ public class BGABannerUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
-    private static void debug(String msg) {
-        Log.i(TAG, msg);
+    public static ImageView getItemImageView(Context context, @DrawableRes int placeholderResId) {
+        ImageView imageView = new ImageView(context);
+        imageView.setImageResource(placeholderResId);
+        imageView.setClickable(true);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        return imageView;
+    }
+
+    public static void resetPageTransformer(List<? extends View> views) {
+        for (View view : views) {
+            view.setVisibility(View.VISIBLE);
+            ViewHelper.setAlpha(view, 1);
+            ViewHelper.setPivotX(view, view.getMeasuredWidth() * 0.5f);
+            ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);
+            ViewHelper.setTranslationX(view, 0);
+            ViewHelper.setTranslationY(view, 0);
+            ViewHelper.setScaleX(view, 1);
+            ViewHelper.setScaleY(view, 1);
+            ViewHelper.setRotationX(view, 0);
+            ViewHelper.setRotationY(view, 0);
+            ViewHelper.setRotation(view, 0);
+        }
     }
 
 }
