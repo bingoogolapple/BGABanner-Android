@@ -12,53 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.bingoogolapple.bgabanner.demo.App;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
 import cn.bingoogolapple.bgabanner.demo.model.BannerModel;
+import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends Activity {
     private BGABanner mDefaultBanner;
-    private List<ImageView> mDefaultViews;
-
     private BGABanner mCubeBanner;
-    private List<ImageView> mCubeViews;
-
     private BGABanner mAccordionBanner;
-    private List<ImageView> mAccordionViews;
-
     private BGABanner mFlipBanner;
-    private List<ImageView> mFlipViews;
-
     private BGABanner mRotateBanner;
-    private List<ImageView> mRotateViews;
-
     private BGABanner mAlphaBanner;
-    private List<ImageView> mAlphaViews;
-
     private BGABanner mZoomFadeBanner;
-    private List<ImageView> mZoomFadeViews;
-
     private BGABanner mFadeBanner;
-    private List<ImageView> mFadeViews;
-
     private BGABanner mZoomCenterBanner;
-    private List<ImageView> mZoomCenterViews;
-
     private BGABanner mZoomBanner;
-    private List<ImageView> mZoomViews;
-
     private BGABanner mStackBanner;
-    private List<ImageView> mStackViews;
-
     private BGABanner mZoomStackBanner;
-    private List<ImageView> mZoomStackViews;
-
     private BGABanner mDepthBanner;
-    private List<ImageView> mDepthViews;
 
     private Engine mEngine;
 
@@ -69,302 +46,71 @@ public class MainActivity extends Activity {
 
         mEngine = App.getInstance().getEngine();
 
-        initDefault();
-        initCube();
-        initAccordion();
-        initFlip();
-        initRotate();
-        initAlpha();
-        initZoomFade();
-        initFade();
-        initZoomCenter();
-        initZoom();
-        initStack();
-        initZoomStack();
-        initDepth();
+        initView();
+        setListener();
+        loadData();
     }
 
-    private void initDefault() {
+    private void initView() {
         mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
-        mDefaultViews = getViews(5);
-        mDefaultBanner.setViews(mDefaultViews);
-
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                ImageView imageView;
-                for (int i = 0; i < mDefaultViews.size(); i++) {
-                    imageView = mDefaultViews.get(i);
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(imageView);
-
-                    // 为每一页添加点击事件
-                    final int finalPosition = i;
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(App.getInstance(), "点击了第" + (finalPosition + 1) + "页", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                mDefaultBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initCube() {
         mCubeBanner = (BGABanner) findViewById(R.id.banner_main_cube);
-        mCubeViews = getViews(6);
-        mCubeBanner.setViews(mCubeViews);
-
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mCubeViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mCubeViews.get(i));
-                }
-                // 也可以不设置tips
-//                mCubeBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initAccordion() {
         mAccordionBanner = (BGABanner) findViewById(R.id.banner_main_accordion);
-        mAccordionViews = getViews(4);
-        mAccordionBanner.setViews(mAccordionViews);
-
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mAccordionViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mAccordionViews.get(i));
-                }
-                mAccordionBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initFlip() {
         mFlipBanner = (BGABanner) findViewById(R.id.banner_main_flip);
-        mFlipViews = getViews(3);
-        mFlipBanner.setViews(mFlipViews);
-
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mFlipViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mFlipViews.get(i));
-                }
-                mFlipBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initRotate() {
         mRotateBanner = (BGABanner) findViewById(R.id.banner_main_rotate);
-        mRotateViews = getViews(6);
-        mRotateBanner.setViews(mRotateViews);
-
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mRotateViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mRotateViews.get(i));
-                }
-                mRotateBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initAlpha() {
         mAlphaBanner = (BGABanner) findViewById(R.id.banner_main_alpha);
-        mAlphaViews = getViews(5);
-        mAlphaBanner.setViews(mAlphaViews);
-
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mAlphaViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mAlphaViews.get(i));
-                }
-                mAlphaBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initZoomFade() {
         mZoomFadeBanner = (BGABanner) findViewById(R.id.banner_main_zoomFade);
-        mZoomFadeViews = getViews(4);
-        mZoomFadeBanner.setViews(mZoomFadeViews);
-
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mZoomFadeViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomFadeViews.get(i));
-                }
-                mZoomFadeBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initFade() {
         mFadeBanner = (BGABanner) findViewById(R.id.banner_main_fade);
-        mFadeViews = getViews(3);
-        mFadeBanner.setViews(mFadeViews);
-
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mFadeViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mFadeViews.get(i));
-                }
-                mFadeBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initZoomCenter() {
         mZoomCenterBanner = (BGABanner) findViewById(R.id.banner_main_zoomCenter);
-        mZoomCenterViews = getViews(6);
-        mZoomCenterBanner.setViews(mZoomCenterViews);
-
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mZoomCenterViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomCenterViews.get(i));
-                }
-                mZoomCenterBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initZoom() {
         mZoomBanner = (BGABanner) findViewById(R.id.banner_main_zoom);
-        mZoomViews = getViews(5);
-        mZoomBanner.setViews(mZoomViews);
-
-        mEngine.fiveItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mZoomViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomViews.get(i));
-                }
-                mZoomBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initStack() {
         mStackBanner = (BGABanner) findViewById(R.id.banner_main_stack);
-        mStackViews = getViews(4);
-        mStackBanner.setViews(mStackViews);
-
-        mEngine.fourItem().enqueue(new Callback<BannerModel>() {
-            @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mStackViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mStackViews.get(i));
-                }
-                mStackBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
-            }
-        });
-    }
-
-    private void initZoomStack() {
         mZoomStackBanner = (BGABanner) findViewById(R.id.banner_main_zoomStack);
-        mZoomStackViews = getViews(3);
-        mZoomStackBanner.setViews(mZoomStackViews);
+        mDepthBanner = (BGABanner) findViewById(R.id.banner_main_depth);
+    }
 
-        mEngine.threeItem().enqueue(new Callback<BannerModel>() {
+    private void setListener() {
+        mDefaultBanner.setDelegate(new BGABanner.Delegate() {
             @Override
-            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
-                BannerModel bannerModel = response.body();
-                for (int i = 0; i < mZoomStackViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mZoomStackViews.get(i));
-                }
-                mZoomStackBanner.setTips(bannerModel.tips);
-            }
-
-            @Override
-            public void onFailure(Call<BannerModel> call, Throwable t) {
+            public void onClickBannerItem(int position) {
+                Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void initDepth() {
-        mDepthBanner = (BGABanner) findViewById(R.id.banner_main_depth);
-        mDepthViews = getViews(6);
-        mDepthBanner.setViews(mDepthViews);
+    private void loadData() {
+        loadData(mDefaultBanner, 2);
+        loadData(mCubeBanner, 2);
+        loadData(mAccordionBanner, 3);
+        loadData(mFlipBanner, 4);
+        loadData(mRotateBanner, 5);
+        loadData(mAlphaBanner, 6);
+        loadData(mZoomFadeBanner, 4);
+        loadData(mFadeBanner, 4);
+        loadData(mZoomCenterBanner, 4);
+        loadData(mZoomBanner, 4);
+        loadData(mStackBanner, 4);
+        loadData(mZoomStackBanner, 4);
+        loadData(mDepthBanner, 4);
+    }
 
-        mEngine.sixItem().enqueue(new Callback<BannerModel>() {
+    private void loadData(final BGABanner banner, int count) {
+        mEngine.fetchItemsWithItemCount(count).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                for (int i = 0; i < mDepthViews.size(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(mDepthViews.get(i));
+                banner.setViewsAndTips(getViews(bannerModel.imgs.size()), bannerModel.tips);
+//                banner.setViews(getViews(bannerModel.imgs.size()));
+                for (int i = 0; i < banner.getItemCount(); i++) {
+                    Glide.with(MainActivity.this)
+                            .load(bannerModel.imgs.get(i))
+                            .placeholder(R.drawable.holder)
+                            .error(R.drawable.holder)
+                            .into(banner.getItemImageView(i));
                 }
-                mDepthBanner.setTips(bannerModel.tips);
             }
 
             @Override
             public void onFailure(Call<BannerModel> call, Throwable t) {
+                Toast.makeText(App.getInstance(), "网络数据加载失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -372,27 +118,54 @@ public class MainActivity extends Activity {
     private List<ImageView> getViews(int count) {
         List<ImageView> views = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            views.add((ImageView) getLayoutInflater().inflate(R.layout.view_image, null));
+            views.add(BGABannerUtil.getItemImageView(this, R.drawable.holder));
         }
         return views;
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_main_1:
+            case R.id.tv_main_1:
                 mDefaultBanner.setCurrentItem(0);
                 break;
-            case R.id.btn_main_2:
+            case R.id.tv_main_2:
                 mDefaultBanner.setCurrentItem(1);
                 break;
-            case R.id.btn_main_3:
+            case R.id.tv_main_3:
                 mDefaultBanner.setCurrentItem(2);
                 break;
-            case R.id.btn_main_4:
+            case R.id.tv_main_4:
                 mDefaultBanner.setCurrentItem(3);
                 break;
-            case R.id.btn_main_5:
+            case R.id.tv_main_5:
                 mDefaultBanner.setCurrentItem(4);
+                break;
+            case R.id.tv_main_get_item_count:
+                Toast.makeText(App.getInstance(), "广告条总页数为 " + mDefaultBanner.getItemCount(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_main_get_current_item:
+                Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_main_load_three_item:
+                loadData(mDefaultBanner, 3);
+                break;
+            case R.id.tv_main_load_five_item:
+                loadData(mDefaultBanner, 5);
+                break;
+            case R.id.tv_main_cube:
+                mDefaultBanner.setTransitionEffect(TransitionEffect.Cube);
+                break;
+            case R.id.tv_main_depth:
+                mDefaultBanner.setTransitionEffect(TransitionEffect.Depth);
+                break;
+            case R.id.tv_main_flip:
+                mDefaultBanner.setTransitionEffect(TransitionEffect.Flip);
+                break;
+            case R.id.tv_main_rotate:
+                mDefaultBanner.setTransitionEffect(TransitionEffect.Rotate);
+                break;
+            case R.id.tv_main_alpha:
+                mDefaultBanner.setTransitionEffect(TransitionEffect.Alpha);
                 break;
             default:
                 break;

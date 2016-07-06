@@ -6,13 +6,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -25,28 +22,18 @@ import android.widget.TextView;
 
 import com.nineoldandroids.view.ViewHelper;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
-import cn.bingoogolapple.bgabanner.transformer.AccordionPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.AlphaPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.CubePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.DefaultPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.DepthPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.FadePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.FlipPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.RotatePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.StackPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomCenterPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomFadePageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomPageTransformer;
-import cn.bingoogolapple.bgabanner.transformer.ZoomStackPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.BGAPageTransformer;
+import cn.bingoogolapple.bgabanner.transformer.TransitionEffect;
 
-public class BGABanner extends RelativeLayout {
-    private static final String TAG = BGABanner.class.getSimpleName();
+public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDelegate, ViewPager.OnPageChangeListener {
     private static final int RMP = RelativeLayout.LayoutParams.MATCH_PARENT;
     private static final int RWC = RelativeLayout.LayoutParams.WRAP_CONTENT;
     private static final int LWC = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private static final int WHAT_AUTO_PLAY = 1000;
+    private static final int NO_PLACEHOLDER_DRAWABLE = -1;
+    private static final int VEL_THRESHOLD = 400;
     private BGAViewPager mViewPager;
     private List<? extends View> mViews;
     private List<String> mTips;
@@ -61,16 +48,15 @@ public class BGABanner extends RelativeLayout {
     private int mPointContainerLeftRightPadding;
     private int mTipTextSize;
     private int mTipTextColor = Color.WHITE;
-    private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
+    private int mPointDrawableResId = R.drawable.bga_banner_selector_point_solid;
     private Drawable mPointContainerBackgroundDrawable;
-
-    private Handler mAutoPlayHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
-        }
-    };
+    private AutoPlayTask mAutoPlayTask;
+    private int mPageScrollPosition;
+    private float mPageScrollPositionOffset;
+    private Delegate mDelegate;
+    private TransitionEffect mTransitionEffect;
+    private ImageView mPlaceholderIv;
+    private int mPlaceholderDrawableResId = NO_PLACEHOLDER_DRAWABLE;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -84,12 +70,14 @@ public class BGABanner extends RelativeLayout {
     }
 
     private void initDefaultAttrs(Context context) {
-        mViewPager = new BGAViewPager(context);
-        mPointLeftRightMargin = dp2px(context, 3);
-        mPointTopBottomMargin = dp2px(context, 6);
-        mPointContainerLeftRightPadding = dp2px(context, 10);
-        mTipTextSize = sp2px(context, 8);
+        mAutoPlayTask = new AutoPlayTask(this);
+
+        mPointLeftRightMargin = BGABannerUtil.dp2px(context, 3);
+        mPointTopBottomMargin = BGABannerUtil.dp2px(context, 6);
+        mPointContainerLeftRightPadding = BGABannerUtil.dp2px(context, 10);
+        mTipTextSize = BGABannerUtil.sp2px(context, 8);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
+        mTransitionEffect = TransitionEffect.Default;
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -103,7 +91,7 @@ public class BGABanner extends RelativeLayout {
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGABanner_banner_pointDrawable) {
-            mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.selector_bgabanner_point);
+            mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.bga_banner_selector_point_solid);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointLeftRightMargin) {
@@ -122,18 +110,17 @@ public class BGABanner extends RelativeLayout {
             mPageChangeDuration = typedArray.getInteger(attr, mPageChangeDuration);
         } else if (attr == R.styleable.BGABanner_banner_transitionEffect) {
             int ordinal = typedArray.getInt(attr, TransitionEffect.Accordion.ordinal());
-            setTransitionEffect(TransitionEffect.values()[ordinal]);
+            mTransitionEffect = TransitionEffect.values()[ordinal];
         } else if (attr == R.styleable.BGABanner_banner_tipTextColor) {
             mTipTextColor = typedArray.getColor(attr, mTipTextColor);
         } else if (attr == R.styleable.BGABanner_banner_tipTextSize) {
             mTipTextSize = typedArray.getDimensionPixelSize(attr, mTipTextSize);
+        } else if (attr == R.styleable.BGABanner_banner_placeholderDrawable) {
+            mPlaceholderDrawableResId = typedArray.getResourceId(attr, mPlaceholderDrawableResId);
         }
     }
 
     private void initView(Context context) {
-        addView(mViewPager, new RelativeLayout.LayoutParams(RMP, RMP));
-        setPageChangeDuration(mPageChangeDuration);
-
         RelativeLayout pointContainerRl = new RelativeLayout(context);
         if (Build.VERSION.SDK_INT >= 16) {
             pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
@@ -178,6 +165,11 @@ public class BGABanner extends RelativeLayout {
             pointRealContainerLp.addRule(RelativeLayout.CENTER_HORIZONTAL);
             tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
         }
+
+        if (mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
+            mPlaceholderIv = BGABannerUtil.getItemImageView(context, mPlaceholderDrawableResId);
+            addView(mPlaceholderIv);
+        }
     }
 
     /**
@@ -187,8 +179,29 @@ public class BGABanner extends RelativeLayout {
      */
     public void setPageChangeDuration(int duration) {
         if (duration >= 0 && duration <= 2000) {
-            mViewPager.setPageChangeDuration(duration);
+            mPageChangeDuration = duration;
+            if (mViewPager != null) {
+                mViewPager.setPageChangeDuration(duration);
+            }
         }
+    }
+
+    /**
+     * 设置是否开启自动轮播
+     *
+     * @param autoPlayAble
+     */
+    public void setAutoPlayAble(boolean autoPlayAble) {
+        mAutoPlayAble = autoPlayAble;
+    }
+
+    /**
+     * 设置自动轮播的时间间隔
+     *
+     * @param autoPlayInterval
+     */
+    public void setAutoPlayInterval(int autoPlayInterval) {
+        mAutoPlayInterval = autoPlayInterval;
     }
 
     /**
@@ -198,23 +211,23 @@ public class BGABanner extends RelativeLayout {
      * @param tips  每一页的提示文案集合
      */
     public void setViewsAndTips(List<? extends View> views, List<String> tips) {
-        if (mAutoPlayAble && views.size() < 3) {
-            throw new IllegalArgumentException("开启指定轮播时至少有三个页面");
+        if (mAutoPlayAble && views.size() < 2) {
+            mAutoPlayAble = false;
         }
+
         if (tips != null && tips.size() != views.size()) {
             throw new IllegalArgumentException("提示文案数必须等于页面数量");
         }
         mViews = views;
         mTips = tips;
-        mViewPager.setAdapter(new PageAdapter());
-        mViewPager.addOnPageChangeListener(new ChangePointListener());
 
         initPoints();
-        processAutoPlay();
-    }
+        initViewPager();
 
-    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mViewPager.addOnPageChangeListener(listener);
+        if (mPlaceholderIv != null && this.equals(mPlaceholderIv.getParent())) {
+            removeView(mPlaceholderIv);
+            mPlaceholderIv = null;
+        }
     }
 
     /**
@@ -238,9 +251,74 @@ public class BGABanner extends RelativeLayout {
         mTips = tips;
     }
 
+    /**
+     * 设置是否允许用户手指滑动
+     *
+     * @param scrollable true表示允许跟随用户触摸滑动，false反之
+     */
+    public void setAllowUserScrollable(boolean scrollable) {
+        mViewPager.setAllowUserScrollable(scrollable);
+    }
+
+    /**
+     * 添加ViewPager滚动监听器
+     *
+     * @param listener
+     */
+    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+        mViewPager.addOnPageChangeListener(listener);
+    }
+
+    /**
+     * 获取当前选中界面索引
+     *
+     * @return
+     */
+    public int getCurrentItem() {
+        if (mViewPager == null || mViews == null) {
+            return 0;
+        } else {
+            return mViewPager.getCurrentItem() % mViews.size();
+        }
+    }
+
+    /**
+     * 获取广告页面总个数
+     *
+     * @return
+     */
+    public int getItemCount() {
+        return mViews == null ? 0 : mViews.size();
+    }
+
+    public List<? extends View> getViews() {
+        return mViews;
+    }
+
+    public <VT extends View> VT getItemView(int position) {
+        return mViews == null ? null : (VT) mViews.get(position);
+    }
+
+    public ImageView getItemImageView(int position) {
+        return getItemView(position);
+    }
+
+    public List<String> getTips() {
+        return mTips;
+    }
+
+    public BGAViewPager getViewPager() {
+        return mViewPager;
+    }
+
+    public void setOverScrollMode(int overScrollMode) {
+        if (mViewPager != null) {
+            mViewPager.setOverScrollMode(overScrollMode);
+        }
+    }
+
     private void initPoints() {
         mPointRealContainerLl.removeAllViews();
-        mViewPager.removeAllViews();
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
         lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
@@ -253,8 +331,24 @@ public class BGABanner extends RelativeLayout {
         }
     }
 
-    private void processAutoPlay() {
+    private void initViewPager() {
+        if (mViewPager != null && this.equals(mViewPager.getParent())) {
+            this.removeView(mViewPager);
+            mViewPager = null;
+        }
+
+        mViewPager = new BGAViewPager(getContext());
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setAdapter(new PageAdapter());
+        mViewPager.addOnPageChangeListener(this);
+        mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
+
+        addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
+        setPageChangeDuration(mPageChangeDuration);
+
         if (mAutoPlayAble) {
+            mViewPager.setAutoPlayDelegate(this);
+
             int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
             mViewPager.setCurrentItem(zeroItem);
 
@@ -280,12 +374,11 @@ public class BGABanner extends RelativeLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-    /**
-     * Set the currently selected page.
-     *
-     * @param item Item index to select
-     */
     public void setCurrentItem(int item) {
+        if (mViewPager == null || mViews == null || item > getItemCount() - 1) {
+            return;
+        }
+
         if (mAutoPlayAble) {
             int realCurrentItem = mViewPager.getCurrentItem();
             int currentItem = realCurrentItem % mViews.size();
@@ -327,13 +420,13 @@ public class BGABanner extends RelativeLayout {
     public void startAutoPlay() {
         stopAutoPlay();
         if (mAutoPlayAble) {
-            mAutoPlayHandler.sendEmptyMessageDelayed(WHAT_AUTO_PLAY, mAutoPlayInterval);
+            postDelayed(mAutoPlayTask, mAutoPlayInterval);
         }
     }
 
     public void stopAutoPlay() {
         if (mAutoPlayAble) {
-            mAutoPlayHandler.removeMessages(WHAT_AUTO_PLAY);
+            removeCallbacks(mAutoPlayTask);
         }
     }
 
@@ -344,58 +437,20 @@ public class BGABanner extends RelativeLayout {
         mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
         if (mTipTv != null && mTips != null) {
-            mTipTv.setText(mTips.get(newCurrentPoint % mTips.size()));
+            mTipTv.setText(mTips.get(newCurrentPoint));
         }
     }
 
     /**
-     * 设置页面也换动画
+     * 设置页面切换换动画
      *
      * @param effect
      */
     public void setTransitionEffect(TransitionEffect effect) {
-        switch (effect) {
-            case Default:
-                mViewPager.setPageTransformer(true, new DefaultPageTransformer());
-                break;
-            case Alpha:
-                mViewPager.setPageTransformer(true, new AlphaPageTransformer());
-                break;
-            case Rotate:
-                mViewPager.setPageTransformer(true, new RotatePageTransformer());
-                break;
-            case Cube:
-                mViewPager.setPageTransformer(true, new CubePageTransformer());
-                break;
-            case Flip:
-                mViewPager.setPageTransformer(true, new FlipPageTransformer());
-                break;
-            case Accordion:
-                mViewPager.setPageTransformer(true, new AccordionPageTransformer());
-                break;
-            case ZoomFade:
-                mViewPager.setPageTransformer(true, new ZoomFadePageTransformer());
-                break;
-            case Fade:
-                mViewPager.setPageTransformer(true, new FadePageTransformer());
-                break;
-            case ZoomCenter:
-                mViewPager.setPageTransformer(true, new ZoomCenterPageTransformer());
-                break;
-            case ZoomStack:
-                mViewPager.setPageTransformer(true, new ZoomStackPageTransformer());
-                break;
-            case Stack:
-                mViewPager.setPageTransformer(true, new StackPageTransformer());
-                break;
-            case Depth:
-                mViewPager.setPageTransformer(true, new DepthPageTransformer());
-                break;
-            case Zoom:
-                mViewPager.setPageTransformer(true, new ZoomPageTransformer());
-                break;
-            default:
-                break;
+        mTransitionEffect = effect;
+        if (mViewPager != null) {
+            initViewPager();
+            BGABannerUtil.resetPageTransformer(mViews);
         }
     }
 
@@ -405,26 +460,93 @@ public class BGABanner extends RelativeLayout {
      * @param transformer
      */
     public void setPageTransformer(ViewPager.PageTransformer transformer) {
-        if (transformer != null) {
+        if (transformer != null && mViewPager != null) {
             mViewPager.setPageTransformer(true, transformer);
         }
     }
 
-    private final class PageAdapter extends PagerAdapter {
+    /**
+     * 切换到下一页
+     */
+    private void switchToNextPage() {
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        }
+    }
+
+    @Override
+    public void handleAutoPlayActionUpOrCancel(float xVelocity) {
+        if (mViewPager != null && mPageScrollPosition < mViewPager.getCurrentItem()) {
+            // 往右滑
+            if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+            } else {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
+            }
+        } else {
+            // 往左滑
+            if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
+            } else {
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+            }
+        }
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switchToPoint(position % mViews.size());
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mPageScrollPosition = position;
+        mPageScrollPositionOffset = positionOffset;
+        if (mTipTv != null && mTips != null) {
+            if (positionOffset > 0.5) {
+                mTipTv.setText(mTips.get((position + 1) % mTips.size()));
+                ViewHelper.setAlpha(mTipTv, positionOffset);
+            } else {
+                ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
+                mTipTv.setText(mTips.get(position % mTips.size()));
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    public void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
+    }
+
+    private class PageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return mAutoPlayAble ? Integer.MAX_VALUE : mViews.size();
+            return mViews == null ? 0 : (mAutoPlayAble ? Integer.MAX_VALUE : mViews.size());
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = mViews.get(position % mViews.size());
+            final int finalPosition = position % mViews.size();
+            View view = mViews.get(finalPosition);
 
             // 在destroyItem方法中销毁的话，当只有3页时会有问题
             if (container.equals(view.getParent())) {
                 container.removeView(view);
             }
+
+            if (mDelegate != null) {
+                view.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDelegate.onClickBannerItem(finalPosition);
+                    }
+                });
+            }
+
             container.addView(view);
             return view;
         }
@@ -437,54 +559,31 @@ public class BGABanner extends RelativeLayout {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
-    }
-
-    private final class ChangePointListener extends BGAViewPager.SimpleOnPageChangeListener {
 
         @Override
-        public void onPageSelected(int position) {
-            switchToPoint(position % mViews.size());
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
+    private static class AutoPlayTask implements Runnable {
+        private final WeakReference<BGABanner> mBanner;
+
+        private AutoPlayTask(BGABanner banner) {
+            mBanner = new WeakReference<>(banner);
         }
 
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (mTipTv != null && mTips != null) {
-                if (positionOffset > 0.5) {
-                    mTipTv.setText(mTips.get((position + 1) % mTips.size()));
-                    ViewHelper.setAlpha(mTipTv, positionOffset);
-                } else {
-                    ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
-                    mTipTv.setText(mTips.get(position % mTips.size()));
-                }
+        public void run() {
+            BGABanner banner = mBanner.get();
+            if (banner != null) {
+                banner.switchToNextPage();
+                banner.startAutoPlay();
             }
         }
     }
 
-    public enum TransitionEffect {
-        Default,
-        Alpha,
-        Rotate,
-        Cube,
-        Flip,
-        Accordion,
-        ZoomFade,
-        Fade,
-        ZoomCenter,
-        ZoomStack,
-        Stack,
-        Depth,
-        Zoom
-    }
-
-    public static int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    public static int sp2px(Context context, float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
-    }
-
-    private static void debug(String msg) {
-        Log.i(TAG, msg);
+    public interface Delegate {
+        void onClickBannerItem(int position);
     }
 }

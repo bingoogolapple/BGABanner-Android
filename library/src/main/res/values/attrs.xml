@@ -46,6 +46,8 @@
         <attr name="banner_tipTextColor" format="reference|color" />
         <!-- 提示文案的文字大小 -->
         <attr name="banner_tipTextSize" format="dimension" />
+        <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
+        <attr name="banner_placeholderDrawable" format="reference" />
     </declare-styleable>
 
 </resources>

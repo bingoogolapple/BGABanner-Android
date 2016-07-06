@@ -1,27 +1,31 @@
 :running:BGABanner-Android:running:
 ============
 
-[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner)
 
-demo中演示了引导页、以及通过glide、retrofit、gson实现广告条的自动轮播效果
+## 主要功能：
+- [x] 引导界面导航效果
+- [x] 支持根据服务端返回的数据动态设置广告条的总页数
+- [x] 支持大于等于2页时的无限循环自动轮播、手指按下暂停轮播、抬起手指开始轮播
+- [x] 支持自定义指示器位置和广告文案位置
+- [x] 支持 ViewPager 各种切换动画
+- [x] 支持选中特定页面
+- [x] 支持监听 item 点击事件
+- [x] 加载网络数据时支持暂未图设置，避免出现空白
+- [ ] 多个 ViewPager 跟随滚动
 
-**【感谢慕课网的 [千变万化的ViewPager切换动画](http://www.imooc.com/learn/226) 视频教程】**
+## 效果图与示例 apk
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner1.gif?imageView2/2/w/250)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner2.gif?imageView2/2/w/250)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner3.gif?imageView2/2/w/250)
 
-### 主要功能：
-1. 引导界面导航效果
-2. 广告条循环自动轮播、手指按下暂停自动轮播、自定义指示器位置
-3. ViewPager各种切换动画
-4. 支持选中特定页面、支持大于等于3页时的轮播功能
+[点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
-### 效果图
-![引导界面](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner1.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner2.gif)
-![自动轮播1](https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/screenshots/banner3.gif)
+![BGABannerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com/banner/BGABannerDemo.png)
 
-### 基本使用
+## 基本使用
 
-#### 1.添加Gradle依赖
+#### 1.添加Gradle依赖 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner)
 
 ```groovy
 dependencies {
@@ -34,62 +38,35 @@ dependencies {
 #### 2.在布局文件中添加BGABanner
 
 ```xml
-<cn.bingoogolapple.bgabanner.BGABanner xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/banner_splash_pager"
+<cn.bingoogolapple.bgabanner.BGABanner
+    android:id="@+id/banner_guide_content"
     style="@style/MatchMatch"
+    app:banner_pageChangeDuration="1000"
     app:banner_pointAutoPlayAble="false"
-    app:banner_pointTopBottomMargin="15dp"/>
+    app:banner_pointContainerBackground="@android:color/transparent"
+    app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+    app:banner_pointTopBottomMargin="15dp"
+    app:banner_transitionEffect="alpha" />
 ```
 
 #### 3.在Activity或者Fragment中配置BGABanner
 
 ```java
-public class SplashActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        BGABanner banner = (BGABanner)findViewById(R.id.banner_splash_pager);
-        // 用Java代码方式设置切换动画
-        banner.setTransitionEffect(BGABanner.TransitionEffect.Rotate);
-        // banner.setPageTransformer(new RotatePageTransformer());
-        // 设置page切换时长
-        banner.setPageChangeDuration(1000);
-        List<View> views = new ArrayList<>();
-        views.add(getPageView(R.drawable.guide_1));
-        views.add(getPageView(R.drawable.guide_2));
-        views.add(getPageView(R.drawable.guide_3));
-
-        View lastView = getLayoutInflater().inflate(R.layout.view_last, null);
-        views.add(lastView);
-        lastView.findViewById(R.id.btn_last_main).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        banner.setViews(views);
-        // banner.setCurrentItem(1);
-    }
-
-    private View getPageView(@DrawableRes int resid) {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resid);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        return imageView;
-    }
-}
+mContentBanner = (BGABanner) findViewById(R.id.banner_guide_content);
+List<View> topViews = new ArrayList<>();
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
+topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+mContentBanner.setViews(topViews);
+mContentBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
 ```
 
-### 自定义属性说明
+## 自定义属性说明
 ```xml
 <declare-styleable name="BGABanner">
     <!-- 指示点容器背景 -->
     <attr name="banner_pointContainerBackground" format="reference|color" />
-    <!-- 指示点的背景 -->
+    <!-- 指示点背景 -->
     <attr name="banner_pointDrawable" format="reference" />
     <!-- 指示点容器左右内间距 -->
     <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
@@ -131,16 +108,26 @@ public class SplashActivity extends AppCompatActivity {
     <attr name="banner_tipTextColor" format="reference|color" />
     <!-- 提示文案的文字大小 -->
     <attr name="banner_tipTextSize" format="dimension" />
+    <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
+    <attr name="banner_placeholderDrawable" format="reference" />
 </declare-styleable>
 ```
 
-### 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
+## 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo):feet:
 
-### 关于我
+## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
 | ------------ | ------------- | ------------ | ------------ |
 | <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+
+## 打赏支持
+
+如果觉得 BGA 系列开源库对您有用，请随意打赏。
+
+<p align="center">
+  <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
+</p>
 
 ## License
 
