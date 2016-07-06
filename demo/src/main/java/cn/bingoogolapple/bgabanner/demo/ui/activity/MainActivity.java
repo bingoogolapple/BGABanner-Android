@@ -100,7 +100,11 @@ public class MainActivity extends Activity {
                 banner.setViewsAndTips(getViews(bannerModel.imgs.size()), bannerModel.tips);
 //                banner.setViews(getViews(bannerModel.imgs.size()));
                 for (int i = 0; i < banner.getItemCount(); i++) {
-                    Glide.with(MainActivity.this).load(bannerModel.imgs.get(i)).placeholder(R.drawable.holder).error(R.drawable.holder).into(banner.getItemImageView(i));
+                    Glide.with(MainActivity.this)
+                            .load(bannerModel.imgs.get(i))
+                            .placeholder(R.drawable.holder)
+                            .error(R.drawable.holder)
+                            .into(banner.getItemImageView(i));
                 }
             }
 
