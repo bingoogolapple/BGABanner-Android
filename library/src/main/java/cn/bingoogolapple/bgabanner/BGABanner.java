@@ -47,7 +47,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private int mPointContainerLeftRightPadding;
     private int mTipTextSize;
     private int mTipTextColor = Color.WHITE;
-    private int mPointDrawableResId = R.drawable.selector_bgabanner_point;
+    private int mPointDrawableResId = R.drawable.bga_banner_selector_point_solid;
     private Drawable mPointContainerBackgroundDrawable;
     private AutoPlayTask mAutoPlayTask;
     private int mPageScrollPosition;
@@ -88,7 +88,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
         if (attr == R.styleable.BGABanner_banner_pointDrawable) {
-            mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.selector_bgabanner_point);
+            mPointDrawableResId = typedArray.getResourceId(attr, R.drawable.bga_banner_selector_point_solid);
         } else if (attr == R.styleable.BGABanner_banner_pointContainerBackground) {
             mPointContainerBackgroundDrawable = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_pointLeftRightMargin) {
@@ -294,6 +294,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     public BGAViewPager getViewPager() {
         return mViewPager;
+    }
+
+    public void setOverScrollMode(int overScrollMode) {
+        if (mViewPager != null) {
+            mViewPager.setOverScrollMode(overScrollMode);
+        }
     }
 
     private void initPoints() {

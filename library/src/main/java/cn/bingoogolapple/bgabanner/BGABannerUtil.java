@@ -29,10 +29,14 @@ public class BGABannerUtil {
     }
 
     public static ImageView getItemImageView(Context context, @DrawableRes int placeholderResId) {
+        return getItemImageView(context, placeholderResId, ImageView.ScaleType.CENTER_CROP);
+    }
+
+    public static ImageView getItemImageView(Context context, @DrawableRes int placeholderResId, ImageView.ScaleType scaleType) {
         ImageView imageView = new ImageView(context);
         imageView.setImageResource(placeholderResId);
         imageView.setClickable(true);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setScaleType(scaleType);
         return imageView;
     }
 
