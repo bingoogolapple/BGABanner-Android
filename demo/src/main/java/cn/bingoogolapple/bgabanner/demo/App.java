@@ -21,7 +21,7 @@ public class App extends Application {
 
         sInstance = this;
         mEngine = new Retrofit.Builder()
-                .baseUrl("https://raw.githubusercontent.com/bingoogolapple/BGABanner-Android/server/api/")
+                .baseUrl("http://7xk9dj.com1.z0.glb.clouddn.com/banner/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(Engine.class);
     }
