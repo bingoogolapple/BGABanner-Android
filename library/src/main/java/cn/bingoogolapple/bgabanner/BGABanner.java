@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.LayoutRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.nineoldandroids.view.ViewHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.transformer.BGAPageTransformer;
@@ -35,7 +37,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private static final int NO_PLACEHOLDER_DRAWABLE = -1;
     private static final int VEL_THRESHOLD = 400;
     private BGAViewPager mViewPager;
-    private List<? extends View> mViews;
+    private List<View> mHackyViews;
+    private List<View> mViews;
     private List<String> mTips;
     private LinearLayout mPointRealContainerLl;
     private TextView mTipTv;
@@ -53,10 +56,14 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private AutoPlayTask mAutoPlayTask;
     private int mPageScrollPosition;
     private float mPageScrollPositionOffset;
-    private Delegate mDelegate;
     private TransitionEffect mTransitionEffect;
     private ImageView mPlaceholderIv;
     private int mPlaceholderDrawableResId = NO_PLACEHOLDER_DRAWABLE;
+    private List<? extends Object> mModels;
+    private OnItemClickListener mOnItemClickListener;
+    private Adapter mAdapter;
+    private int mOverScrollMode = OVER_SCROLL_ALWAYS;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -205,19 +212,18 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置每一页的控件和文案
+     * 设置每一页的控件、数据模型和文案
      *
-     * @param views 每一页的控件集合
-     * @param tips  每一页的提示文案集合
+     * @param views  每一页的控件集合
+     * @param models 每一页的数据模型集合
+     * @param tips   每一页的提示文案集合
      */
-    public void setViewsAndTips(List<? extends View> views, List<String> tips) {
-        if (mAutoPlayAble && views.size() < 2) {
+    public void setData(List<View> views, List<? extends Object> models, List<String> tips) {
+        if (mAutoPlayAble && views.size() < 3 && mHackyViews == null) {
             mAutoPlayAble = false;
         }
 
-        if (tips != null && tips.size() != views.size()) {
-            throw new IllegalArgumentException("提示文案数必须等于页面数量");
-        }
+        mModels = models;
         mViews = views;
         mTips = tips;
 
@@ -231,24 +237,44 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置每一页的控件
+     * 设置布局资源id、数据模型和文案
      *
-     * @param views 每一页的控件集合
+     * @param layoutResId item布局文件资源id
+     * @param models      每一页的数据模型集合
+     * @param tips        每一页的提示文案集合
      */
-    public void setViews(List<? extends View> views) {
-        setViewsAndTips(views, null);
+    public void setData(@LayoutRes int layoutResId, List<? extends Object> models, List<String> tips) {
+        mViews = new ArrayList<>();
+        for (int i = 0; i < models.size(); i++) {
+            mViews.add(View.inflate(getContext(), layoutResId, null));
+        }
+        if (mAutoPlayAble && mViews.size() < 3) {
+            mHackyViews = new ArrayList<>(mViews);
+            mHackyViews.add(View.inflate(getContext(), layoutResId, null));
+            if (mHackyViews.size() == 2) {
+                mHackyViews.add(View.inflate(getContext(), layoutResId, null));
+            }
+        }
+        setData(mViews, models, tips);
     }
 
     /**
-     * 设置每一页的提示文案
+     * 设置数据模型和文案，布局资源默认为ImageView
      *
-     * @param tips 提示文案集合
+     * @param models 每一页的数据模型集合
+     * @param tips   每一页的提示文案集合
      */
-    public void setTips(List<String> tips) {
-        if (tips != null && mViews != null && tips.size() != mViews.size()) {
-            throw new IllegalArgumentException("提示文案数必须等于页面数量");
-        }
-        mTips = tips;
+    public void setData(List<? extends Object> models, List<String> tips) {
+        setData(R.layout.bga_banner_item_image, models, tips);
+    }
+
+    /**
+     * 设置每一页的控件集合，主要针对引导页的情况
+     *
+     * @param views 每一页的控件集合
+     */
+    public void setData(List<View> views) {
+        setData(views, null, null);
     }
 
     /**
@@ -263,10 +289,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     /**
      * 添加ViewPager滚动监听器
      *
-     * @param listener
+     * @param onPageChangeListener
      */
-    public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        mViewPager.addOnPageChangeListener(listener);
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        mOnPageChangeListener = onPageChangeListener;
     }
 
     /**
@@ -312,8 +338,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     public void setOverScrollMode(int overScrollMode) {
+        mOverScrollMode = overScrollMode;
         if (mViewPager != null) {
-            mViewPager.setOverScrollMode(overScrollMode);
+            mViewPager.setOverScrollMode(mOverScrollMode);
         }
     }
 
@@ -341,6 +368,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(this);
+        mViewPager.setOverScrollMode(mOverScrollMode);
         mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
 
         addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
@@ -450,7 +478,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mTransitionEffect = effect;
         if (mViewPager != null) {
             initViewPager();
-            BGABannerUtil.resetPageTransformer(mViews);
+            if (mHackyViews == null) {
+                BGABannerUtil.resetPageTransformer(mViews);
+            } else {
+                BGABannerUtil.resetPageTransformer(mHackyViews);
+            }
         }
     }
 
@@ -495,7 +527,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void onPageSelected(int position) {
-        switchToPoint(position % mViews.size());
+        position = position % mViews.size();
+        switchToPoint(position);
+
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageSelected(position);
+        }
     }
 
     @Override
@@ -511,14 +548,25 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                 mTipTv.setText(mTips.get(position % mTips.size()));
             }
         }
+
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrolled(position % mViews.size(), positionOffset, positionOffsetPixels);
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        if (mOnPageChangeListener != null) {
+            mOnPageChangeListener.onPageScrollStateChanged(state);
+        }
     }
 
-    public void setDelegate(Delegate delegate) {
-        mDelegate = delegate;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setAdapter(Adapter adapter) {
+        mAdapter = adapter;
     }
 
     private class PageAdapter extends PagerAdapter {
@@ -531,20 +579,29 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             final int finalPosition = position % mViews.size();
-            View view = mViews.get(finalPosition);
 
-            // 在destroyItem方法中销毁的话，当只有3页时会有问题
+            View view = null;
+            if (mHackyViews == null) {
+                view = mViews.get(finalPosition);
+            } else {
+                view = mHackyViews.get(position % mHackyViews.size());
+            }
+
             if (container.equals(view.getParent())) {
                 container.removeView(view);
             }
 
-            if (mDelegate != null) {
+            if (mOnItemClickListener != null) {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mDelegate.onClickBannerItem(finalPosition);
+                        mOnItemClickListener.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
                     }
                 });
+            }
+
+            if (mAdapter != null) {
+                mAdapter.fillBannerItem(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
             }
 
             container.addView(view);
@@ -583,7 +640,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    public interface Delegate {
-        void onClickBannerItem(int position);
+    public interface OnItemClickListener {
+        void onBannerItemClick(BGABanner banner, View view, Object model, int position);
+    }
+
+    public interface Adapter {
+        void fillBannerItem(BGABanner banner, View view, Object model, int position);
     }
 }

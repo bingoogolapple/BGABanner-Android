@@ -6,7 +6,7 @@
 ## 主要功能：
 - [x] 引导界面导航效果
 - [x] 支持根据服务端返回的数据动态设置广告条的总页数
-- [x] 支持大于等于2页时的无限循环自动轮播、手指按下暂停轮播、抬起手指开始轮播
+- [x] 支持大于等于1页时的无限循环自动轮播、手指按下暂停轮播、抬起手指开始轮播
 - [x] 支持自定义指示器位置和广告文案位置
 - [x] 支持 ViewPager 各种切换动画
 - [x] 支持选中特定页面
@@ -15,9 +15,9 @@
 - [ ] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner1.gif?imageView2/2/w/250)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner2.gif?imageView2/2/w/250)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/banner3.gif?imageView2/2/w/250)
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner1.gif?imageView2/2/w/250)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/250)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/250)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
@@ -51,14 +51,39 @@ dependencies {
 
 #### 3.在Activity或者Fragment中配置BGABanner
 
+有多种初始化方式，这里仅列出两种方式。更多初始化方式请查看 [demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo)，或加网页底部给的 QQ 群咨询
+
+>初始化方式1：通过传入数据模型并结合Adapter的方式初始化
+
 ```java
-mContentBanner = (BGABanner) findViewById(R.id.banner_guide_content);
-List<View> topViews = new ArrayList<>();
-topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
-topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
-topViews.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
-mContentBanner.setViews(topViews);
-mContentBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
+mContentBanner.setAdapter(new BGABanner.Adapter() {
+    @Override
+    public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+        ((ImageView)view).setImageResource((int)model);
+    }
+});
+mContentBanner.setData(Arrays.asList(R.drawable.ic_guide_1, R.drawable.ic_guide_2, R.drawable.ic_guide_3), null);
+```
+
+> 初始化方式2：通过直接传入视图集合的方式初始化
+
+```java
+List<View> views = new ArrayList<>();
+views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
+views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
+views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+mContentBanner.setData(views);
+```
+
+#### 4.监听广告 item 的单击事件
+
+```java
+mContentBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
+    @Override
+    public void onBannerItemClick(BGABanner banner, View view, Object model, int position) {
+        Log.i(TAG, "点击了第" + (position + 1) + "页");
+    }
+});
 ```
 
 ## 自定义属性说明

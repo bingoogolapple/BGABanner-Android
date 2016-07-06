@@ -8,11 +8,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.bingoogolapple.bgabanner.BGABanner;
-import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.bingoogolapple.bgabanner.demo.App;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
@@ -22,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements BGABanner.OnItemClickListener, BGABanner.Adapter {
     private BGABanner mDefaultBanner;
     private BGABanner mCubeBanner;
     private BGABanner mAccordionBanner;
@@ -68,28 +64,24 @@ public class MainActivity extends Activity {
     }
 
     private void setListener() {
-        mDefaultBanner.setDelegate(new BGABanner.Delegate() {
-            @Override
-            public void onClickBannerItem(int position) {
-                Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mDefaultBanner.setOnItemClickListener(this);
+        mCubeBanner.setOnItemClickListener(this);
     }
 
     private void loadData() {
-        loadData(mDefaultBanner, 2);
+        loadData(mDefaultBanner, 1);
         loadData(mCubeBanner, 2);
         loadData(mAccordionBanner, 3);
         loadData(mFlipBanner, 4);
         loadData(mRotateBanner, 5);
         loadData(mAlphaBanner, 6);
-        loadData(mZoomFadeBanner, 4);
+        loadData(mZoomFadeBanner, 3);
         loadData(mFadeBanner, 4);
-        loadData(mZoomCenterBanner, 4);
-        loadData(mZoomBanner, 4);
-        loadData(mStackBanner, 4);
+        loadData(mZoomCenterBanner, 5);
+        loadData(mZoomBanner, 6);
+        loadData(mStackBanner, 3);
         loadData(mZoomStackBanner, 4);
-        loadData(mDepthBanner, 4);
+        loadData(mDepthBanner, 5);
     }
 
     private void loadData(final BGABanner banner, int count) {
@@ -97,15 +89,9 @@ public class MainActivity extends Activity {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
-                banner.setViewsAndTips(getViews(bannerModel.imgs.size()), bannerModel.tips);
-//                banner.setViews(getViews(bannerModel.imgs.size()));
-                for (int i = 0; i < banner.getItemCount(); i++) {
-                    Glide.with(MainActivity.this)
-                            .load(bannerModel.imgs.get(i))
-                            .placeholder(R.drawable.holder)
-                            .error(R.drawable.holder)
-                            .into(banner.getItemImageView(i));
-                }
+
+                banner.setAdapter(MainActivity.this);
+                banner.setData(bannerModel.imgs, bannerModel.tips);
             }
 
             @Override
@@ -115,29 +101,35 @@ public class MainActivity extends Activity {
         });
     }
 
-    private List<ImageView> getViews(int count) {
-        List<ImageView> views = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            views.add(BGABannerUtil.getItemImageView(this, R.drawable.holder));
-        }
-        return views;
+    @Override
+    public void onBannerItemClick(BGABanner banner, View view, Object model, int position) {
+        Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+        Glide.with(MainActivity.this)
+                .load(model)
+                .placeholder(R.drawable.holder)
+                .error(R.drawable.holder)
+                .into((ImageView) view);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_main_1:
+            case R.id.tv_main_select_page_one:
                 mDefaultBanner.setCurrentItem(0);
                 break;
-            case R.id.tv_main_2:
+            case R.id.tv_main_select_page_two:
                 mDefaultBanner.setCurrentItem(1);
                 break;
-            case R.id.tv_main_3:
+            case R.id.tv_main_select_page_three:
                 mDefaultBanner.setCurrentItem(2);
                 break;
-            case R.id.tv_main_4:
+            case R.id.tv_main_select_page_four:
                 mDefaultBanner.setCurrentItem(3);
                 break;
-            case R.id.tv_main_5:
+            case R.id.tv_main_select_page_five:
                 mDefaultBanner.setCurrentItem(4);
                 break;
             case R.id.tv_main_get_item_count:
@@ -145,6 +137,12 @@ public class MainActivity extends Activity {
                 break;
             case R.id.tv_main_get_current_item:
                 Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_main_load_one_item:
+                loadData(mDefaultBanner, 1);
+                break;
+            case R.id.tv_main_load_two_item:
+                loadData(mDefaultBanner, 2);
                 break;
             case R.id.tv_main_load_three_item:
                 loadData(mDefaultBanner, 3);
