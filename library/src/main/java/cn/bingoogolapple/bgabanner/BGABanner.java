@@ -64,6 +64,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private Adapter mAdapter;
     private int mOverScrollMode = OVER_SCROLL_ALWAYS;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
+    private boolean mIsNumberIndicator = false;
+    private TextView mNumberIndicatorTv;
+    private int mNumberIndicatorTextColor = Color.WHITE;
+    private int mNumberIndicatorTextSize;
+    private Drawable mNumberIndicatorBackground;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -82,9 +87,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mPointLeftRightMargin = BGABannerUtil.dp2px(context, 3);
         mPointTopBottomMargin = BGABannerUtil.dp2px(context, 6);
         mPointContainerLeftRightPadding = BGABannerUtil.dp2px(context, 10);
-        mTipTextSize = BGABannerUtil.sp2px(context, 8);
+        mTipTextSize = BGABannerUtil.sp2px(context, 10);
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
         mTransitionEffect = TransitionEffect.Default;
+        mNumberIndicatorTextSize = BGABannerUtil.sp2px(context, 10);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -107,7 +113,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mPointContainerLeftRightPadding = typedArray.getDimensionPixelSize(attr, mPointContainerLeftRightPadding);
         } else if (attr == R.styleable.BGABanner_banner_pointTopBottomMargin) {
             mPointTopBottomMargin = typedArray.getDimensionPixelSize(attr, mPointTopBottomMargin);
-        } else if (attr == R.styleable.BGABanner_banner_pointGravity) {
+        } else if (attr == R.styleable.BGABanner_banner_indicatorGravity) {
             mPointGravity = typedArray.getInt(attr, mPointGravity);
         } else if (attr == R.styleable.BGABanner_banner_pointAutoPlayAble) {
             mAutoPlayAble = typedArray.getBoolean(attr, mAutoPlayAble);
@@ -124,6 +130,14 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mTipTextSize = typedArray.getDimensionPixelSize(attr, mTipTextSize);
         } else if (attr == R.styleable.BGABanner_banner_placeholderDrawable) {
             mPlaceholderDrawableResId = typedArray.getResourceId(attr, mPlaceholderDrawableResId);
+        } else if (attr == R.styleable.BGABanner_banner_isNumberIndicator) {
+            mIsNumberIndicator = typedArray.getBoolean(attr, mIsNumberIndicator);
+        } else if (attr == R.styleable.BGABanner_banner_numberIndicatorTextColor) {
+            mNumberIndicatorTextColor = typedArray.getColor(attr, mNumberIndicatorTextColor);
+        } else if (attr == R.styleable.BGABanner_banner_numberIndicatorTextSize) {
+            mNumberIndicatorTextSize = typedArray.getDimensionPixelSize(attr, mNumberIndicatorTextSize);
+        } else if (attr == R.styleable.BGABanner_banner_numberIndicatorBackground) {
+            mNumberIndicatorBackground = typedArray.getDrawable(attr);
         }
     }
 
@@ -134,7 +148,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         } else {
             pointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
         }
-        pointContainerRl.setPadding(mPointContainerLeftRightPadding, 0, mPointContainerLeftRightPadding, 0);
+        pointContainerRl.setPadding(mPointContainerLeftRightPadding, mPointTopBottomMargin, mPointContainerLeftRightPadding, mPointTopBottomMargin);
         RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(RMP, RWC);
         // 处理圆点在顶部还是底部
         if ((mPointGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
@@ -144,13 +158,35 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
         addView(pointContainerRl, pointContainerLp);
 
-        mPointRealContainerLl = new LinearLayout(context);
-        mPointRealContainerLl.setId(R.id.banner_pointContainerId);
-        mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
-        RelativeLayout.LayoutParams pointRealContainerLp = new RelativeLayout.LayoutParams(RWC, RWC);
-        pointContainerRl.addView(mPointRealContainerLl, pointRealContainerLp);
 
-        RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, getResources().getDrawable(mPointDrawableResId).getIntrinsicHeight() + 2 * mPointTopBottomMargin);
+        RelativeLayout.LayoutParams indicatorLp = new RelativeLayout.LayoutParams(RWC, RWC);
+        indicatorLp.addRule(CENTER_VERTICAL);
+        if (mIsNumberIndicator) {
+            mNumberIndicatorTv = new TextView(context);
+            mNumberIndicatorTv.setId(R.id.banner_indicatorId);
+            mNumberIndicatorTv.setGravity(Gravity.CENTER_VERTICAL);
+            mNumberIndicatorTv.setSingleLine(true);
+            mNumberIndicatorTv.setEllipsize(TextUtils.TruncateAt.END);
+            mNumberIndicatorTv.setTextColor(mNumberIndicatorTextColor);
+            mNumberIndicatorTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mNumberIndicatorTextSize);
+            mNumberIndicatorTv.setVisibility(View.INVISIBLE);
+            if (mNumberIndicatorBackground != null) {
+                if (Build.VERSION.SDK_INT >= 16) {
+                    mNumberIndicatorTv.setBackground(mNumberIndicatorBackground);
+                } else {
+                    mNumberIndicatorTv.setBackgroundDrawable(mNumberIndicatorBackground);
+                }
+            }
+            pointContainerRl.addView(mNumberIndicatorTv, indicatorLp);
+        } else {
+            mPointRealContainerLl = new LinearLayout(context);
+            mPointRealContainerLl.setId(R.id.banner_indicatorId);
+            mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
+            pointContainerRl.addView(mPointRealContainerLl, indicatorLp);
+        }
+
+        RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, RWC);
+        tipLp.addRule(CENTER_VERTICAL);
         mTipTv = new TextView(context);
         mTipTv.setGravity(Gravity.CENTER_VERTICAL);
         mTipTv.setSingleLine(true);
@@ -162,15 +198,15 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
         // 处理圆点在左边、右边还是水平居中
         if (horizontalGravity == Gravity.LEFT) {
-            pointRealContainerLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            tipLp.addRule(RelativeLayout.RIGHT_OF, R.id.banner_pointContainerId);
+            indicatorLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            tipLp.addRule(RelativeLayout.RIGHT_OF, R.id.banner_indicatorId);
             mTipTv.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         } else if (horizontalGravity == Gravity.RIGHT) {
-            pointRealContainerLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
+            indicatorLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_indicatorId);
         } else {
-            pointRealContainerLp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_pointContainerId);
+            indicatorLp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_indicatorId);
         }
 
         if (mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
@@ -227,13 +263,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViews = views;
         mTips = tips;
 
-        initPoints();
+        initIndicator();
         initViewPager();
-
-        if (mPlaceholderIv != null && this.equals(mPlaceholderIv.getParent())) {
-            removeView(mPlaceholderIv);
-            mPlaceholderIv = null;
-        }
+        removePlaceholder();
     }
 
     /**
@@ -344,17 +376,22 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    private void initPoints() {
-        mPointRealContainerLl.removeAllViews();
+    private void initIndicator() {
+        if (mPointRealContainerLl != null) {
+            mPointRealContainerLl.removeAllViews();
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
-        lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
-        ImageView imageView;
-        for (int i = 0; i < mViews.size(); i++) {
-            imageView = new ImageView(getContext());
-            imageView.setLayoutParams(lp);
-            imageView.setImageResource(mPointDrawableResId);
-            mPointRealContainerLl.addView(imageView);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
+            lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
+            ImageView imageView;
+            for (int i = 0; i < mViews.size(); i++) {
+                imageView = new ImageView(getContext());
+                imageView.setLayoutParams(lp);
+                imageView.setImageResource(mPointDrawableResId);
+                mPointRealContainerLl.addView(imageView);
+            }
+        }
+        if (mNumberIndicatorTv != null) {
+            mNumberIndicatorTv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -383,6 +420,13 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             startAutoPlay();
         } else {
             switchToPoint(0);
+        }
+    }
+
+    private void removePlaceholder() {
+        if (mPlaceholderIv != null && this.equals(mPlaceholderIv.getParent())) {
+            removeView(mPlaceholderIv);
+            mPlaceholderIv = null;
         }
     }
 
@@ -459,13 +503,19 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     private void switchToPoint(int newCurrentPoint) {
-        for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
-            mPointRealContainerLl.getChildAt(i).setEnabled(false);
+        if (mPointRealContainerLl != null) {
+            for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
+                mPointRealContainerLl.getChildAt(i).setEnabled(false);
+            }
+            mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
         }
-        mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
 
         if (mTipTv != null && mTips != null) {
             mTipTv.setText(mTips.get(newCurrentPoint));
+        }
+
+        if (mNumberIndicatorTv != null && mViews != null) {
+            mNumberIndicatorTv.setText((newCurrentPoint + 1) + "/" + mViews.size());
         }
     }
 

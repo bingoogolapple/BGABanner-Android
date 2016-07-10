@@ -12,8 +12,8 @@
         <attr name="banner_pointTopBottomMargin" format="dimension" />
         <!-- 指示点左右外间距 -->
         <attr name="banner_pointLeftRightMargin" format="dimension" />
-        <!-- 指示点的位置 -->
-        <attr name="banner_pointGravity">
+        <!-- 指示器的位置 -->
+        <attr name="banner_indicatorGravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
             <flag name="left" value="0x03" />
@@ -48,6 +48,14 @@
         <attr name="banner_tipTextSize" format="dimension" />
         <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
         <attr name="banner_placeholderDrawable" format="reference" />
+        <!-- 是否是数字指示器 -->
+        <attr name="banner_isNumberIndicator" format="boolean" />
+        <!-- 数字指示器文字颜色 -->
+        <attr name="banner_numberIndicatorTextColor" format="reference|color" />
+        <!-- 数字指示器文字大小 -->
+        <attr name="banner_numberIndicatorTextSize" format="dimension" />
+        <!-- 数字指示器背景 -->
+        <attr name="banner_numberIndicatorBackground" format="reference" />
     </declare-styleable>
 
 </resources>
