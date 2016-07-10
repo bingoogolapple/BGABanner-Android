@@ -42,8 +42,8 @@
         <item name="banner_pointTopBottomMargin">6dp</item>
         <!-- 指示点左右外间距 -->
         <item name="banner_pointLeftRightMargin">3dp</item>
-        <!-- 指示点的位置 -->
-        <item name="banner_pointGravity">bottom|center_horizontal</item>
+        <!-- 指示器的位置 -->
+        <item name="banner_indicatorGravity">bottom|center_horizontal</item>
         <!-- 页码切换过程的时间长度 -->
         <item name="banner_pageChangeDuration">800</item>
         <!-- 提示文案的文字大小 -->

@@ -98,11 +98,21 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_default"
             style="@style/BannerDefaultStyle"
+            app:banner_indicatorGravity="bottom|right"
+            app:banner_isNumberIndicator="true"
+            app:banner_numberIndicatorBackground="@drawable/shape_number_indicator_background"
+            app:banner_numberIndicatorTextColor="@android:color/white"
+            app:banner_numberIndicatorTextSize="10sp"
+            app:banner_pointContainerBackground="@android:color/transparent"
             app:banner_transitionEffect="defaultEffect" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_cube"
             style="@style/BannerDefaultStyle"
+            app:banner_indicatorGravity="bottom|right"
+            app:banner_isNumberIndicator="true"
+            app:banner_numberIndicatorTextColor="@android:color/white"
+            app:banner_numberIndicatorTextSize="10sp"
             app:banner_transitionEffect="cube" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -114,8 +124,8 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_flip"
             style="@style/BannerDefaultStyle"
+            app:banner_indicatorGravity="bottom|left"
             app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
-            app:banner_pointGravity="bottom|left"
             app:banner_transitionEffect="flip" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -127,7 +137,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_alpha"
             style="@style/BannerDefaultStyle"
-            app:banner_pointGravity="bottom|right"
+            app:banner_indicatorGravity="bottom|right"
             app:banner_transitionEffect="alpha" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -154,13 +164,13 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_stack"
             style="@style/BannerDefaultStyle"
-            app:banner_pointGravity="bottom|right"
+            app:banner_indicatorGravity="bottom|right"
             app:banner_transitionEffect="stack" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoomStack"
             style="@style/BannerDefaultStyle"
-            app:banner_pointGravity="bottom|left"
+            app:banner_indicatorGravity="bottom|left"
             app:banner_transitionEffect="zoomStack" />
 
         <cn.bingoogolapple.bgabanner.BGABanner

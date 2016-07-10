@@ -8,6 +8,7 @@
 - [x] 支持根据服务端返回的数据动态设置广告条的总页数
 - [x] 支持大于等于1页时的无限循环自动轮播、手指按下暂停轮播、抬起手指开始轮播
 - [x] 支持自定义指示器位置和广告文案位置
+- [x] 支持图片指示器和数字指示器
 - [x] 支持 ViewPager 各种切换动画
 - [x] 支持选中特定页面
 - [x] 支持监听 item 点击事件
@@ -15,9 +16,10 @@
 - [ ] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner1.gif?imageView2/2/w/250)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/250)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/250)
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner1.gif?imageView2/2/w/300)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/300)
+![自动轮播2](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fbanner%2F207banner1.gif?imageView2/2/w/300)
+![自动轮播3](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/300)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
@@ -99,8 +101,8 @@ mContentBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
     <attr name="banner_pointTopBottomMargin" format="dimension" />
     <!-- 指示点左右外间距 -->
     <attr name="banner_pointLeftRightMargin" format="dimension" />
-    <!-- 指示点的位置 -->
-    <attr name="banner_pointGravity">
+    <!-- 指示器的位置 -->
+    <attr name="banner_indicatorGravity">
         <flag name="top" value="0x30" />
         <flag name="bottom" value="0x50" />
         <flag name="left" value="0x03" />
@@ -135,6 +137,14 @@ mContentBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
     <attr name="banner_tipTextSize" format="dimension" />
     <!-- 加载网络数据时覆盖在BGABanner最上层的占位图 -->
     <attr name="banner_placeholderDrawable" format="reference" />
+    <!-- 是否是数字指示器 -->
+    <attr name="banner_isNumberIndicator" format="boolean" />
+    <!-- 数字指示器文字颜色 -->
+    <attr name="banner_numberIndicatorTextColor" format="reference|color" />
+    <!-- 数字指示器文字大小 -->
+    <attr name="banner_numberIndicatorTextSize" format="dimension" />
+    <!-- 数字指示器背景 -->
+    <attr name="banner_numberIndicatorBackground" format="reference" />
 </declare-styleable>
 ```
 
