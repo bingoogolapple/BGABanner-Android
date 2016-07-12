@@ -69,6 +69,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private int mNumberIndicatorTextColor = Color.WHITE;
     private int mNumberIndicatorTextSize;
     private Drawable mNumberIndicatorBackground;
+    private boolean mIsNeedShowIndicatorOnOnlyOnePage;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -138,6 +139,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mNumberIndicatorTextSize = typedArray.getDimensionPixelSize(attr, mNumberIndicatorTextSize);
         } else if (attr == R.styleable.BGABanner_banner_numberIndicatorBackground) {
             mNumberIndicatorBackground = typedArray.getDrawable(attr);
+        } else if (attr == R.styleable.BGABanner_banner_isNeedShowIndicatorOnOnlyOnePage) {
+            mIsNeedShowIndicatorOnOnlyOnePage = typedArray.getBoolean(attr, mIsNeedShowIndicatorOnOnlyOnePage);
         }
     }
 
@@ -380,18 +383,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (mPointRealContainerLl != null) {
             mPointRealContainerLl.removeAllViews();
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
-            lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
-            ImageView imageView;
-            for (int i = 0; i < mViews.size(); i++) {
-                imageView = new ImageView(getContext());
-                imageView.setLayoutParams(lp);
-                imageView.setImageResource(mPointDrawableResId);
-                mPointRealContainerLl.addView(imageView);
+            if (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)) {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
+                lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
+                ImageView imageView;
+                for (int i = 0; i < mViews.size(); i++) {
+                    imageView = new ImageView(getContext());
+                    imageView.setLayoutParams(lp);
+                    imageView.setImageResource(mPointDrawableResId);
+                    mPointRealContainerLl.addView(imageView);
+                }
             }
         }
         if (mNumberIndicatorTv != null) {
-            mNumberIndicatorTv.setVisibility(View.VISIBLE);
+            if (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)) {
+                mNumberIndicatorTv.setVisibility(View.VISIBLE);
+            } else {
+                mNumberIndicatorTv.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -444,6 +453,15 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 设置当只有一页数据时是否显示指示器
+     *
+     * @param isNeedShowIndicatorOnOnlyOnePage
+     */
+    public void setIsNeedShowIndicatorOnOnlyOnePage(boolean isNeedShowIndicatorOnOnlyOnePage) {
+        mIsNeedShowIndicatorOnOnlyOnePage = isNeedShowIndicatorOnOnlyOnePage;
     }
 
     public void setCurrentItem(int item) {
@@ -503,7 +521,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     private void switchToPoint(int newCurrentPoint) {
-        if (mPointRealContainerLl != null) {
+        if (mPointRealContainerLl != null && mViews != null && (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1))) {
             for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
                 mPointRealContainerLl.getChildAt(i).setEnabled(false);
             }
@@ -514,7 +532,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mTipTv.setText(mTips.get(newCurrentPoint));
         }
 
-        if (mNumberIndicatorTv != null && mViews != null) {
+        if (mNumberIndicatorTv != null && mViews != null && (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1))) {
             mNumberIndicatorTv.setText((newCurrentPoint + 1) + "/" + mViews.size());
         }
     }

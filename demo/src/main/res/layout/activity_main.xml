@@ -99,6 +99,7 @@
             android:id="@+id/banner_main_default"
             style="@style/BannerDefaultStyle"
             app:banner_indicatorGravity="bottom|right"
+            app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
             app:banner_isNumberIndicator="true"
             app:banner_numberIndicatorBackground="@drawable/shape_number_indicator_background"
             app:banner_numberIndicatorTextColor="@android:color/white"
