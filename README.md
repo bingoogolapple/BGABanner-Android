@@ -145,6 +145,8 @@ mContentBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
     <attr name="banner_numberIndicatorTextSize" format="dimension" />
     <!-- 数字指示器背景 -->
     <attr name="banner_numberIndicatorBackground" format="reference" />
+    <!-- 当只有一页数据时是否显示指示器，默认值为false -->
+    <attr name="banner_isNeedShowIndicatorOnOnlyOnePage" format="boolean" />
 </declare-styleable>
 ```
 
