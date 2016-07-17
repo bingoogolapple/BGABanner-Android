@@ -70,6 +70,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private int mNumberIndicatorTextSize;
     private Drawable mNumberIndicatorBackground;
     private boolean mIsNeedShowIndicatorOnOnlyOnePage;
+    private boolean mAllowUserScrollable = true;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -315,10 +316,13 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     /**
      * 设置是否允许用户手指滑动
      *
-     * @param scrollable true表示允许跟随用户触摸滑动，false反之
+     * @param allowUserScrollable true表示允许跟随用户触摸滑动，false反之
      */
-    public void setAllowUserScrollable(boolean scrollable) {
-        mViewPager.setAllowUserScrollable(scrollable);
+    public void setAllowUserScrollable(boolean allowUserScrollable) {
+        mAllowUserScrollable = allowUserScrollable;
+        if (mViewPager != null) {
+            mViewPager.setAllowUserScrollable(mAllowUserScrollable);
+        }
     }
 
     /**
@@ -415,6 +419,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setAdapter(new PageAdapter());
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setOverScrollMode(mOverScrollMode);
+        mViewPager.setAllowUserScrollable(mAllowUserScrollable);
         mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
 
         addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));

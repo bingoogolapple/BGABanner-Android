@@ -113,9 +113,9 @@ public class BGAViewPager extends ViewPager {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (mAllowUserScrollable) {
-            return super.dispatchTouchEvent(ev);
+            return super.onInterceptTouchEvent(ev);
         } else {
             return false;
         }
