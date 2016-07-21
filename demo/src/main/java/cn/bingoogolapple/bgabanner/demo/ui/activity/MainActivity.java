@@ -1,6 +1,7 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -164,6 +165,9 @@ public class MainActivity extends Activity implements BGABanner.OnItemClickListe
                 break;
             case R.id.tv_main_alpha:
                 mDefaultBanner.setTransitionEffect(TransitionEffect.Alpha);
+                break;
+            case R.id.tv_main_listview_demo:
+                startActivity(new Intent(this, ListViewDemoActivity.class));
                 break;
             default:
                 break;

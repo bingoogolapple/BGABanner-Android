@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap.Vertical"
+    android:background="@drawable/selector_item"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_item_normal_title"
+        style="@style/MatchWrap"
+        android:singleLine="true"
+        android:text="标题"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_item_normal_detail"
+        style="@style/MatchWrap"
+        android:layout_marginTop="8dp"
+        android:singleLine="true"
+        android:text="详细内容"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp" />
+</LinearLayout>

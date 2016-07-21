@@ -6,6 +6,20 @@
 
     <LinearLayout style="@style/MatchWrap.Vertical">
 
+        <TextView
+            android:id="@+id/tv_main_listview_demo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_btn_test"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="查看 ListView HeaderView Demo"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
         <LinearLayout style="@style/MatchWrap.Horizontal">
 
             <TextView
