@@ -8,11 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
@@ -28,7 +26,6 @@ public class GuideActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guide);
 
         initView();
         setListener();
@@ -36,6 +33,7 @@ public class GuideActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
+        setContentView(R.layout.activity_guide);
         mSkipTv = (TextView) findViewById(R.id.tv_guide_skip);
         mEnterBtn = (Button) findViewById(R.id.btn_guide_enter);
         mContentBanner = (BGABanner) findViewById(R.id.banner_guide_content);

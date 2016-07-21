@@ -74,6 +74,7 @@ List<View> views = new ArrayList<>();
 views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
 views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
 views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+// 如果你想实现少于3页的无限轮播，请不要用该方式初始化。用「方式1」初始化
 mContentBanner.setData(views);
 ```
 
