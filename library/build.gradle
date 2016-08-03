@@ -1,18 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
-        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        minSdkVersion 15
+        targetSdkVersion 23
     }
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:24.0.0'
-    provided 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.facebook.fresco:fresco:0.10.0'
 }
 
 // gradle uploadArchives

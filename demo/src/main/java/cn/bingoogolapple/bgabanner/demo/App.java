@@ -2,6 +2,7 @@ package cn.bingoogolapple.bgabanner.demo;
 
 import android.app.Application;
 
+import cn.bingoogolapple.bgabanner.BGAImgControl;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,6 +18,9 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+        //Fresco初始化
+        BGAImgControl.getInstance().init(this);
+
         super.onCreate();
 
         sInstance = this;

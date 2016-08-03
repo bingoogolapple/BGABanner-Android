@@ -2,14 +2,20 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.RoundingParams;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGAImgControl;
 import cn.bingoogolapple.bgabanner.demo.App;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
@@ -86,10 +92,15 @@ public class MainActivity extends Activity implements BGABanner.OnItemClickListe
     }
 
     private void loadData(final BGABanner banner, int count) {
+
         mEngine.fetchItemsWithItemCount(count).enqueue(new Callback<BannerModel>() {
             @Override
             public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
                 BannerModel bannerModel = response.body();
+
+                for (String bannerModel1 : bannerModel.imgs) {
+                    Log.i("bannerModel1", bannerModel1);
+                }
 
                 banner.setAdapter(MainActivity.this);
                 banner.setData(bannerModel.imgs, bannerModel.tips);
@@ -109,11 +120,15 @@ public class MainActivity extends Activity implements BGABanner.OnItemClickListe
 
     @Override
     public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
-        Glide.with(MainActivity.this)
-                .load(model)
-                .placeholder(R.drawable.holder)
-                .error(R.drawable.holder)
-                .into((ImageView) view);
+        GenericDraweeHierarchy hierarchy = new BGAImgControl.Builder(this).setFadeDuration(200)
+                .setRetryImageScaleType(ScalingUtils.ScaleType.FOCUS_CROP)
+                .setFailureImage(ContextCompat.getDrawable(this, R.drawable.holder))
+               // .setDesiredAspectRatio(2)
+                .setRoundingParams(RoundingParams.fromCornersRadius(10))
+                .build();
+
+        ((SimpleDraweeView) view).setHierarchy(hierarchy);
+        ((SimpleDraweeView) view).setImageURI(Uri.parse(String.valueOf(model)));
     }
 
     public void onClick(View v) {
