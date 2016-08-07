@@ -13,10 +13,10 @@
 - [x] 支持选中特定页面
 - [x] 支持监听 item 点击事件
 - [x] 加载网络数据时支持占位图设置，避免出现整个广告条空白的情况
-- [ ] 多个 ViewPager 跟随滚动
+- [x] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner1.gif?imageView2/2/w/300)
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/209banner1.gif?imageView2/2/w/300)
 ![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/300)
 ![自动轮播2](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fbanner%2F207banner1.gif?imageView2/2/w/300)
 ![自动轮播3](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/300)

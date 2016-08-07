@@ -4,22 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchMatch">
 
-    <cn.bingoogolapple.bgabanner.BGABanner
-        android:id="@+id/banner_guide_content"
-        style="@style/MatchMatch"
-        app:banner_pageChangeDuration="1000"
-        app:banner_pointAutoPlayAble="false"
-        app:banner_pointContainerBackground="@android:color/transparent"
-        app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-        app:banner_pointTopBottomMargin="15dp"
-        app:banner_transitionEffect="alpha" />
+    <cn.bingoogolapple.bgabanner.demo.widget.GuideLinkageLayout style="@style/MatchMatch">
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_guide_background"
+            style="@style/MatchMatch"
+            app:banner_pageChangeDuration="1000"
+            app:banner_pointAutoPlayAble="false"
+            app:banner_pointContainerBackground="@android:color/transparent"
+            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointTopBottomMargin="15dp"
+            app:banner_transitionEffect="fade" />
+
+        <cn.bingoogolapple.bgabanner.BGABanner
+            android:id="@+id/banner_guide_foreground"
+            style="@style/MatchMatch"
+            app:banner_pageChangeDuration="1000"
+            app:banner_pointAutoPlayAble="false"
+            app:banner_pointContainerBackground="@android:color/transparent"
+            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointTopBottomMargin="15dp"
+            app:banner_transitionEffect="alpha" />
+    </cn.bingoogolapple.bgabanner.demo.widget.GuideLinkageLayout>
 
     <TextView
         android:id="@+id/tv_guide_skip"
         style="@style/WrapWrap"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:padding="4dp"
         android:text="跳过 >"
