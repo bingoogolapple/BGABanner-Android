@@ -16,10 +16,11 @@
 - [x] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/209banner1.gif?imageView2/2/w/300)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/300)
-![自动轮播2](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fbanner%2F207banner1.gif?imageView2/2/w/300)
-![自动轮播3](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/300)
+![209banner1](https://cloud.githubusercontent.com/assets/8949716/17474422/606791ec-5d88-11e6-9f6e-d535531c554d.gif)
+![206banner2](https://cloud.githubusercontent.com/assets/8949716/17474491/b330bd22-5d88-11e6-81f6-5891af2e7002.gif)
+![207banner1](https://cloud.githubusercontent.com/assets/8949716/17474643/940bfc26-5d89-11e6-8901-e6fd20bdd042.gif)
+![206banner3](https://cloud.githubusercontent.com/assets/8949716/17474646/98ff0980-5d89-11e6-965e-fc5167b6f51f.gif)
+![209banner4](https://cloud.githubusercontent.com/assets/8949716/17474786/6dc37cc8-5d8a-11e6-9d01-6dd9b6be05ca.gif)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
