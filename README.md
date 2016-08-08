@@ -16,10 +16,10 @@
 - [x] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/209banner1.gif?imageView2/2/w/300)
-![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif?imageView2/2/w/300)
-![自动轮播2](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fbanner%2F207banner1.gif?imageView2/2/w/300)
-![自动轮播3](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif?imageView2/2/w/300)
+![引导界面](http://7xk9dj.com1.z0.glb.clouddn.com/banner/209banner1.gif)
+![自动轮播1](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner2.gif)
+![自动轮播2](http://7xk9dj.com1.z0.glb.clouddn.com/%40%2Fbanner%2F207banner1.gif)
+![自动轮播3](http://7xk9dj.com1.z0.glb.clouddn.com/banner/206banner3.gif)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
