@@ -3,8 +3,6 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +45,7 @@ public class GuideActivity extends Activity implements View.OnClickListener {
         mEnterBtn.setOnClickListener(this);
 
         // 监听页码切换事件，控制「跳过按钮」和「进入主界面的显示与隐藏」
+        /*
         mForegroundBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -72,11 +71,16 @@ public class GuideActivity extends Activity implements View.OnClickListener {
                 }
             }
         });
+        */
+
+        // 设置进入按钮和跳过按钮控件，BGABanner 里帮开发者做了上面的注释代码部分中的控制「跳过按钮」和「进入主界面的显示与隐藏」
+        mForegroundBanner.setEnterViewAndSkipView(mEnterBtn, mSkipTv);
     }
 
     private void processLogic() {
         mBackgroundBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mForegroundBanner.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
 
         // 初始化方式1：通过传入数据模型并结合Adapter的方式初始化
         mBackgroundBanner.setAdapter(new BGABanner.Adapter() {

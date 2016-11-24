@@ -16,11 +16,7 @@
 - [x] 多个 ViewPager 跟随滚动
 
 ## 效果图与示例 apk
-![209banner1](https://cloud.githubusercontent.com/assets/8949716/17474422/606791ec-5d88-11e6-9f6e-d535531c554d.gif)
-![206banner2](https://cloud.githubusercontent.com/assets/8949716/17474491/b330bd22-5d88-11e6-81f6-5891af2e7002.gif)
-![207banner1](https://cloud.githubusercontent.com/assets/8949716/17474643/940bfc26-5d89-11e6-8901-e6fd20bdd042.gif)
-![206banner3](https://cloud.githubusercontent.com/assets/8949716/17474646/98ff0980-5d89-11e6-965e-fc5167b6f51f.gif)
-![209banner4](https://cloud.githubusercontent.com/assets/8949716/17474786/6dc37cc8-5d8a-11e6-9d01-6dd9b6be05ca.gif)
+![banner](https://cloud.githubusercontent.com/assets/8949716/17557718/dc235ec4-5f4a-11e6-92b7-144a2a1a1e3f.gif)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
@@ -162,7 +158,7 @@ mContentBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
 
 ## 打赏支持
 
-如果觉得 BGA 系列开源库对您有用，请随意打赏。
+如果觉得 BGA 系列开源库对您有用，请随意打赏。如果猿友有打算购买 [Lantern](https://github.com/getlantern/forum)，可以使用我的邀请码「YFQ9Q3B」购买，双方都赠送三个月的专业版使用时间。
 
 <p align="center">
   <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">

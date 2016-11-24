@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -71,6 +72,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private Drawable mNumberIndicatorBackground;
     private boolean mIsNeedShowIndicatorOnOnlyOnePage;
     private boolean mAllowUserScrollable = true;
+    private View mSkipView;
+    private View mEnterView;
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -335,6 +338,17 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
+     * 设置进入按钮和跳过按钮控件
+     *
+     * @param enterView 进入按钮控件
+     * @param skipView  跳过按钮控件
+     */
+    public void setEnterViewAndSkipView(View enterView, View skipView) {
+        mEnterView = enterView;
+        mSkipView = skipView;
+    }
+
+    /**
      * 获取当前选中界面索引
      *
      * @return
@@ -422,8 +436,57 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setAllowUserScrollable(mAllowUserScrollable);
         mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
 
+
         addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
         setPageChangeDuration(mPageChangeDuration);
+
+        if (mEnterView != null || mSkipView != null) {
+            mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    if (position == getItemCount() - 2) {
+                        if (mEnterView != null) {
+                            ViewCompat.setAlpha(mEnterView, positionOffset);
+                        }
+                        if (mSkipView != null) {
+                            ViewCompat.setAlpha(mSkipView, 1.0f - positionOffset);
+                        }
+
+                        if (positionOffset > 0.5f) {
+                            if (mEnterView != null) {
+                                mEnterView.setVisibility(View.VISIBLE);
+                            }
+                            if (mSkipView != null) {
+                                mSkipView.setVisibility(View.GONE);
+                            }
+                        } else {
+                            if (mEnterView != null) {
+                                mEnterView.setVisibility(View.GONE);
+                            }
+                            if (mSkipView != null) {
+                                mSkipView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } else if (position == getItemCount() - 1) {
+                        if (mSkipView != null) {
+                            mSkipView.setVisibility(View.GONE);
+                        }
+                        if (mEnterView != null) {
+                            mEnterView.setVisibility(View.VISIBLE);
+                            ViewCompat.setAlpha(mEnterView, 1.0f);
+                        }
+                    } else {
+                        if (mSkipView != null) {
+                            mSkipView.setVisibility(View.VISIBLE);
+                            ViewCompat.setAlpha(mSkipView, 1.0f);
+                        }
+                        if (mEnterView != null) {
+                            mEnterView.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            });
+        }
 
         if (mAutoPlayAble) {
             mViewPager.setAutoPlayDelegate(this);
