@@ -1,8 +1,8 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends Activity implements BGABanner.OnItemClickListener, BGABanner.Adapter {
+public class MainActivity extends AppCompatActivity implements BGABanner.OnItemClickListener, BGABanner.Adapter {
     private BGABanner mDefaultBanner;
     private BGABanner mCubeBanner;
     private BGABanner mAccordionBanner;
@@ -41,6 +41,7 @@ public class MainActivity extends Activity implements BGABanner.OnItemClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("BGABannerDemo");
         mEngine = App.getInstance().getEngine();
 
         initView();
@@ -168,6 +169,9 @@ public class MainActivity extends Activity implements BGABanner.OnItemClickListe
                 break;
             case R.id.tv_main_listview_demo:
                 startActivity(new Intent(this, ListViewDemoActivity.class));
+                break;
+            case R.id.tv_main_recyclerview_demo:
+                startActivity(new Intent(this, RecyclerViewDemoActivity.class));
                 break;
             default:
                 break;
