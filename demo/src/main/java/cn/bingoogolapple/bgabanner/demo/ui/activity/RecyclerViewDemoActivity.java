@@ -1,18 +1,18 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAAdapterViewAdapter;
+import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.App;
@@ -29,8 +29,8 @@ import retrofit2.Response;
  * 创建时间:16/7/21 下午8:26
  * 描述:
  */
-public class ListViewDemoActivity extends AppCompatActivity {
-    private ListView mContentLv;
+public class RecyclerViewDemoActivity extends AppCompatActivity {
+    private RecyclerView mContentRv;
     private BGABanner mBanner;
     private ContentAdapter mContentAdapter;
 
@@ -39,13 +39,13 @@ public class ListViewDemoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview_demo);
-        mContentLv = (ListView) findViewById(R.id.lv_content);
+        setContentView(R.layout.activity_recyclerview_demo);
+        mContentRv = (RecyclerView) findViewById(R.id.rv_content);
 
-        setTitle("ListViewDemo");
+        setTitle("RecyclerViewDemo");
         mEngine = App.getInstance().getEngine();
 
-        initListView();
+        initRecyclerView();
 
 
         loadBannerData();
@@ -53,9 +53,11 @@ public class ListViewDemoActivity extends AppCompatActivity {
     }
 
     /**
-     * 初始化ListView
+     * 初始化RecyclerView
      */
-    private void initListView() {
+    private void initRecyclerView() {
+        mContentAdapter = new ContentAdapter(mContentRv);
+
         // 初始化HeaderView
         View headerView = View.inflate(this, R.layout.layout_header, null);
         mBanner = (BGABanner) headerView.findViewById(R.id.banner);
@@ -72,10 +74,10 @@ public class ListViewDemoActivity extends AppCompatActivity {
             }
         });
 
-        // 初始化ListView
-        mContentLv.addHeaderView(headerView);
-        mContentAdapter = new ContentAdapter(this);
-        mContentLv.setAdapter(mContentAdapter);
+        mContentAdapter.addHeaderView(headerView);
+
+        mContentRv.setLayoutManager(new LinearLayoutManager(this));
+        mContentRv.setAdapter(mContentAdapter.getHeaderAndFooterAdapter());
     }
 
     /**
@@ -113,10 +115,10 @@ public class ListViewDemoActivity extends AppCompatActivity {
         });
     }
 
-    private class ContentAdapter extends BGAAdapterViewAdapter<RefreshModel> {
+    private class ContentAdapter extends BGARecyclerViewAdapter<RefreshModel> {
 
-        public ContentAdapter(Context context) {
-            super(context, R.layout.item_normal);
+        public ContentAdapter(RecyclerView recyclerView) {
+            super(recyclerView, R.layout.item_normal);
         }
 
         @Override
