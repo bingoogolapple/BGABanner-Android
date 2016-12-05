@@ -22,8 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nineoldandroids.view.ViewHelper;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -678,9 +676,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (mTipTv != null && mTips != null) {
             if (positionOffset > 0.5) {
                 mTipTv.setText(mTips.get((position + 1) % mTips.size()));
-                ViewHelper.setAlpha(mTipTv, positionOffset);
+                ViewCompat.setAlpha(mTipTv, positionOffset);
             } else {
-                ViewHelper.setAlpha(mTipTv, 1 - positionOffset);
+                ViewCompat.setAlpha(mTipTv, 1 - positionOffset);
                 mTipTv.setText(mTips.get(position % mTips.size()));
             }
         }

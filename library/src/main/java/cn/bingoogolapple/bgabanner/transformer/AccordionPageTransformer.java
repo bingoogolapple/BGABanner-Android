@@ -1,8 +1,7 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
-
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -17,15 +16,15 @@ public class AccordionPageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleLeftPage(View view, float position) {
-        ViewHelper.setPivotX(view, view.getWidth());
-        ViewHelper.setScaleX(view, 1.0f + position);
+        ViewCompat.setPivotX(view, view.getWidth());
+        ViewCompat.setScaleX(view, 1.0f + position);
     }
 
     @Override
     public void handleRightPage(View view, float position) {
-        ViewHelper.setPivotX(view, 0);
-        ViewHelper.setScaleX(view, 1.0f - position);
-        ViewHelper.setAlpha(view, 1);
+        ViewCompat.setPivotX(view, 0);
+        ViewCompat.setScaleX(view, 1.0f - position);
+        ViewCompat.setAlpha(view, 1);
     }
 
 }

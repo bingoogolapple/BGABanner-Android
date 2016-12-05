@@ -1,8 +1,7 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
-
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -21,17 +20,17 @@ public class RotatePageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
-        ViewHelper.setPivotX(view, view.getMeasuredWidth() * 0.5f);
-        ViewHelper.setPivotY(view, view.getMeasuredHeight());
-        ViewHelper.setRotation(view, 0);
+        ViewCompat.setPivotX(view, view.getMeasuredWidth() * 0.5f);
+        ViewCompat.setPivotY(view, view.getMeasuredHeight());
+        ViewCompat.setRotation(view, 0);
     }
 
     @Override
     public void handleLeftPage(View view, float position) {
         float rotation = (mMaxRotation * position);
-        ViewHelper.setPivotX(view, view.getMeasuredWidth() * 0.5f);
-        ViewHelper.setPivotY(view, view.getMeasuredHeight());
-        ViewHelper.setRotation(view, rotation);
+        ViewCompat.setPivotX(view, view.getMeasuredWidth() * 0.5f);
+        ViewCompat.setPivotY(view, view.getMeasuredHeight());
+        ViewCompat.setRotation(view, rotation);
     }
 
     @Override

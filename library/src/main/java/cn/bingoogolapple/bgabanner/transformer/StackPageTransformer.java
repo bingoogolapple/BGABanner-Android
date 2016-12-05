@@ -1,8 +1,7 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
-
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -21,7 +20,7 @@ public class StackPageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleRightPage(View view, float position) {
-        ViewHelper.setTranslationX(view, -view.getWidth() * position);
+        ViewCompat.setTranslationX(view, -view.getWidth() * position);
     }
 
 }

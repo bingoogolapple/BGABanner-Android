@@ -15,11 +15,10 @@ android {
 dependencies {
 //    compile project(':library')
 
-    // -------------------- 以下三个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-banner:2.1.0@aar'
+    // -------------------- 以下两个库是必须依赖的 ----------------------------
+    compile 'cn.bingoogolapple:bga-banner:2.1.1@aar'
     compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.nineoldandroids:library:2.4.0'
-    // -------------------- 以上三个库是必须依赖的 ----------------------------
+    // -------------------- 以上两个库是必须依赖的 ----------------------------
 
     // 以下几个库是演示案例所使用到的
     compile 'com.android.support:appcompat-v7:25.0.1'
