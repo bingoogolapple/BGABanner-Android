@@ -1,8 +1,7 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
-
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -21,17 +20,17 @@ public class AlphaPageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
-        ViewHelper.setAlpha(view, 0);
+        ViewCompat.setAlpha(view, 0);
     }
 
     @Override
     public void handleLeftPage(View view, float position) {
-        ViewHelper.setAlpha(view, mMinScale + (1 - mMinScale) * (1 + position));
+        ViewCompat.setAlpha(view, mMinScale + (1 - mMinScale) * (1 + position));
     }
 
     @Override
     public void handleRightPage(View view, float position) {
-        ViewHelper.setAlpha(view, mMinScale + (1 - mMinScale) * (1 - position));
+        ViewCompat.setAlpha(view, mMinScale + (1 - mMinScale) * (1 - position));
     }
 
     public void setMinScale(float minScale) {

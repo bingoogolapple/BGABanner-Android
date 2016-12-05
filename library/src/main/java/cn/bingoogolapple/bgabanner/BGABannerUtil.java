@@ -2,11 +2,10 @@ package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
+import android.support.v4.view.ViewCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.nineoldandroids.view.ViewHelper;
 
 import java.util.List;
 
@@ -43,16 +42,16 @@ public class BGABannerUtil {
     public static void resetPageTransformer(List<? extends View> views) {
         for (View view : views) {
             view.setVisibility(View.VISIBLE);
-            ViewHelper.setAlpha(view, 1);
-            ViewHelper.setPivotX(view, view.getMeasuredWidth() * 0.5f);
-            ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);
-            ViewHelper.setTranslationX(view, 0);
-            ViewHelper.setTranslationY(view, 0);
-            ViewHelper.setScaleX(view, 1);
-            ViewHelper.setScaleY(view, 1);
-            ViewHelper.setRotationX(view, 0);
-            ViewHelper.setRotationY(view, 0);
-            ViewHelper.setRotation(view, 0);
+            ViewCompat.setAlpha(view, 1);
+            ViewCompat.setPivotX(view, view.getMeasuredWidth() * 0.5f);
+            ViewCompat.setPivotY(view, view.getMeasuredHeight() * 0.5f);
+            ViewCompat.setTranslationX(view, 0);
+            ViewCompat.setTranslationY(view, 0);
+            ViewCompat.setScaleX(view, 1);
+            ViewCompat.setScaleY(view, 1);
+            ViewCompat.setRotationX(view, 0);
+            ViewCompat.setRotationY(view, 0);
+            ViewCompat.setRotation(view, 0);
         }
     }
 

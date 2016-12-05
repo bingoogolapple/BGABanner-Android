@@ -1,8 +1,7 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
-
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -21,23 +20,23 @@ public class CubePageTransformer extends BGAPageTransformer {
 
     @Override
     public void handleInvisiblePage(View view, float position) {
-        ViewHelper.setPivotX(view, view.getMeasuredWidth());
-        ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);
-        ViewHelper.setRotationY(view, 0);
+        ViewCompat.setPivotX(view, view.getMeasuredWidth());
+        ViewCompat.setPivotY(view, view.getMeasuredHeight() * 0.5f);
+        ViewCompat.setRotationY(view, 0);
     }
 
     @Override
     public void handleLeftPage(View view, float position) {
-        ViewHelper.setPivotX(view, view.getMeasuredWidth());
-        ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);
-        ViewHelper.setRotationY(view, mMaxRotation * position);
+        ViewCompat.setPivotX(view, view.getMeasuredWidth());
+        ViewCompat.setPivotY(view, view.getMeasuredHeight() * 0.5f);
+        ViewCompat.setRotationY(view, mMaxRotation * position);
     }
 
     @Override
     public void handleRightPage(View view, float position) {
-        ViewHelper.setPivotX(view, 0);
-        ViewHelper.setPivotY(view, view.getMeasuredHeight() * 0.5f);
-        ViewHelper.setRotationY(view, mMaxRotation * position);
+        ViewCompat.setPivotX(view, 0);
+        ViewCompat.setPivotY(view, view.getMeasuredHeight() * 0.5f);
+        ViewCompat.setRotationY(view, mMaxRotation * position);
     }
 
     public void setMaxRotation(float maxRotation) {
