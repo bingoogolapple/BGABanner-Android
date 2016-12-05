@@ -28,7 +28,6 @@
 
 ```groovy
 dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-v4:latestVersion'
     compile 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
