@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements BGABanner.OnItemClickListener, BGABanner.Adapter {
+public class MainActivity extends AppCompatActivity implements BGABanner.Delegate<ImageView, String>, BGABanner.Adapter<ImageView, String> {
     private BGABanner mDefaultBanner;
     private BGABanner mCubeBanner;
     private BGABanner mAccordionBanner;
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements BGABanner.OnItemC
     }
 
     private void setListener() {
-        mDefaultBanner.setOnItemClickListener(this);
-        mCubeBanner.setOnItemClickListener(this);
+        mDefaultBanner.setDelegate(this);
+        mCubeBanner.setDelegate(this);
     }
 
     private void loadData() {
@@ -104,21 +104,32 @@ public class MainActivity extends AppCompatActivity implements BGABanner.OnItemC
     }
 
     @Override
-    public void onBannerItemClick(BGABanner banner, View view, Object model, int position) {
-        Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
+    public void onBannerItemClick(BGABanner banner, ImageView itemView, String model, int position) {
+        Toast.makeText(banner.getContext(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+    public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
         Glide.with(MainActivity.this)
                 .load(model)
                 .placeholder(R.drawable.holder)
                 .error(R.drawable.holder)
-                .into((ImageView) view);
+                .centerCrop()
+                .dontAnimate()
+                .into(itemView);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_main_visible:
+                mDefaultBanner.setVisibility(View.VISIBLE);
+                break;
+            case R.id.tv_main_invisible:
+                mDefaultBanner.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.tv_main_gone:
+                mDefaultBanner.setVisibility(View.GONE);
+                break;
             case R.id.tv_main_select_page_one:
                 mDefaultBanner.setCurrentItem(0);
                 break;

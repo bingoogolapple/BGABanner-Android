@@ -1,11 +1,13 @@
 package cn.bingoogolapple.bgabanner;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
@@ -17,6 +19,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -59,9 +62,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private ImageView mPlaceholderIv;
     private int mPlaceholderDrawableResId = NO_PLACEHOLDER_DRAWABLE;
     private List<? extends Object> mModels;
-    private OnItemClickListener mOnItemClickListener;
+    private Delegate mDelegate;
     private Adapter mAdapter;
-    private int mOverScrollMode = OVER_SCROLL_ALWAYS;
+    private int mOverScrollMode = OVER_SCROLL_NEVER;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private boolean mIsNumberIndicator = false;
     private TextView mNumberIndicatorTv;
@@ -72,6 +75,17 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private boolean mAllowUserScrollable = true;
     private View mSkipView;
     private View mEnterView;
+    private GuideDelegate mGuideDelegate;
+    private int mContentBottomMargin;
+
+    private BGAOnNoDoubleClickListener mGuideOnNoDoubleClickListener = new BGAOnNoDoubleClickListener() {
+        @Override
+        public void onNoDoubleClick(View v) {
+            if (mGuideDelegate != null) {
+                mGuideDelegate.onClickEnterOrSkip();
+            }
+        }
+    };
 
     public BGABanner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -94,6 +108,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mPointContainerBackgroundDrawable = new ColorDrawable(Color.parseColor("#44aaaaaa"));
         mTransitionEffect = TransitionEffect.Default;
         mNumberIndicatorTextSize = BGABannerUtil.sp2px(context, 10);
+
+        mContentBottomMargin = 0;
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -143,6 +159,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mNumberIndicatorBackground = typedArray.getDrawable(attr);
         } else if (attr == R.styleable.BGABanner_banner_isNeedShowIndicatorOnOnlyOnePage) {
             mIsNeedShowIndicatorOnOnlyOnePage = typedArray.getBoolean(attr, mIsNeedShowIndicatorOnOnlyOnePage);
+        } else if (attr == R.styleable.BGABanner_banner_contentBottomMargin) {
+            mContentBottomMargin = typedArray.getDimensionPixelSize(attr, mContentBottomMargin);
         }
     }
 
@@ -214,9 +232,15 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             tipLp.addRule(RelativeLayout.LEFT_OF, R.id.banner_indicatorId);
         }
 
-        if (mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
-            mPlaceholderIv = BGABannerUtil.getItemImageView(context, mPlaceholderDrawableResId);
-            addView(mPlaceholderIv);
+        showPlaceholder();
+    }
+
+    public void showPlaceholder() {
+        if (mPlaceholderIv == null && mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
+            mPlaceholderIv = BGABannerUtil.getItemImageView(getContext(), mPlaceholderDrawableResId);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RMP, RMP);
+            layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
+            addView(mPlaceholderIv, layoutParams);
         }
     }
 
@@ -241,6 +265,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      */
     public void setAutoPlayAble(boolean autoPlayAble) {
         mAutoPlayAble = autoPlayAble;
+        if (mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     /**
@@ -260,6 +287,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param tips   每一页的提示文案集合
      */
     public void setData(List<View> views, List<? extends Object> models, List<String> tips) {
+        if (views == null || views.size() < 1) {
+            mAutoPlayAble = false;
+            views = new ArrayList<>();
+            models = new ArrayList<>();
+            tips = new ArrayList<>();
+        }
         if (mAutoPlayAble && views.size() < 3 && mHackyViews == null) {
             mAutoPlayAble = false;
         }
@@ -282,6 +315,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      */
     public void setData(@LayoutRes int layoutResId, List<? extends Object> models, List<String> tips) {
         mViews = new ArrayList<>();
+        if (models == null) {
+            models = new ArrayList<>();
+            tips = new ArrayList<>();
+        }
         for (int i = 0; i < models.size(); i++) {
             mViews.add(View.inflate(getContext(), layoutResId, null));
         }
@@ -296,7 +333,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置数据模型和文案，布局资源默认为ImageView
+     * 设置数据模型和文案，布局资源默认为 ImageView
      *
      * @param models 每一页的数据模型集合
      * @param tips   每一页的提示文案集合
@@ -312,6 +349,19 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      */
     public void setData(List<View> views) {
         setData(views, null, null);
+    }
+
+    /**
+     * 设置每一页图片的资源 id，主要针对引导页的情况
+     *
+     * @param resIds
+     */
+    public void setData(@DrawableRes int... resIds) {
+        List<View> views = new ArrayList<>();
+        for (int resId : resIds) {
+            views.add(BGABannerUtil.getItemImageView(getContext(), resId));
+        }
+        setData(views);
     }
 
     /**
@@ -336,14 +386,42 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置进入按钮和跳过按钮控件
+     * 设置进入按钮和跳过按钮控件资源 id，需要开发者自己处理这两个按钮的点击事件
      *
-     * @param enterView 进入按钮控件
-     * @param skipView  跳过按钮控件
+     * @param enterResId 进入按钮控件
+     * @param skipResId  跳过按钮控件
      */
-    public void setEnterViewAndSkipView(View enterView, View skipView) {
-        mEnterView = enterView;
-        mSkipView = skipView;
+    public void setEnterSkipViewId(int enterResId, int skipResId) {
+        if (enterResId != 0) {
+            mEnterView = ((Activity) getContext()).findViewById(enterResId);
+        }
+        if (skipResId != 0) {
+            mSkipView = ((Activity) getContext()).findViewById(skipResId);
+        }
+    }
+
+    /**
+     * 设置进入按钮和跳过按钮控件资源 id 及其点击事件监听器
+     * 如果进入按钮和跳过按钮有一个不存在的话就传 0
+     * 在 BGABanner 里已经帮开发者处理了重复点击事件
+     * 在 BGABanner 里已经帮开发者处理了「跳过按钮」和「进入按钮」的显示与隐藏
+     *
+     * @param enterResId    进入按钮控件资源 id，没有的话就传 0
+     * @param skipResId     跳过按钮控件资源 id，没有的话就传 0
+     * @param guideDelegate 引导页「进入」和「跳过」按钮点击事件监听器
+     */
+    public void setEnterSkipViewIdAndDelegate(int enterResId, int skipResId, GuideDelegate guideDelegate) {
+        if (guideDelegate != null) {
+            mGuideDelegate = guideDelegate;
+            if (enterResId != 0) {
+                mEnterView = ((Activity) getContext()).findViewById(enterResId);
+                mEnterView.setOnClickListener(mGuideOnNoDoubleClickListener);
+            }
+            if (skipResId != 0) {
+                mSkipView = ((Activity) getContext()).findViewById(skipResId);
+                mSkipView.setOnClickListener(mGuideOnNoDoubleClickListener);
+            }
+        }
     }
 
     /**
@@ -434,8 +512,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setAllowUserScrollable(mAllowUserScrollable);
         mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
 
-
-        addView(mViewPager, 0, new RelativeLayout.LayoutParams(RMP, RMP));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RMP, RMP);
+        layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
+        addView(mViewPager, 0, layoutParams);
         setPageChangeDuration(mPageChangeDuration);
 
         if (mEnterView != null || mSkipView != null) {
@@ -498,7 +577,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    private void removePlaceholder() {
+    public void removePlaceholder() {
         if (mPlaceholderIv != null && this.equals(mPlaceholderIv.getParent())) {
             removeView(mPlaceholderIv);
             mPlaceholderIv = null;
@@ -562,7 +641,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         super.onVisibilityChanged(changedView, visibility);
         if (visibility == VISIBLE) {
             startAutoPlay();
-        } else if (visibility == INVISIBLE) {
+        } else if (visibility == INVISIBLE || visibility == GONE) {
             stopAutoPlay();
         }
     }
@@ -587,19 +666,34 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     private void switchToPoint(int newCurrentPoint) {
-        if (mPointRealContainerLl != null && mViews != null && (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1))) {
-            for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
-                mPointRealContainerLl.getChildAt(i).setEnabled(false);
+        if (mTipTv != null) {
+            if (mTips == null || mTips.size() < 1 || newCurrentPoint >= mTips.size()) {
+                mTipTv.setVisibility(View.GONE);
+            } else {
+                mTipTv.setVisibility(View.VISIBLE);
+                mTipTv.setText(mTips.get(newCurrentPoint));
             }
-            mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
         }
 
-        if (mTipTv != null && mTips != null) {
-            mTipTv.setText(mTips.get(newCurrentPoint));
+        if (mPointRealContainerLl != null) {
+            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
+                mPointRealContainerLl.setVisibility(View.VISIBLE);
+                for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
+                    mPointRealContainerLl.getChildAt(i).setEnabled(false);
+                }
+                mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
+            } else {
+                mPointRealContainerLl.setVisibility(View.GONE);
+            }
         }
 
-        if (mNumberIndicatorTv != null && mViews != null && (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1))) {
-            mNumberIndicatorTv.setText((newCurrentPoint + 1) + "/" + mViews.size());
+        if (mNumberIndicatorTv != null) {
+            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
+                mNumberIndicatorTv.setVisibility(View.VISIBLE);
+                mNumberIndicatorTv.setText((newCurrentPoint + 1) + "/" + mViews.size());
+            } else {
+                mNumberIndicatorTv.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -673,13 +767,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         mPageScrollPosition = position;
         mPageScrollPositionOffset = positionOffset;
-        if (mTipTv != null && mTips != null) {
-            if (positionOffset > 0.5) {
-                mTipTv.setText(mTips.get((position + 1) % mTips.size()));
-                ViewCompat.setAlpha(mTipTv, positionOffset);
+
+        if (mTipTv != null) {
+            if (mTips != null && mTips.size() > 0) {
+                mTipTv.setVisibility(View.VISIBLE);
+
+                int leftPosition = position % mTips.size();
+                int rightPosition = (position + 1) % mTips.size();
+                if (rightPosition < mTips.size() && leftPosition < mTips.size()) {
+                    if (positionOffset > 0.5) {
+                        mTipTv.setText(mTips.get(rightPosition));
+                        ViewCompat.setAlpha(mTipTv, positionOffset);
+                    } else {
+                        ViewCompat.setAlpha(mTipTv, 1 - positionOffset);
+                        mTipTv.setText(mTips.get(leftPosition));
+                    }
+                }
             } else {
-                ViewCompat.setAlpha(mTipTv, 1 - positionOffset);
-                mTipTv.setText(mTips.get(position % mTips.size()));
+                mTipTv.setVisibility(View.GONE);
             }
         }
 
@@ -695,8 +800,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
+    public void setDelegate(Delegate delegate) {
+        mDelegate = delegate;
     }
 
     public void setAdapter(Adapter adapter) {
@@ -714,28 +819,30 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         public Object instantiateItem(ViewGroup container, int position) {
             final int finalPosition = position % mViews.size();
 
-            View view = null;
+            View view;
             if (mHackyViews == null) {
                 view = mViews.get(finalPosition);
             } else {
                 view = mHackyViews.get(position % mHackyViews.size());
             }
 
-            if (container.equals(view.getParent())) {
-                container.removeView(view);
-            }
-
-            if (mOnItemClickListener != null) {
-                view.setOnClickListener(new OnClickListener() {
+            if (mDelegate != null) {
+                view.setOnClickListener(new BGAOnNoDoubleClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        mOnItemClickListener.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
+                    public void onNoDoubleClick(View view) {
+                        int currentPosition = mViewPager.getCurrentItem() % mViews.size();
+                        mDelegate.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(currentPosition), currentPosition);
                     }
                 });
             }
 
             if (mAdapter != null) {
                 mAdapter.fillBannerItem(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
+            }
+
+            ViewParent viewParent = view.getParent();
+            if (viewParent != null) {
+                ((ViewGroup) viewParent).removeView(view);
             }
 
             container.addView(view);
@@ -774,11 +881,30 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
-    public interface OnItemClickListener {
-        void onBannerItemClick(BGABanner banner, View view, Object model, int position);
+    /**
+     * item 点击事件监听器
+     *
+     * @param <V> item 视图类型，如果没有在 setData 方法里指定自定义的 item 布局资源文件的话，这里的 V 就是 ImageView
+     * @param <M> item 数据模型
+     */
+    public interface Delegate<V extends View, M> {
+        void onBannerItemClick(BGABanner banner, V itemView, M model, int position);
     }
 
-    public interface Adapter {
-        void fillBannerItem(BGABanner banner, View view, Object model, int position);
+    /**
+     * 适配器
+     *
+     * @param <V> item 视图类型，如果没有在 setData 方法里指定自定义的 item 布局资源文件的话，这里的 V 就是 ImageView
+     * @param <M> item 数据模型
+     */
+    public interface Adapter<V extends View, M> {
+        void fillBannerItem(BGABanner banner, V itemView, M model, int position);
+    }
+
+    /**
+     * 引导页「进入」和「跳过」按钮点击事件监听器，在 BGABanner 里已经帮开发者处理了重复点击事件
+     */
+    public interface GuideDelegate {
+        void onClickEnterOrSkip();
     }
 }

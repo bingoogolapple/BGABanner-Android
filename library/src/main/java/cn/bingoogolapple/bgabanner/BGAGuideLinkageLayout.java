@@ -1,4 +1,4 @@
-package cn.bingoogolapple.bgabanner.demo.widget;
+package cn.bingoogolapple.bgabanner;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,16 +11,16 @@ import android.widget.FrameLayout;
  * 创建时间:16/8/7 上午11:39
  * 描述:引导界面联动布局，将每一个触摸事件分发给所有的子控件。
  */
-public class GuideLinkageLayout extends FrameLayout {
-    public GuideLinkageLayout(Context context) {
+public class BGAGuideLinkageLayout extends FrameLayout {
+    public BGAGuideLinkageLayout(Context context) {
         super(context);
     }
 
-    public GuideLinkageLayout(Context context, AttributeSet attrs) {
+    public BGAGuideLinkageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GuideLinkageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BGAGuideLinkageLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
