@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MatchMatch">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/MatchMatch">
 
-    <cn.bingoogolapple.bgabanner.demo.widget.GuideLinkageLayout style="@style/MatchMatch">
+    <cn.bingoogolapple.bgabanner.BGAGuideLinkageLayout style="@style/MatchMatch">
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_guide_background"
@@ -14,7 +14,7 @@
             app:banner_pointContainerBackground="@android:color/transparent"
             app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
             app:banner_pointTopBottomMargin="15dp"
-            app:banner_transitionEffect="fade" />
+            app:banner_transitionEffect="fade"/>
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_guide_foreground"
@@ -24,8 +24,8 @@
             app:banner_pointContainerBackground="@android:color/transparent"
             app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
             app:banner_pointTopBottomMargin="15dp"
-            app:banner_transitionEffect="alpha" />
-    </cn.bingoogolapple.bgabanner.demo.widget.GuideLinkageLayout>
+            app:banner_transitionEffect="alpha"/>
+    </cn.bingoogolapple.bgabanner.BGAGuideLinkageLayout>
 
     <TextView
         android:id="@+id/tv_guide_skip"
@@ -37,7 +37,7 @@
         android:padding="4dp"
         android:text="跳过 >"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/btn_guide_enter"
@@ -51,5 +51,5 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
 </RelativeLayout>

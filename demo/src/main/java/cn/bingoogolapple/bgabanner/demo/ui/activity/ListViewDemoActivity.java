@@ -65,7 +65,7 @@ public class ListViewDemoActivity extends AppCompatActivity {
                 Glide.with(banner.getContext()).load(model).placeholder(R.drawable.holder).error(R.drawable.holder).dontAnimate().thumbnail(0.1f).into((ImageView) view);
             }
         });
-        mBanner.setOnItemClickListener(new BGABanner.OnItemClickListener() {
+        mBanner.setDelegate(new BGABanner.Delegate() {
             @Override
             public void onBannerItemClick(BGABanner banner, View view, Object model, int position) {
                 Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
