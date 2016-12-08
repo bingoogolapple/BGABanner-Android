@@ -92,12 +92,12 @@ public class BGAViewPager extends ViewPager {
      *
      * @param position
      */
-    public void setBannerCurrentItemInternal(int position) {
+    public void setBannerCurrentItemInternal(int position, boolean smoothScroll) {
         Class viewpagerClass = ViewPager.class;
         try {
             Method setCurrentItemInternalMethod = viewpagerClass.getDeclaredMethod("setCurrentItemInternal", int.class, boolean.class, boolean.class);
             setCurrentItemInternalMethod.setAccessible(true);
-            setCurrentItemInternalMethod.invoke(this, position, true, true);
+            setCurrentItemInternalMethod.invoke(this, position, smoothScroll, true);
             ViewCompat.postInvalidateOnAnimation(this);
         } catch (Exception e) {
         }

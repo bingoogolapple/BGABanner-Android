@@ -77,6 +77,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private View mEnterView;
     private GuideDelegate mGuideDelegate;
     private int mContentBottomMargin;
+    private boolean mIsFirstInvisible = true;
 
     private BGAOnNoDoubleClickListener mGuideOnNoDoubleClickListener = new BGAOnNoDoubleClickListener() {
         @Override
@@ -511,11 +512,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mViewPager.setOverScrollMode(mOverScrollMode);
         mViewPager.setAllowUserScrollable(mAllowUserScrollable);
         mViewPager.setPageTransformer(true, BGAPageTransformer.getPageTransformer(mTransitionEffect));
+        setPageChangeDuration(mPageChangeDuration);
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RMP, RMP);
         layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
         addView(mViewPager, 0, layoutParams);
-        setPageChangeDuration(mPageChangeDuration);
 
         if (mEnterView != null || mSkipView != null) {
             mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -642,14 +643,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (visibility == VISIBLE) {
             startAutoPlay();
         } else if (visibility == INVISIBLE || visibility == GONE) {
-            stopAutoPlay();
+            onInvisibleToUser();
         }
+    }
+
+    private void onInvisibleToUser() {
+        stopAutoPlay();
+
+        // 处理 RecyclerView 中从对用户不可见变为可见时卡顿的问题
+        if (!mIsFirstInvisible && mAutoPlayAble && mViewPager != null && getItemCount() > 0) {
+            switchToNextPage();
+        }
+        mIsFirstInvisible = false;
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        stopAutoPlay();
+        onInvisibleToUser();
     }
 
     public void startAutoPlay() {
@@ -736,19 +747,21 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void handleAutoPlayActionUpOrCancel(float xVelocity) {
-        if (mViewPager != null && mPageScrollPosition < mViewPager.getCurrentItem()) {
-            // 往右滑
-            if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
-                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+        if (mViewPager != null) {
+            if (mPageScrollPosition < mViewPager.getCurrentItem()) {
+                // 往右滑
+                if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
+                } else {
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1, true);
+                }
             } else {
-                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
-            }
-        } else {
-            // 往左滑
-            if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
-                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1);
-            } else {
-                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition);
+                // 往左滑
+                if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1, true);
+                } else {
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
+                }
             }
         }
     }
@@ -882,7 +895,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * item 点击事件监听器
+     * item 点击事件监听器，在 BGABanner 里已经帮开发者处理了防止重复点击事件
      *
      * @param <V> item 视图类型，如果没有在 setData 方法里指定自定义的 item 布局资源文件的话，这里的 V 就是 ImageView
      * @param <M> item 数据模型
@@ -892,7 +905,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 适配器
+     * 适配器，在 fillBannerItem 方法中填充数据，加载网络图片等
      *
      * @param <V> item 视图类型，如果没有在 setData 方法里指定自定义的 item 布局资源文件的话，这里的 V 就是 ImageView
      * @param <M> item 数据模型
@@ -902,7 +915,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 引导页「进入」和「跳过」按钮点击事件监听器，在 BGABanner 里已经帮开发者处理了重复点击事件
+     * 引导页「进入」和「跳过」按钮点击事件监听器，在 BGABanner 里已经帮开发者处理了防止重复点击事件
      */
     public interface GuideDelegate {
         void onClickEnterOrSkip();
