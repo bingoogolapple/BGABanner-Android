@@ -663,6 +663,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         onInvisibleToUser();
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        startAutoPlay();
+    }
+
     public void startAutoPlay() {
         stopAutoPlay();
         if (mAutoPlayAble) {

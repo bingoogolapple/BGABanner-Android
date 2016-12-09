@@ -110,12 +110,12 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
 
     @Override
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-        Glide.with(MainActivity.this)
+        Glide.with(itemView.getContext())
                 .load(model)
                 .placeholder(R.drawable.holder)
                 .error(R.drawable.holder)
-                .centerCrop()
                 .dontAnimate()
+                .centerCrop()
                 .into(itemView);
     }
 

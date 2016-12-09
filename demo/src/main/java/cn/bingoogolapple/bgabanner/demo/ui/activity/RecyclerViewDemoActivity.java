@@ -56,24 +56,30 @@ public class RecyclerViewDemoActivity extends AppCompatActivity {
      * 初始化RecyclerView
      */
     private void initRecyclerView() {
-        mContentAdapter = new ContentAdapter(mContentRv);
 
         // 初始化HeaderView
         View headerView = View.inflate(this, R.layout.layout_header, null);
         mBanner = (BGABanner) headerView.findViewById(R.id.banner);
-        mBanner.setAdapter(new BGABanner.Adapter() {
+        mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
-            public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
-                Glide.with(banner.getContext()).load(model).placeholder(R.drawable.holder).error(R.drawable.holder).dontAnimate().thumbnail(0.1f).into((ImageView) view);
+            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+                Glide.with(itemView.getContext())
+                        .load(model)
+                        .placeholder(R.drawable.holder)
+                        .error(R.drawable.holder)
+                        .dontAnimate()
+                        .centerCrop()
+                        .into(itemView);
             }
         });
-        mBanner.setDelegate(new BGABanner.Delegate() {
+        mBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
             @Override
-            public void onBannerItemClick(BGABanner banner, View view, Object model, int position) {
-                Toast.makeText(App.getInstance(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
+            public void onBannerItemClick(BGABanner banner, ImageView imageView, String model, int position) {
+                Toast.makeText(banner.getContext(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
             }
         });
 
+        mContentAdapter = new ContentAdapter(mContentRv);
         mContentAdapter.addHeaderView(headerView);
 
         mContentRv.setLayoutManager(new LinearLayoutManager(this));

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:banner_indicatorGravity="bottom|right"
-        app:banner_pageChangeDuration="2000"
+        app:banner_pageChangeDuration="1500"
         app:banner_placeholderDrawable="@drawable/holder"
         app:banner_tipTextSize="12sp"
         app:banner_transitionEffect="accordion"/>
