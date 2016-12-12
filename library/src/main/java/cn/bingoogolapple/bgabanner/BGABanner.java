@@ -260,13 +260,19 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
-     * 设置是否开启自动轮播
+     * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
+     * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
+     * mDefaultBanner.setAutoPlayAble(bannerModel.imgs.size() > 1);
+     * mDefaultBanner.setData(bannerModel.imgs, bannerModel.tips);
      *
      * @param autoPlayAble
      */
     public void setAutoPlayAble(boolean autoPlayAble) {
         mAutoPlayAble = autoPlayAble;
-        if (mViewPager.getAdapter() != null) {
+
+        stopAutoPlay();
+
+        if (mViewPager != null && mViewPager.getAdapter() != null) {
             mViewPager.getAdapter().notifyDataSetChanged();
         }
     }
@@ -677,7 +683,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     public void stopAutoPlay() {
-        if (mAutoPlayAble) {
+        if (mAutoPlayTask != null) {
             removeCallbacks(mAutoPlayTask);
         }
     }

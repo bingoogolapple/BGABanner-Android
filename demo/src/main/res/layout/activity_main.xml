@@ -34,6 +34,20 @@
             android:textColor="@android:color/white"
             android:textSize="14dp"/>
 
+        <TextView
+            android:id="@+id/tv_main_fresco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_btn_test"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="Fresco Demo"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"/>
+
         <LinearLayout style="@style/MatchWrap.Horizontal">
 
             <TextView
@@ -50,6 +64,29 @@
                 android:id="@+id/tv_main_gone"
                 style="@style/AutoWrapTv"
                 android:text="gone"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/MatchWrap.Horizontal">
+
+            <TextView
+                android:id="@+id/tv_main_enable_auto_play"
+                style="@style/AutoWrapTv"
+                android:text="EnableAutoPlay"/>
+
+            <TextView
+                android:id="@+id/tv_main_disable_auto_play"
+                style="@style/AutoWrapTv"
+                android:text="DisableAutoPlay"/>
+
+            <TextView
+                android:id="@+id/tv_main_start_auto_play"
+                style="@style/AutoWrapTv"
+                android:text="StartAutoPlay"/>
+
+            <TextView
+                android:id="@+id/tv_main_stop_auto_play"
+                style="@style/AutoWrapTv"
+                android:text="StopAutoPlay"/>
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -150,6 +187,7 @@
             app:banner_numberIndicatorBackground="@drawable/shape_number_indicator_background"
             app:banner_numberIndicatorTextColor="@android:color/white"
             app:banner_numberIndicatorTextSize="10sp"
+            app:banner_pointAutoPlayAble="true"
             app:banner_pointContainerBackground="@android:color/transparent"
             app:banner_transitionEffect="defaultEffect"/>
 

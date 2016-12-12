@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/MatchMatch.Vertical">
+
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_fresco_demo_content"
+        style="@style/BannerDefaultStyle"
+        app:banner_indicatorGravity="bottom|right"
+        app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
+        app:banner_isNumberIndicator="true"
+        app:banner_numberIndicatorBackground="@drawable/shape_number_indicator_background"
+        app:banner_numberIndicatorTextColor="@android:color/white"
+        app:banner_numberIndicatorTextSize="10sp"
+        app:banner_pointAutoPlayAble="true"
+        app:banner_pointContainerBackground="@android:color/transparent"
+        app:banner_transitionEffect="defaultEffect"/>
+</LinearLayout>
