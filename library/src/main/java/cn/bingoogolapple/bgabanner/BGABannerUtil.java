@@ -40,6 +40,10 @@ public class BGABannerUtil {
     }
 
     public static void resetPageTransformer(List<? extends View> views) {
+        if (views == null) {
+            return;
+        }
+
         for (View view : views) {
             view.setVisibility(View.VISIBLE);
             ViewCompat.setAlpha(view, 1);

@@ -16,7 +16,7 @@ dependencies {
 //    compile project(':library')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    compile 'cn.bingoogolapple:bga-banner:2.1.4@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.1.5@aar'
     compile 'com.android.support:support-v4:25.0.1'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 
@@ -27,4 +27,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
+
+    compile 'com.facebook.fresco:fresco:0.14.1'
 }

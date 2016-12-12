@@ -5,6 +5,7 @@
 
 * [功能介绍](#功能介绍)
 * [效果图与示例 apk](#效果图与示例-apk)
+* [常见问题](#常见问题)
 * [使用](#使用)
 * [自定义属性说明](#自定义属性说明)
 * [关于我](#关于我)
@@ -31,6 +32,11 @@
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
 ![BGABannerDemo apk文件二维](http://7xk9dj.com1.z0.glb.clouddn.com/banner/BGABannerDemo.png)
+
+## 常见问题
+
+1. 结合 Fresco 加载图片请参考 [FrescoDemoActivity](https://github.com/bingoogolapple/BGABanner-Android/blob/master/demo/src/main/java/cn/bingoogolapple/bgabanner/demo/ui/activity/FrescoDemoActivity.java)
+2. 自定义 item 布局文件请参考 [FrescoDemoActivity](https://github.com/bingoogolapple/BGABanner-Android/blob/master/demo/src/main/java/cn/bingoogolapple/bgabanner/demo/ui/activity/FrescoDemoActivity.java)
 
 ## 使用
 
