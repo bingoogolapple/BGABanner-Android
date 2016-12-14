@@ -3,5 +3,6 @@
                                         xmlns:tools="http://schemas.android.com/tools"
                                         android:id="@+id/rv_content"
                                         style="@style/MatchMatch"
+                                        android:background="#ccc"
                                         android:scrollbars="none"
                                         tools:listitem="@layout/item_normal"/>

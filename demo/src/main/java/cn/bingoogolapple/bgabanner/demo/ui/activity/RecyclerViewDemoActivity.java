@@ -1,10 +1,12 @@
 package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -12,9 +14,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
 import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.bingoogolapple.bgabanner.demo.App;
 import cn.bingoogolapple.bgabanner.demo.R;
 import cn.bingoogolapple.bgabanner.demo.engine.Engine;
@@ -56,8 +60,52 @@ public class RecyclerViewDemoActivity extends AppCompatActivity {
      * 初始化RecyclerView
      */
     private void initRecyclerView() {
+        // 初始化适配器
+        mContentAdapter = new ContentAdapter(mContentRv);
+        // 测试 item 点击事件
+        mContentAdapter.setOnRVItemClickListener(new BGAOnRVItemClickListener() {
+            @Override
+            public void onRVItemClick(ViewGroup parent, View itemView, int position) {
+                // 注意：即使加了 HeaderView，这里返回的 position 也是从 0 开始的，在 BGARecyclerViewAdapter 的内部已经帮开发者减去了 HeaderView
+                Toast.makeText(itemView.getContext(), "position = " + position + " " + mContentAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+            }
+        });
+        // 添加 HeaderView
+        mContentAdapter.addHeaderView(getHeaderView());
 
-        // 初始化HeaderView
+        RecyclerView.LayoutManager layoutManager;
+
+        // 测试 LinearLayoutManager 的情况
+//        layoutManager = new LinearLayoutManager(this);
+
+        // 测试 GridLayoutManager 的情况
+        layoutManager = new GridLayoutManager(this, 2);
+
+        mContentRv.setLayoutManager(layoutManager);
+
+        // 测试添加分割间隙
+        mContentRv.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int position = parent.getChildAdapterPosition(view);
+                // 注意：由于加了一个 HeaderView，所以是大于 0 时才加分隔间隙。onCanvas 就不演示了
+                if (position > 0) {
+                    int halfPadding = BGABannerUtil.dp2px(view.getContext(), 4);
+                    outRect.set(halfPadding, halfPadding, halfPadding, halfPadding);
+                }
+            }
+        });
+
+        // 注意：这里调用了 getHeaderAndFooterAdapter 方法
+        mContentRv.setAdapter(mContentAdapter.getHeaderAndFooterAdapter());
+    }
+
+    /**
+     * 初始化 HeaderView
+     *
+     * @return
+     */
+    private View getHeaderView() {
         View headerView = View.inflate(this, R.layout.layout_header, null);
         mBanner = (BGABanner) headerView.findViewById(R.id.banner);
         mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
@@ -78,12 +126,7 @@ public class RecyclerViewDemoActivity extends AppCompatActivity {
                 Toast.makeText(banner.getContext(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
             }
         });
-
-        mContentAdapter = new ContentAdapter(mContentRv);
-        mContentAdapter.addHeaderView(headerView);
-
-        mContentRv.setLayoutManager(new LinearLayoutManager(this));
-        mContentRv.setAdapter(mContentAdapter.getHeaderAndFooterAdapter());
+        return headerView;
     }
 
     /**
