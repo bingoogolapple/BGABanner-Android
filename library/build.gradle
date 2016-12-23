@@ -7,11 +7,12 @@ android {
     defaultConfig {
         minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:25.0.1'
+    provided 'com.android.support:support-v4:25.1.0'
 }
 
 // gradle uploadArchives

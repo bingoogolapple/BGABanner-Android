@@ -1,0 +1,1 @@
+-keep class cn.bingoogolapple.bgabanner.BGAViewPager { *; }

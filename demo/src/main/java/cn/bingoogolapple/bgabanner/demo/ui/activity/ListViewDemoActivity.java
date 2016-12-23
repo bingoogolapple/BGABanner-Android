@@ -29,7 +29,7 @@ import retrofit2.Response;
  * 创建时间:16/7/21 下午8:26
  * 描述:
  */
-public class ListViewDemoActivity extends AppCompatActivity {
+public class ListViewDemoActivity extends AppCompatActivity implements BGABanner.Adapter<ImageView, String>, BGABanner.Delegate<ImageView, String> {
     private ListView mContentLv;
     private BGABanner mBanner;
     private ContentAdapter mContentAdapter;
@@ -59,29 +59,29 @@ public class ListViewDemoActivity extends AppCompatActivity {
         // 初始化HeaderView
         View headerView = View.inflate(this, R.layout.layout_header, null);
         mBanner = (BGABanner) headerView.findViewById(R.id.banner);
-        mBanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
-            @Override
-            public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
-                Glide.with(itemView.getContext())
-                        .load(model)
-                        .placeholder(R.drawable.holder)
-                        .error(R.drawable.holder)
-                        .dontAnimate()
-                        .centerCrop()
-                        .into(itemView);
-            }
-        });
-        mBanner.setDelegate(new BGABanner.Delegate<ImageView, String>() {
-            @Override
-            public void onBannerItemClick(BGABanner banner, ImageView imageView, String model, int position) {
-                Toast.makeText(banner.getContext(), "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mBanner.setAdapter(this);
+        mBanner.setDelegate(this);
 
         // 初始化ListView
         mContentLv.addHeaderView(headerView);
         mContentAdapter = new ContentAdapter(this);
         mContentLv.setAdapter(mContentAdapter);
+    }
+
+    @Override
+    public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
+        Glide.with(this)
+                .load(model)
+                .placeholder(R.drawable.holder)
+                .error(R.drawable.holder)
+                .dontAnimate()
+                .centerCrop()
+                .into(itemView);
+    }
+
+    @Override
+    public void onBannerItemClick(BGABanner banner, ImageView imageView, String model, int position) {
+        Toast.makeText(this, "点击了第" + (position + 1) + "页", Toast.LENGTH_SHORT).show();
     }
 
     /**
