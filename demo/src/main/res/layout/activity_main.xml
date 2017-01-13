@@ -201,7 +201,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_accordion"
             style="@style/BannerDefaultStyle"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointDrawable="@drawable/selector_banner_unequal"
             app:banner_transitionEffect="accordion"/>
 
         <cn.bingoogolapple.bgabanner.BGABanner

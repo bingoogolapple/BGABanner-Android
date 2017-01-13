@@ -60,6 +60,8 @@
         <attr name="banner_isNeedShowIndicatorOnOnlyOnePage" format="boolean"/>
         <!-- 自动轮播区域距离 BGABanner 底部的距离 -->
         <attr name="banner_contentBottomMargin" format="dimension"/>
+        <!-- 占位图缩放模式 -->
+        <attr name="android:scaleType"/>
     </declare-styleable>
 
 </resources>

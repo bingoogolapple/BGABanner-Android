@@ -60,6 +60,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private float mPageScrollPositionOffset;
     private TransitionEffect mTransitionEffect;
     private ImageView mPlaceholderIv;
+    private ImageView.ScaleType mPlaceholderScaleType = ImageView.ScaleType.CENTER_CROP;
     private int mPlaceholderDrawableResId = NO_PLACEHOLDER_DRAWABLE;
     private List<? extends Object> mModels;
     private Delegate mDelegate;
@@ -78,6 +79,17 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private GuideDelegate mGuideDelegate;
     private int mContentBottomMargin;
     private boolean mIsFirstInvisible = true;
+
+    private static final ImageView.ScaleType[] sScaleTypeArray = {
+            ImageView.ScaleType.MATRIX,
+            ImageView.ScaleType.FIT_XY,
+            ImageView.ScaleType.FIT_START,
+            ImageView.ScaleType.FIT_CENTER,
+            ImageView.ScaleType.FIT_END,
+            ImageView.ScaleType.CENTER,
+            ImageView.ScaleType.CENTER_CROP,
+            ImageView.ScaleType.CENTER_INSIDE
+    };
 
     private BGAOnNoDoubleClickListener mGuideOnNoDoubleClickListener = new BGAOnNoDoubleClickListener() {
         @Override
@@ -162,6 +174,11 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mIsNeedShowIndicatorOnOnlyOnePage = typedArray.getBoolean(attr, mIsNeedShowIndicatorOnOnlyOnePage);
         } else if (attr == R.styleable.BGABanner_banner_contentBottomMargin) {
             mContentBottomMargin = typedArray.getDimensionPixelSize(attr, mContentBottomMargin);
+        } else if (attr == R.styleable.BGABanner_android_scaleType) {
+            final int index = typedArray.getInt(attr, -1);
+            if (index >= 0 && index < sScaleTypeArray.length) {
+                mPlaceholderScaleType = sScaleTypeArray[index];
+            }
         }
     }
 
@@ -206,6 +223,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mPointRealContainerLl = new LinearLayout(context);
             mPointRealContainerLl.setId(R.id.banner_indicatorId);
             mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
+            mPointRealContainerLl.setGravity(Gravity.CENTER_VERTICAL);
             pointContainerRl.addView(mPointRealContainerLl, indicatorLp);
         }
 
@@ -239,6 +257,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     public void showPlaceholder() {
         if (mPlaceholderIv == null && mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
             mPlaceholderIv = BGABannerUtil.getItemImageView(getContext(), mPlaceholderDrawableResId);
+            mPlaceholderIv.setScaleType(mPlaceholderScaleType);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RMP, RMP);
             layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
             addView(mPlaceholderIv, layoutParams);
@@ -702,9 +721,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
                 mPointRealContainerLl.setVisibility(View.VISIBLE);
                 for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
-                    mPointRealContainerLl.getChildAt(i).setEnabled(false);
+                    mPointRealContainerLl.getChildAt(i).setEnabled(i == newCurrentPoint);
+                    // 处理指示器选中和未选中状态图片尺寸不相等
+                    mPointRealContainerLl.getChildAt(i).requestLayout();
                 }
-                mPointRealContainerLl.getChildAt(newCurrentPoint).setEnabled(true);
             } else {
                 mPointRealContainerLl.setVisibility(View.GONE);
             }
