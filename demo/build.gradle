@@ -24,10 +24,10 @@ android {
 }
 
 dependencies {
-    compile project(':library')
+//    compile project(':library')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-//    compile 'cn.bingoogolapple:bga-banner:2.1.7@aar'
+    compile 'cn.bingoogolapple:bga-banner:2.1.7@aar'
     compile 'com.android.support:support-v4:25.1.0'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 
