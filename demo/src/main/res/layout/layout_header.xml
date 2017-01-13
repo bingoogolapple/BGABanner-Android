@@ -9,6 +9,7 @@
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:scaleType="fitXY"
         app:banner_indicatorGravity="bottom|right"
         app:banner_pageChangeDuration="1500"
         app:banner_placeholderDrawable="@drawable/holder"

@@ -3,6 +3,6 @@
           xmlns:tools="http://schemas.android.com/tools"
           android:id="@+id/lv_content"
           style="@style/MatchMatch"
-          android:divider="@drawable/list_divider"
+          android:divider="@mipmap/bga_adapter_divider_bitmap"
           android:overScrollMode="never"
           tools:listitem="@layout/item_normal"/>
