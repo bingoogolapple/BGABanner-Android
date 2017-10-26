@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
                  * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
                  * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
                  */
-//                banner.setAutoPlayAble(bannerModel.imgs.size() > 1);
+                banner.setAutoPlayAble(bannerModel.imgs.size() > 1);
 
                 banner.setAdapter(MainActivity.this);
                 banner.setData(bannerModel.imgs, bannerModel.tips);
@@ -178,6 +178,12 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
                 break;
             case R.id.tv_main_get_current_item:
                 Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_main_load_zero_item:
+                mDefaultBanner.setAdapter(this);
+                mDefaultBanner.setAutoPlayAble(false);
+                mDefaultBanner.setData(null, null);
+                mDefaultBanner.showPlaceholder();
                 break;
             case R.id.tv_main_load_one_item:
                 loadData(mDefaultBanner, 1);

@@ -456,8 +456,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @return
      */
     public int getCurrentItem() {
-        if (mViewPager == null || mViews == null) {
-            return 0;
+        if (mViewPager == null || mViews == null || mViews.size() == 0) {
+            return -1;
         } else {
             return mViewPager.getCurrentItem() % mViews.size();
         }
@@ -862,6 +862,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            if (mViews == null || mViews.size() == 0) {
+                return null;
+            }
+
             final int finalPosition = position % mViews.size();
 
             View view;

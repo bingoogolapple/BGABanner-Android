@@ -14,9 +14,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import cn.bingoogolapple.bgabanner.demo.App;
