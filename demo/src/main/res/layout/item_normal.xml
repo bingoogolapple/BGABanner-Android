@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchWrap.Vertical"
-    android:background="@drawable/bga_adapter_white_gray"
+    android:background="@drawable/bga_baseadapter_white_gray"
     android:padding="8dp">
 
     <TextView

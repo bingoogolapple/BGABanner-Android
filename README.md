@@ -41,7 +41,7 @@
 ## 使用
 
 ### 1.添加 Gradle 依赖
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-banner) bga-banner 后面的「latestVersion」指的是左边这个 maven-central 徽章后面的「数字」，请自行替换。
+[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion) bga-banner 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
 
 ```groovy
 dependencies {

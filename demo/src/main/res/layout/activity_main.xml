@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/MatchMatch"
-            android:scrollbars="none">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:scrollbars="none">
 
     <LinearLayout style="@style/MatchWrap.Vertical">
 
@@ -18,7 +18,7 @@
             android:padding="10dp"
             android:text="查看 ListView HeaderView Demo"
             android:textColor="@android:color/white"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_main_recyclerview_demo"
@@ -32,7 +32,7 @@
             android:padding="10dp"
             android:text="查看 RecyclerView HeaderView Demo"
             android:textColor="@android:color/white"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/tv_main_fresco"
@@ -46,24 +46,24 @@
             android:padding="10dp"
             android:text="Fresco Demo"
             android:textColor="@android:color/white"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
 
             <TextView
                 android:id="@+id/tv_main_visible"
                 style="@style/AutoWrapTv"
-                android:text="visible"/>
+                android:text="visible" />
 
             <TextView
                 android:id="@+id/tv_main_invisible"
                 style="@style/AutoWrapTv"
-                android:text="invisible"/>
+                android:text="invisible" />
 
             <TextView
                 android:id="@+id/tv_main_gone"
                 style="@style/AutoWrapTv"
-                android:text="gone"/>
+                android:text="gone" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -71,22 +71,22 @@
             <TextView
                 android:id="@+id/tv_main_enable_auto_play"
                 style="@style/AutoWrapTv"
-                android:text="EnableAutoPlay"/>
+                android:text="EnableAutoPlay" />
 
             <TextView
                 android:id="@+id/tv_main_disable_auto_play"
                 style="@style/AutoWrapTv"
-                android:text="DisableAutoPlay"/>
+                android:text="DisableAutoPlay" />
 
             <TextView
                 android:id="@+id/tv_main_start_auto_play"
                 style="@style/AutoWrapTv"
-                android:text="StartAutoPlay"/>
+                android:text="StartAutoPlay" />
 
             <TextView
                 android:id="@+id/tv_main_stop_auto_play"
                 style="@style/AutoWrapTv"
-                android:text="StopAutoPlay"/>
+                android:text="StopAutoPlay" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -94,32 +94,37 @@
             <TextView
                 android:id="@+id/tv_main_get_item_count"
                 style="@style/AutoWrapTv"
-                android:text="总页数"/>
+                android:text="总页数" />
 
             <TextView
                 android:id="@+id/tv_main_get_current_item"
                 style="@style/AutoWrapTv"
-                android:text="当前索引"/>
+                android:text="索引" />
+
+            <TextView
+                android:id="@+id/tv_main_load_zero_item"
+                style="@style/AutoWrapTv"
+                android:text="载0页" />
 
             <TextView
                 android:id="@+id/tv_main_load_one_item"
                 style="@style/AutoWrapTv"
-                android:text="加载1页"/>
+                android:text="载1页" />
 
             <TextView
                 android:id="@+id/tv_main_load_two_item"
                 style="@style/AutoWrapTv"
-                android:text="加载2页"/>
+                android:text="载2页" />
 
             <TextView
                 android:id="@+id/tv_main_load_three_item"
                 style="@style/AutoWrapTv"
-                android:text="加载3页"/>
+                android:text="载3页" />
 
             <TextView
                 android:id="@+id/tv_main_load_five_item"
                 style="@style/AutoWrapTv"
-                android:text="加载5页"/>
+                android:text="载5页" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -127,27 +132,27 @@
             <TextView
                 android:id="@+id/tv_main_select_page_one"
                 style="@style/AutoWrapTv"
-                android:text="选择第1页"/>
+                android:text="选择第1页" />
 
             <TextView
                 android:id="@+id/tv_main_select_page_two"
                 style="@style/AutoWrapTv"
-                android:text="选择第2页"/>
+                android:text="选择第2页" />
 
             <TextView
                 android:id="@+id/tv_main_select_page_three"
                 style="@style/AutoWrapTv"
-                android:text="选择第3页"/>
+                android:text="选择第3页" />
 
             <TextView
                 android:id="@+id/tv_main_select_page_four"
                 style="@style/AutoWrapTv"
-                android:text="选择第4页"/>
+                android:text="选择第4页" />
 
             <TextView
                 android:id="@+id/tv_main_select_page_five"
                 style="@style/AutoWrapTv"
-                android:text="选择第5页"/>
+                android:text="选择第5页" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -155,27 +160,27 @@
             <TextView
                 android:id="@+id/tv_main_cube"
                 style="@style/AutoWrapTv"
-                android:text="Cube"/>
+                android:text="Cube" />
 
             <TextView
                 android:id="@+id/tv_main_depth"
                 style="@style/AutoWrapTv"
-                android:text="Depth"/>
+                android:text="Depth" />
 
             <TextView
                 android:id="@+id/tv_main_flip"
                 style="@style/AutoWrapTv"
-                android:text="Flip"/>
+                android:text="Flip" />
 
             <TextView
                 android:id="@+id/tv_main_rotate"
                 style="@style/AutoWrapTv"
-                android:text="Rotate"/>
+                android:text="Rotate" />
 
             <TextView
                 android:id="@+id/tv_main_alpha"
                 style="@style/AutoWrapTv"
-                android:text="Alpha等"/>
+                android:text="Alpha等" />
         </LinearLayout>
 
         <cn.bingoogolapple.bgabanner.BGABanner
@@ -189,76 +194,76 @@
             app:banner_numberIndicatorTextSize="10sp"
             app:banner_pointAutoPlayAble="true"
             app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_transitionEffect="defaultEffect"/>
+            app:banner_transitionEffect="defaultEffect" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_cube"
             style="@style/BannerDefaultStyle"
             app:banner_contentBottomMargin="40dp"
             app:banner_indicatorGravity="bottom|center_horizontal"
-            app:banner_transitionEffect="cube"/>
+            app:banner_transitionEffect="cube" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_accordion"
             style="@style/BannerDefaultStyle"
             app:banner_pointDrawable="@drawable/selector_banner_unequal"
-            app:banner_transitionEffect="accordion"/>
+            app:banner_transitionEffect="accordion" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_flip"
             style="@style/BannerDefaultStyle"
             app:banner_indicatorGravity="bottom|left"
             app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
-            app:banner_transitionEffect="flip"/>
+            app:banner_transitionEffect="flip" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_rotate"
             style="@style/BannerDefaultStyle"
             app:banner_pointDrawable="@drawable/selector_banner_point"
-            app:banner_transitionEffect="rotate"/>
+            app:banner_transitionEffect="rotate" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_alpha"
             style="@style/BannerDefaultStyle"
             app:banner_indicatorGravity="bottom|right"
-            app:banner_transitionEffect="alpha"/>
+            app:banner_transitionEffect="alpha" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoomFade"
             style="@style/BannerDefaultStyle"
-            app:banner_transitionEffect="zoomFade"/>
+            app:banner_transitionEffect="zoomFade" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_fade"
             style="@style/BannerDefaultStyle"
-            app:banner_transitionEffect="fade"/>
+            app:banner_transitionEffect="fade" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoomCenter"
             style="@style/BannerDefaultStyle"
             app:banner_pointDrawable="@drawable/selector_banner_point"
-            app:banner_transitionEffect="zoomCenter"/>
+            app:banner_transitionEffect="zoomCenter" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoom"
             style="@style/BannerDefaultStyle"
-            app:banner_transitionEffect="zoom"/>
+            app:banner_transitionEffect="zoom" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_stack"
             style="@style/BannerDefaultStyle"
             app:banner_indicatorGravity="bottom|right"
-            app:banner_transitionEffect="stack"/>
+            app:banner_transitionEffect="stack" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_zoomStack"
             style="@style/BannerDefaultStyle"
             app:banner_indicatorGravity="bottom|left"
-            app:banner_transitionEffect="zoomStack"/>
+            app:banner_transitionEffect="zoomStack" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_depth"
             style="@style/BannerDefaultStyle"
-            app:banner_transitionEffect="depth"/>
+            app:banner_transitionEffect="depth" />
     </LinearLayout>
 </ScrollView>
