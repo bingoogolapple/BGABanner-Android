@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,6 +58,26 @@ public class BGABannerUtil {
             ViewCompat.setRotationY(view, 0);
             ViewCompat.setRotation(view, 0);
         }
+    }
+
+    public static boolean isIndexNotOutOfBounds(int position, Collection collection) {
+        return isCollectionNotEmpty(collection) && position < collection.size();
+    }
+
+    public static boolean isCollectionEmpty(Collection collection, Collection... args) {
+        if (collection == null || collection.isEmpty()) {
+            return true;
+        }
+        for (Collection arg : args) {
+            if (arg == null || arg.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCollectionNotEmpty(Collection collection, Collection... args) {
+        return !isCollectionEmpty(collection, args);
     }
 
 }

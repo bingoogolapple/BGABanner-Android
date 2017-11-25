@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ListViewDemoActivity extends AppCompatActivity implements BGABanner
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview_demo);
-        mContentLv = (ListView) findViewById(R.id.lv_content);
+        mContentLv = findViewById(R.id.lv_content);
 
         setTitle("ListViewDemo");
         mEngine = App.getInstance().getEngine();
@@ -58,7 +59,7 @@ public class ListViewDemoActivity extends AppCompatActivity implements BGABanner
     private void initListView() {
         // 初始化HeaderView
         View headerView = View.inflate(this, R.layout.layout_header, null);
-        mBanner = (BGABanner) headerView.findViewById(R.id.banner);
+        mBanner = headerView.findViewById(R.id.banner);
         mBanner.setAdapter(this);
         mBanner.setDelegate(this);
 
@@ -72,10 +73,7 @@ public class ListViewDemoActivity extends AppCompatActivity implements BGABanner
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
         Glide.with(this)
                 .load(model)
-                .placeholder(R.drawable.holder)
-                .error(R.drawable.holder)
-                .dontAnimate()
-                .centerCrop()
+                .apply(new RequestOptions().placeholder(R.drawable.holder).error(R.drawable.holder).dontAnimate().centerCrop())
                 .into(itemView);
     }
 

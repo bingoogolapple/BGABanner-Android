@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.demo.App;
@@ -50,19 +51,19 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
     }
 
     private void initView() {
-        mDefaultBanner = (BGABanner) findViewById(R.id.banner_main_default);
-        mCubeBanner = (BGABanner) findViewById(R.id.banner_main_cube);
-        mAccordionBanner = (BGABanner) findViewById(R.id.banner_main_accordion);
-        mFlipBanner = (BGABanner) findViewById(R.id.banner_main_flip);
-        mRotateBanner = (BGABanner) findViewById(R.id.banner_main_rotate);
-        mAlphaBanner = (BGABanner) findViewById(R.id.banner_main_alpha);
-        mZoomFadeBanner = (BGABanner) findViewById(R.id.banner_main_zoomFade);
-        mFadeBanner = (BGABanner) findViewById(R.id.banner_main_fade);
-        mZoomCenterBanner = (BGABanner) findViewById(R.id.banner_main_zoomCenter);
-        mZoomBanner = (BGABanner) findViewById(R.id.banner_main_zoom);
-        mStackBanner = (BGABanner) findViewById(R.id.banner_main_stack);
-        mZoomStackBanner = (BGABanner) findViewById(R.id.banner_main_zoomStack);
-        mDepthBanner = (BGABanner) findViewById(R.id.banner_main_depth);
+        mDefaultBanner = findViewById(R.id.banner_main_default);
+        mCubeBanner = findViewById(R.id.banner_main_cube);
+        mAccordionBanner = findViewById(R.id.banner_main_accordion);
+        mFlipBanner = findViewById(R.id.banner_main_flip);
+        mRotateBanner = findViewById(R.id.banner_main_rotate);
+        mAlphaBanner = findViewById(R.id.banner_main_alpha);
+        mZoomFadeBanner = findViewById(R.id.banner_main_zoomFade);
+        mFadeBanner = findViewById(R.id.banner_main_fade);
+        mZoomCenterBanner = findViewById(R.id.banner_main_zoomCenter);
+        mZoomBanner = findViewById(R.id.banner_main_zoom);
+        mStackBanner = findViewById(R.id.banner_main_stack);
+        mZoomStackBanner = findViewById(R.id.banner_main_zoomStack);
+        mDepthBanner = findViewById(R.id.banner_main_depth);
     }
 
     private void setListener() {
@@ -118,10 +119,7 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
         Glide.with(itemView.getContext())
                 .load(model)
-                .placeholder(R.drawable.holder)
-                .error(R.drawable.holder)
-                .dontAnimate()
-                .centerCrop()
+                .apply(new RequestOptions().placeholder(R.drawable.holder).error(R.drawable.holder).dontAnimate().centerCrop())
                 .into(itemView);
     }
 

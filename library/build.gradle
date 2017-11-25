@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:25.3.1'
+    compileOnly 'com.android.support:support-v4:27.0.1'
 }
 
 // gradle clean build bintrayUpload
