@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class RecyclerViewDemoActivity extends AppCompatActivity implements BGABa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview_demo);
-        mContentRv = (RecyclerView) findViewById(R.id.rv_content);
+        mContentRv = findViewById(R.id.rv_content);
 
         setTitle("RecyclerViewDemo");
         mEngine = App.getInstance().getEngine();
@@ -107,7 +108,7 @@ public class RecyclerViewDemoActivity extends AppCompatActivity implements BGABa
      */
     private View getHeaderView() {
         View headerView = View.inflate(this, R.layout.layout_header, null);
-        mBanner = (BGABanner) headerView.findViewById(R.id.banner);
+        mBanner = headerView.findViewById(R.id.banner);
         mBanner.setAdapter(this);
         mBanner.setDelegate(this);
         return headerView;
@@ -117,10 +118,7 @@ public class RecyclerViewDemoActivity extends AppCompatActivity implements BGABa
     public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
         Glide.with(this)
                 .load(model)
-                .placeholder(R.drawable.holder)
-                .error(R.drawable.holder)
-                .dontAnimate()
-                .centerCrop()
+                .apply(new RequestOptions().placeholder(R.drawable.holder).error(R.drawable.holder).dontAnimate().centerCrop())
                 .into(itemView);
     }
 

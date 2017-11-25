@@ -23,8 +23,8 @@ public class GuideActivity extends Activity {
 
     private void initView() {
         setContentView(R.layout.activity_guide);
-        mBackgroundBanner = (BGABanner) findViewById(R.id.banner_guide_background);
-        mForegroundBanner = (BGABanner) findViewById(R.id.banner_guide_foreground);
+        mBackgroundBanner = findViewById(R.id.banner_guide_background);
+        mForegroundBanner = findViewById(R.id.banner_guide_foreground);
     }
 
     private void setListener() {

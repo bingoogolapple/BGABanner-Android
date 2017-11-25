@@ -281,8 +281,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     /**
      * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
      * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
-     * mDefaultBanner.setAutoPlayAble(bannerModel.imgs.size() > 1);
-     * mDefaultBanner.setData(bannerModel.imgs, bannerModel.tips);
      *
      * @param autoPlayAble
      */
@@ -313,7 +311,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param tips   每一页的提示文案集合
      */
     public void setData(List<View> views, List<? extends Object> models, List<String> tips) {
-        if (views == null || views.size() < 1) {
+        if (BGABannerUtil.isCollectionEmpty(views)) {
             mAutoPlayAble = false;
             views = new ArrayList<>();
             models = new ArrayList<>();
@@ -456,7 +454,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @return
      */
     public int getCurrentItem() {
-        if (mViewPager == null || mViews == null || mViews.size() == 0) {
+        if (mViewPager == null || BGABannerUtil.isCollectionEmpty(mViews)) {
             return -1;
         } else {
             return mViewPager.getCurrentItem() % mViews.size();
@@ -814,7 +812,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mPageScrollPositionOffset = positionOffset;
 
         if (mTipTv != null) {
-            if (mTips != null && mTips.size() > 0) {
+            if (BGABannerUtil.isCollectionNotEmpty(mTips)) {
                 mTipTv.setVisibility(View.VISIBLE);
 
                 int leftPosition = position % mTips.size();
@@ -862,7 +860,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            if (mViews == null || mViews.size() == 0) {
+            if (BGABannerUtil.isCollectionEmpty(mViews)) {
                 return null;
             }
 
@@ -880,12 +878,15 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                     @Override
                     public void onNoDoubleClick(View view) {
                         int currentPosition = mViewPager.getCurrentItem() % mViews.size();
-                        mDelegate.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(currentPosition), currentPosition);
+
+                        if (BGABannerUtil.isIndexNotOutOfBounds(currentPosition, mModels)) {
+                            mDelegate.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(currentPosition), currentPosition);
+                        }
                     }
                 });
             }
 
-            if (mAdapter != null) {
+            if (mAdapter != null && BGABannerUtil.isIndexNotOutOfBounds(finalPosition, mModels)) {
                 mAdapter.fillBannerItem(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
             }
 

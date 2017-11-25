@@ -45,8 +45,8 @@
 
 ```groovy
 dependencies {
-    compile 'com.android.support:support-v4:latestVersion'
-    compile 'cn.bingoogolapple:bga-banner:latestVersion@aar'
+    implementation 'com.android.support:support-v4:latestVersion'
+    implementation 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
 ```
 

@@ -31,7 +31,7 @@ public class FrescoDemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fresco_demo);
         setTitle("FrescoDemo");
 
-        mContentBanner = (BGABanner) findViewById(R.id.banner_fresco_demo_content);
+        mContentBanner = findViewById(R.id.banner_fresco_demo_content);
         mContentBanner.setDelegate(new BGABanner.Delegate<CardView, String>() {
             @Override
             public void onBannerItemClick(BGABanner banner, CardView itemView, String model, int position) {
@@ -41,7 +41,7 @@ public class FrescoDemoActivity extends AppCompatActivity {
         mContentBanner.setAdapter(new BGABanner.Adapter<CardView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, CardView itemView, String model, int position) {
-                SimpleDraweeView simpleDraweeView = (SimpleDraweeView) itemView.findViewById(R.id.sdv_item_fresco_content);
+                SimpleDraweeView simpleDraweeView = itemView.findViewById(R.id.sdv_item_fresco_content);
                 simpleDraweeView.setImageURI(Uri.parse(model));
             }
         });
