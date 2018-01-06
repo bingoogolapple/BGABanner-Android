@@ -27,7 +27,7 @@ dependencies {
 //    implementation project(':library')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-banner:2.2.0@aar'
+    implementation 'cn.bingoogolapple:bga-banner:2.2.1@aar'
     implementation 'com.android.support:support-v4:27.0.2'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 

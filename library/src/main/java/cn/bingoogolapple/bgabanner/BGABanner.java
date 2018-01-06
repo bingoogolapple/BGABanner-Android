@@ -492,7 +492,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
             if (mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)) {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LWC, LWC);
-                lp.setMargins(mPointLeftRightMargin, mPointTopBottomMargin, mPointLeftRightMargin, mPointTopBottomMargin);
+                lp.setMargins(mPointLeftRightMargin, 0, mPointLeftRightMargin, 0);
                 ImageView imageView;
                 for (int i = 0; i < mViews.size(); i++) {
                     imageView = new ImageView(getContext());
