@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -281,8 +282,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     /**
      * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
      * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
-     *
-     * @param autoPlayAble
      */
     public void setAutoPlayAble(boolean autoPlayAble) {
         mAutoPlayAble = autoPlayAble;
@@ -296,8 +295,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置自动轮播的时间间隔
-     *
-     * @param autoPlayInterval
      */
     public void setAutoPlayInterval(int autoPlayInterval) {
         mAutoPlayInterval = autoPlayInterval;
@@ -377,8 +374,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置每一页图片的资源 id，主要针对引导页的情况
-     *
-     * @param resIds
      */
     public void setData(@DrawableRes int... resIds) {
         List<View> views = new ArrayList<>();
@@ -402,8 +397,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 添加ViewPager滚动监听器
-     *
-     * @param onPageChangeListener
      */
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         mOnPageChangeListener = onPageChangeListener;
@@ -450,8 +443,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 获取当前选中界面索引
-     *
-     * @return
      */
     public int getCurrentItem() {
         if (mViewPager == null || BGABannerUtil.isCollectionEmpty(mViews)) {
@@ -463,8 +454,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 获取广告页面总个数
-     *
-     * @return
      */
     public int getItemCount() {
         return mViews == null ? 0 : mViews.size();
@@ -626,8 +615,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置当只有一页数据时是否显示指示器
-     *
-     * @param isNeedShowIndicatorOnOnlyOnePage
      */
     public void setIsNeedShowIndicatorOnOnlyOnePage(boolean isNeedShowIndicatorOnOnlyOnePage) {
         mIsNeedShowIndicatorOnOnlyOnePage = isNeedShowIndicatorOnOnlyOnePage;
@@ -716,7 +703,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
 
         if (mPointRealContainerLl != null) {
-            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
+            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (
+                    !mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
                 mPointRealContainerLl.setVisibility(View.VISIBLE);
                 for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
                     mPointRealContainerLl.getChildAt(i).setEnabled(i == newCurrentPoint);
@@ -729,7 +717,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
 
         if (mNumberIndicatorTv != null) {
-            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (!mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
+            if (mViews != null && mViews.size() > 0 && newCurrentPoint < mViews.size() && ((mIsNeedShowIndicatorOnOnlyOnePage || (
+                    !mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
                 mNumberIndicatorTv.setVisibility(View.VISIBLE);
                 mNumberIndicatorTv.setText((newCurrentPoint + 1) + "/" + mViews.size());
             } else {
@@ -740,8 +729,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置页面切换换动画
-     *
-     * @param effect
      */
     public void setTransitionEffect(TransitionEffect effect) {
         mTransitionEffect = effect;
@@ -757,8 +744,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置自定义页面切换动画
-     *
-     * @param transformer
      */
     public void setPageTransformer(ViewPager.PageTransformer transformer) {
         if (transformer != null && mViewPager != null) {
@@ -880,14 +865,20 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                         int currentPosition = mViewPager.getCurrentItem() % mViews.size();
 
                         if (BGABannerUtil.isIndexNotOutOfBounds(currentPosition, mModels)) {
-                            mDelegate.onBannerItemClick(BGABanner.this, view, mModels == null ? null : mModels.get(currentPosition), currentPosition);
+                            mDelegate.onBannerItemClick(BGABanner.this, view, mModels.get(currentPosition), currentPosition);
+                        } else if (BGABannerUtil.isCollectionEmpty(mModels)) {
+                            mDelegate.onBannerItemClick(BGABanner.this, view, null, currentPosition);
                         }
                     }
                 });
             }
 
-            if (mAdapter != null && BGABannerUtil.isIndexNotOutOfBounds(finalPosition, mModels)) {
-                mAdapter.fillBannerItem(BGABanner.this, view, mModels == null ? null : mModels.get(finalPosition), finalPosition);
+            if (mAdapter != null) {
+                if (BGABannerUtil.isIndexNotOutOfBounds(finalPosition, mModels)) {
+                    mAdapter.fillBannerItem(BGABanner.this, view, mModels.get(finalPosition), finalPosition);
+                } else if (BGABannerUtil.isCollectionEmpty(mModels)) {
+                    mAdapter.fillBannerItem(BGABanner.this, view, null, finalPosition);
+                }
             }
 
             ViewParent viewParent = view.getParent();
@@ -938,7 +929,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param <M> item 数据模型
      */
     public interface Delegate<V extends View, M> {
-        void onBannerItemClick(BGABanner banner, V itemView, M model, int position);
+        void onBannerItemClick(BGABanner banner, V itemView, @Nullable M model, int position);
     }
 
     /**
@@ -948,7 +939,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
      * @param <M> item 数据模型
      */
     public interface Adapter<V extends View, M> {
-        void fillBannerItem(BGABanner banner, V itemView, M model, int position);
+        void fillBannerItem(BGABanner banner, V itemView, @Nullable M model, int position);
     }
 
     /**
