@@ -17,8 +17,8 @@ public class GuideActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         initView();
-        setListener();
         processLogic();
+        setListener();
     }
 
     private void initView() {
@@ -29,6 +29,7 @@ public class GuideActivity extends Activity {
 
     private void setListener() {
         /**
+         * 「该方法需要在 setData 方法之前调用」
          * 设置进入按钮和跳过按钮控件资源 id 及其点击事件
          * 如果进入按钮和跳过按钮有一个不存在的话就传 0
          * 在 BGABanner 里已经帮开发者处理了防止重复点击事件
