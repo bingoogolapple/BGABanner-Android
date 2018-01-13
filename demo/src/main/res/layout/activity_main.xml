@@ -64,6 +64,11 @@
                 android:id="@+id/tv_main_gone"
                 style="@style/AutoWrapTv"
                 android:text="gone" />
+
+            <TextView
+                android:id="@+id/tv_main_change_height"
+                style="@style/AutoWrapTv"
+                android:text="ChangeHeight" />
         </LinearLayout>
 
         <LinearLayout style="@style/MatchWrap.Horizontal">
@@ -194,7 +199,8 @@
             app:banner_numberIndicatorTextSize="10sp"
             app:banner_pointAutoPlayAble="true"
             app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_transitionEffect="defaultEffect" />
+            app:banner_transitionEffect="defaultEffect"
+            app:banner_aspectRatio="2.8" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_cube"

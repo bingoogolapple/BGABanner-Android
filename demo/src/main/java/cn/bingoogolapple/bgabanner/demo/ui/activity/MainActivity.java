@@ -134,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
             case R.id.tv_main_gone:
                 mDefaultBanner.setVisibility(View.GONE);
                 break;
+            case R.id.tv_main_change_height:
+                // 设置宽高比例，如果大于 0，则会根据宽度来计算高度，否则使用 android:layout_height 指定的高度
+                mDefaultBanner.setAspectRatio(2.1f);
+                break;
             case R.id.tv_main_enable_auto_play:
                 /**
                  * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
