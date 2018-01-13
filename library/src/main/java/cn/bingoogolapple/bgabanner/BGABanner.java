@@ -61,7 +61,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private float mPageScrollPositionOffset;
     private TransitionEffect mTransitionEffect;
     private ImageView mPlaceholderIv;
-    private ImageView.ScaleType mPlaceholderScaleType = ImageView.ScaleType.CENTER_CROP;
+    private ImageView.ScaleType mScaleType = ImageView.ScaleType.CENTER_CROP;
     private int mPlaceholderDrawableResId = NO_PLACEHOLDER_DRAWABLE;
     private List<? extends Object> mModels;
     private Delegate mDelegate;
@@ -178,7 +178,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         } else if (attr == R.styleable.BGABanner_android_scaleType) {
             final int index = typedArray.getInt(attr, -1);
             if (index >= 0 && index < sScaleTypeArray.length) {
-                mPlaceholderScaleType = sScaleTypeArray[index];
+                mScaleType = sScaleTypeArray[index];
             }
         }
     }
@@ -257,8 +257,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     public void showPlaceholder() {
         if (mPlaceholderIv == null && mPlaceholderDrawableResId != NO_PLACEHOLDER_DRAWABLE) {
-            mPlaceholderIv = BGABannerUtil.getItemImageView(getContext(), mPlaceholderDrawableResId);
-            mPlaceholderIv.setScaleType(mPlaceholderScaleType);
+            mPlaceholderIv = BGABannerUtil.getItemImageView(getContext(), mPlaceholderDrawableResId, new BGALocalImageSize(720, 360, 640, 320), mScaleType);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RMP, RMP);
             layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
             addView(mPlaceholderIv, layoutParams);
@@ -374,11 +373,21 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     /**
      * 设置每一页图片的资源 id，主要针对引导页的情况
+     *
+     * @param localImageSize 内存优化，Bitmap 的宽高在 maxWidth maxHeight 和 minWidth minHeight 之间，传 null 的话默认为 720, 1280, 320, 640
+     * @param scaleType      图片缩放模式，传 null 的话默认为 CENTER_CROP
+     * @param resIds         每一页图片资源 id
      */
-    public void setData(@DrawableRes int... resIds) {
+    public void setData(@Nullable BGALocalImageSize localImageSize, @Nullable ImageView.ScaleType scaleType, @DrawableRes int... resIds) {
+        if (localImageSize != null) {
+            localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
+        }
+        if (scaleType != null) {
+            mScaleType = scaleType;
+        }
         List<View> views = new ArrayList<>();
         for (int resId : resIds) {
-            views.add(BGABannerUtil.getItemImageView(getContext(), resId));
+            views.add(BGABannerUtil.getItemImageView(getContext(), resId, localImageSize, mScaleType));
         }
         setData(views);
     }
