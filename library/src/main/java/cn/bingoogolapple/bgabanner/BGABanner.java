@@ -74,11 +74,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private int mNumberIndicatorTextSize;
     private Drawable mNumberIndicatorBackground;
     private boolean mIsNeedShowIndicatorOnOnlyOnePage;
+    private int mContentBottomMargin;
+    private float mAspectRatio;
     private boolean mAllowUserScrollable = true;
     private View mSkipView;
     private View mEnterView;
     private GuideDelegate mGuideDelegate;
-    private int mContentBottomMargin;
     private boolean mIsFirstInvisible = true;
 
     private static final ImageView.ScaleType[] sScaleTypeArray = {
@@ -124,6 +125,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mNumberIndicatorTextSize = BGABannerUtil.sp2px(context, 10);
 
         mContentBottomMargin = 0;
+        mAspectRatio = 0;
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -175,6 +177,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             mIsNeedShowIndicatorOnOnlyOnePage = typedArray.getBoolean(attr, mIsNeedShowIndicatorOnOnlyOnePage);
         } else if (attr == R.styleable.BGABanner_banner_contentBottomMargin) {
             mContentBottomMargin = typedArray.getDimensionPixelSize(attr, mContentBottomMargin);
+        } else if (attr == R.styleable.BGABanner_banner_aspectRatio) {
+            mAspectRatio = typedArray.getFloat(attr, mAspectRatio);
         } else if (attr == R.styleable.BGABanner_android_scaleType) {
             final int index = typedArray.getInt(attr, -1);
             if (index >= 0 && index < sScaleTypeArray.length) {
@@ -539,54 +543,6 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
         addView(mViewPager, 0, layoutParams);
 
-        if (mEnterView != null || mSkipView != null) {
-            mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    if (position == getItemCount() - 2) {
-                        if (mEnterView != null) {
-                            ViewCompat.setAlpha(mEnterView, positionOffset);
-                        }
-                        if (mSkipView != null) {
-                            ViewCompat.setAlpha(mSkipView, 1.0f - positionOffset);
-                        }
-
-                        if (positionOffset > 0.5f) {
-                            if (mEnterView != null) {
-                                mEnterView.setVisibility(View.VISIBLE);
-                            }
-                            if (mSkipView != null) {
-                                mSkipView.setVisibility(View.GONE);
-                            }
-                        } else {
-                            if (mEnterView != null) {
-                                mEnterView.setVisibility(View.GONE);
-                            }
-                            if (mSkipView != null) {
-                                mSkipView.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    } else if (position == getItemCount() - 1) {
-                        if (mSkipView != null) {
-                            mSkipView.setVisibility(View.GONE);
-                        }
-                        if (mEnterView != null) {
-                            mEnterView.setVisibility(View.VISIBLE);
-                            ViewCompat.setAlpha(mEnterView, 1.0f);
-                        }
-                    } else {
-                        if (mSkipView != null) {
-                            mSkipView.setVisibility(View.VISIBLE);
-                            ViewCompat.setAlpha(mSkipView, 1.0f);
-                        }
-                        if (mEnterView != null) {
-                            mEnterView.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            });
-        }
-
         if (mAutoPlayAble) {
             mViewPager.setAutoPlayDelegate(this);
 
@@ -604,6 +560,25 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             removeView(mPlaceholderIv);
             mPlaceholderIv = null;
         }
+    }
+
+    /**
+     * 设置宽高比例，如果大于 0，则会根据宽度来计算高度，否则使用 android:layout_height 指定的高度
+     */
+    public void setAspectRatio(float aspectRatio) {
+        mAspectRatio = aspectRatio;
+        requestLayout();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mAspectRatio > 0) {
+            int width = MeasureSpec.getSize(widthMeasureSpec);
+            int height = (int) (width / mAspectRatio);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -670,8 +645,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         stopAutoPlay();
 
         // 处理 RecyclerView 中从对用户不可见变为可见时卡顿的问题
-        if (!mIsFirstInvisible && mAutoPlayAble && mViewPager != null && getItemCount() > 0) {
-            switchToNextPage();
+        if (!mIsFirstInvisible && mAutoPlayAble && mViewPager != null && getItemCount() > 0 && mPageScrollPositionOffset != 0) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
         }
         mIsFirstInvisible = false;
     }
@@ -802,6 +778,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        handleGuideViewVisibility(position, positionOffset);
+
         mPageScrollPosition = position;
         mPageScrollPositionOffset = positionOffset;
 
@@ -834,6 +812,53 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     public void onPageScrollStateChanged(int state) {
         if (mOnPageChangeListener != null) {
             mOnPageChangeListener.onPageScrollStateChanged(state);
+        }
+    }
+
+    private void handleGuideViewVisibility(int position, float positionOffset) {
+        if (mEnterView == null && mSkipView == null) {
+            return;
+        }
+
+        if (position == getItemCount() - 2) {
+            if (mEnterView != null) {
+                ViewCompat.setAlpha(mEnterView, positionOffset);
+            }
+            if (mSkipView != null) {
+                ViewCompat.setAlpha(mSkipView, 1.0f - positionOffset);
+            }
+
+            if (positionOffset > 0.5f) {
+                if (mEnterView != null) {
+                    mEnterView.setVisibility(View.VISIBLE);
+                }
+                if (mSkipView != null) {
+                    mSkipView.setVisibility(View.GONE);
+                }
+            } else {
+                if (mEnterView != null) {
+                    mEnterView.setVisibility(View.GONE);
+                }
+                if (mSkipView != null) {
+                    mSkipView.setVisibility(View.VISIBLE);
+                }
+            }
+        } else if (position == getItemCount() - 1) {
+            if (mSkipView != null) {
+                mSkipView.setVisibility(View.GONE);
+            }
+            if (mEnterView != null) {
+                mEnterView.setVisibility(View.VISIBLE);
+                ViewCompat.setAlpha(mEnterView, 1.0f);
+            }
+        } else {
+            if (mSkipView != null) {
+                mSkipView.setVisibility(View.VISIBLE);
+                ViewCompat.setAlpha(mSkipView, 1.0f);
+            }
+            if (mEnterView != null) {
+                mEnterView.setVisibility(View.GONE);
+            }
         }
     }
 
