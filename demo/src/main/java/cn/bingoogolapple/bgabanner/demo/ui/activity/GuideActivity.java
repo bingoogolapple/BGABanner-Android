@@ -3,8 +3,10 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
+import cn.bingoogolapple.bgabanner.BGALocalImageSize;
 import cn.bingoogolapple.bgabanner.demo.R;
 
 public class GuideActivity extends Activity {
@@ -45,10 +47,18 @@ public class GuideActivity extends Activity {
     }
 
     private void processLogic() {
+        // Bitmap 的宽高在 maxWidth maxHeight 和 minWidth minHeight 之间
+        BGALocalImageSize localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
         // 设置数据源
-        mBackgroundBanner.setData(R.drawable.uoko_guide_background_1, R.drawable.uoko_guide_background_2, R.drawable.uoko_guide_background_3);
+        mBackgroundBanner.setData(localImageSize, ImageView.ScaleType.CENTER_CROP,
+                R.drawable.uoko_guide_background_1,
+                R.drawable.uoko_guide_background_2,
+                R.drawable.uoko_guide_background_3);
 
-        mForegroundBanner.setData(R.drawable.uoko_guide_foreground_1, R.drawable.uoko_guide_foreground_2, R.drawable.uoko_guide_foreground_3);
+        mForegroundBanner.setData(localImageSize, ImageView.ScaleType.CENTER_CROP,
+                R.drawable.uoko_guide_foreground_1,
+                R.drawable.uoko_guide_foreground_2,
+                R.drawable.uoko_guide_foreground_3);
     }
 
     @Override

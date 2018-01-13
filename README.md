@@ -66,7 +66,7 @@ dependencies {
 
 ### 3.在 Activity 或者 Fragment 中配置 BGABanner 的数据源
 
-有多种配置数据源的方式，这里仅列出三种方式。更多初始化方式请查看 [demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo)，或加网页底部给的 QQ 群咨询
+有多种配置数据源的方式，这里仅列出三种方式。更多初始化方式请查看 [demo](https://github.com/bingoogolapple/BGABanner-Android/tree/master/demo)
 
 >配置数据源的方式1：通过传入数据模型并结合 Adapter 的方式配置数据源。这种方式主要用于加载网络图片，以及实现少于3页时的无限轮播
 
@@ -91,16 +91,22 @@ mContentBanner.setData(Arrays.asList("网络图片路径1", "网络图片路径2
 
 ```java
 List<View> views = new ArrayList<>();
-views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_1));
-views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_2));
-views.add(BGABannerUtil.getItemImageView(this, R.drawable.ic_guide_3));
+views.add(View.inflate(context, R.layout.layout_guide_one, null));
+views.add(View.inflate(context, R.layout.layout_guide_two, null));
+views.add(View.inflate(context, R.layout.layout_guide_three, null));
 mContentBanner.setData(views);
 ```
 
 > 配置数据源的方式3：通过传入图片资源 id 的方式配置数据源，主要用于引导页每一页都是只显示图片的情况
 
 ```
-mContentBanner.setData(R.drawable.uoko_guide_foreground_1, R.drawable.uoko_guide_foreground_2, R.drawable.uoko_guide_foreground_3);
+// Bitmap 的宽高在 maxWidth maxHeight 和 minWidth minHeight 之间
+BGALocalImageSize localImageSize = new BGALocalImageSize(720, 1280, 320, 640);
+// 设置数据源
+mContentBanner.setData(localImageSize, ImageView.ScaleType.CENTER_CROP,
+        R.drawable.uoko_guide_background_1,
+        R.drawable.uoko_guide_background_2,
+        R.drawable.uoko_guide_background_3);
 ```
 
 ### 4.监听广告 item 的单击事件，在 BGABanner 里已经帮开发者处理了防止重复点击事件
