@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/MatchMatch">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch">
 
     <ImageView
         style="@style/MatchMatch"
         android:scaleType="centerCrop"
-        android:src="@drawable/uoko_guide_background_2"/>
+        android:src="@drawable/uoko_guide_background_2" />
 
     <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/banner_fresco_demo_content"
         style="@style/BannerDefaultStyle"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:layout_margin="@dimen/size_level5"
         app:banner_contentBottomMargin="40dp"
         app:banner_indicatorGravity="bottom|center_horizontal"
         app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
         app:banner_isNumberIndicator="false"
         app:banner_pointAutoPlayAble="true"
-        app:banner_pointContainerBackground="@android:color/transparent"
+        app:banner_indicatorContainerBackground="@android:color/transparent"
         app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-        app:banner_transitionEffect="defaultEffect"/>
+        app:banner_transitionEffect="defaultEffect" />
 </RelativeLayout>

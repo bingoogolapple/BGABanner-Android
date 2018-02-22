@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                style="@style/MatchMatch">
+<!-- 背景 Banner。其实 BGABanner 就是一个 ConstraintLayout，可以在其内部添加子控件 -->
+<cn.bingoogolapple.bgabanner.BGABanner
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/banner_guide_background"
+    style="@style/MatchMatch"
+    app:banner_indicatorContainerBackground="@android:color/transparent"
+    app:banner_indicatorContainerHeight="60dp"
+    app:banner_pageChangeDuration="1000"
+    app:banner_pointAutoPlayAble="false"
+    app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+    app:banner_transitionEffect="fade">
 
-    <cn.bingoogolapple.bgabanner.BGAGuideLinkageLayout style="@style/MatchMatch">
-
-        <cn.bingoogolapple.bgabanner.BGABanner
-            android:id="@+id/banner_guide_background"
-            style="@style/MatchMatch"
-            app:banner_pageChangeDuration="1000"
-            app:banner_pointAutoPlayAble="false"
-            app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-            app:banner_pointTopBottomMargin="15dp"
-            app:banner_transitionEffect="fade"/>
-
-        <cn.bingoogolapple.bgabanner.BGABanner
-            android:id="@+id/banner_guide_foreground"
-            style="@style/MatchMatch"
-            app:banner_pageChangeDuration="1000"
-            app:banner_pointAutoPlayAble="false"
-            app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-            app:banner_pointTopBottomMargin="15dp"
-            app:banner_transitionEffect="alpha"/>
-    </cn.bingoogolapple.bgabanner.BGAGuideLinkageLayout>
+    <!-- 前景 Banner -->
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_guide_foreground"
+        style="@style/MatchMatch"
+        app:banner_indicatorContainerBackground="@android:color/transparent"
+        app:banner_indicatorContainerHeight="60dp"
+        app:banner_numberIndicatorHeight="15dp"
+        app:banner_pageChangeDuration="1000"
+        app:banner_pointAutoPlayAble="false"
+        app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+        app:banner_transitionEffect="alpha" />
 
     <TextView
         android:id="@+id/tv_guide_skip"
         style="@style/WrapWrap"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:clickable="true"
+        android:layout_marginRight="8dp"
         android:padding="4dp"
+        android:clickable="true"
         android:text="跳过 >"
         android:textColor="@android:color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textColor="@color/colorPrimary" />
 
     <Button
         android:id="@+id/btn_guide_enter"
         style="@style/WrapWrap"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
-        android:background="@drawable/selector_btn_test"
         android:padding="8dp"
+        android:background="@drawable/selector_btn_test"
         android:text="进入主界面"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:visibility="gone"
-        tools:visibility="visible"/>
-</RelativeLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:visibility="visible" />
+</cn.bingoogolapple.bgabanner.BGABanner>

@@ -11,11 +11,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:padding="10dp"
             android:background="@drawable/selector_btn_test"
             android:clickable="true"
             android:gravity="center"
             android:onClick="onClick"
-            android:padding="10dp"
             android:text="查看 ListView HeaderView Demo"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
@@ -25,11 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:padding="10dp"
             android:background="@drawable/selector_btn_test"
             android:clickable="true"
             android:gravity="center"
             android:onClick="onClick"
-            android:padding="10dp"
             android:text="查看 RecyclerView HeaderView Demo"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
@@ -39,11 +39,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:padding="10dp"
             android:background="@drawable/selector_btn_test"
             android:clickable="true"
             android:gravity="center"
             android:onClick="onClick"
-            android:padding="10dp"
             android:text="Fresco Demo"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
@@ -191,16 +191,17 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_default"
             style="@style/BannerDefaultStyle"
+            app:banner_aspectRatio="2.8"
+            app:banner_indicatorContainerBackground="#44aaaaaa"
             app:banner_indicatorGravity="bottom|right"
             app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
             app:banner_isNumberIndicator="true"
             app:banner_numberIndicatorBackground="@drawable/shape_number_indicator_background"
+            app:banner_numberIndicatorHeight="20dp"
             app:banner_numberIndicatorTextColor="@android:color/white"
             app:banner_numberIndicatorTextSize="10sp"
             app:banner_pointAutoPlayAble="true"
-            app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_transitionEffect="defaultEffect"
-            app:banner_aspectRatio="2.8" />
+            app:banner_transitionEffect="defaultEffect" />
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_cube"
@@ -218,7 +219,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_flip"
             style="@style/BannerDefaultStyle"
-            app:banner_indicatorGravity="bottom|left"
+            app:banner_indicatorGravity="top|left"
             app:banner_pointDrawable="@drawable/bga_banner_selector_point_solid"
             app:banner_transitionEffect="flip" />
 
@@ -242,6 +243,7 @@
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner_main_fade"
             style="@style/BannerDefaultStyle"
+            app:banner_indicatorGravity="bottom|left"
             app:banner_transitionEffect="fade" />
 
         <cn.bingoogolapple.bgabanner.BGABanner

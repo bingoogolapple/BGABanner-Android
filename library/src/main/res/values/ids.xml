@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 整个大的指示器容器的id -->
+    <item name="banner_indicatorContainerId" type="id" />
+    <!-- 圆点指示器容器或数字指示器的id-->
     <item name="banner_indicatorId" type="id" />
+    <!-- 提示文本的 id -->
+    <item name="banner_tipId" type="id" />
+    <!-- 占位图的 id -->
+    <item name="banner_placeholderId" type="id" />
+    <!-- ViewPager 的 id -->
+    <item name="banner_viewPagerId" type="id" />
 </resources>

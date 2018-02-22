@@ -46,6 +46,7 @@
 ```groovy
 dependencies {
     implementation 'com.android.support:support-v4:latestVersion'
+    implementation 'com.android.support.constraint:constraint-layout:latestVersion'
     implementation 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
 ```
@@ -58,9 +59,9 @@ dependencies {
     style="@style/MatchMatch"
     app:banner_pageChangeDuration="1000"
     app:banner_pointAutoPlayAble="false"
-    app:banner_pointContainerBackground="@android:color/transparent"
+    app:banner_indicatorContainerBackground="@android:color/transparent"
     app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
-    app:banner_pointTopBottomMargin="15dp"
+    app:banner_numberIndicatorHeight="15dp"
     app:banner_transitionEffect="alpha" />
 ```
 
@@ -135,17 +136,7 @@ mContentBanner.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide
 ## 自定义属性说明
 ```xml
 <declare-styleable name="BGABanner">
-    <!-- 指示点容器背景 -->
-    <attr name="banner_pointContainerBackground" format="reference|color" />
-    <!-- 指示点背景 -->
-    <attr name="banner_pointDrawable" format="reference" />
-    <!-- 指示点容器左右内间距 -->
-    <attr name="banner_pointContainerLeftRightPadding" format="dimension" />
-    <!-- 指示点上下外间距 -->
-    <attr name="banner_pointTopBottomMargin" format="dimension" />
-    <!-- 指示点左右外间距 -->
-    <attr name="banner_pointLeftRightMargin" format="dimension" />
-    <!-- 指示器的位置 -->
+    <!-- 指示器容器的位置 -->
     <attr name="banner_indicatorGravity">
         <flag name="top" value="0x30" />
         <flag name="bottom" value="0x50" />
@@ -153,14 +144,26 @@ mContentBanner.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide
         <flag name="right" value="0x05" />
         <flag name="center_horizontal" value="0x01" />
     </attr>
+    <!-- 指示器容器的高度 -->
+    <attr format="dimension" name="banner_indicatorContainerHeight" />
+    <!-- 指示器容器的背景 -->
+    <attr format="reference|color" name="banner_indicatorContainerBackground" />
+    <!-- 指示器左右内间距 -->
+    <attr format="dimension" name="banner_indicatorContainerLeftRightPadding" />
+    <!-- 数字指示器高度 -->
+    <attr format="dimension" name="banner_numberIndicatorHeight" />
+    <!-- 指示点背景 -->
+    <attr format="reference" name="banner_pointDrawable" />
+    <!-- 指示点左右外间距 -->
+    <attr format="dimension" name="banner_pointLeftRightMargin" />
     <!-- 是否开启自动轮播 -->
-    <attr name="banner_pointAutoPlayAble" format="boolean" />
+    <attr format="boolean" name="banner_pointAutoPlayAble" />
     <!-- 自动轮播的时间间隔 -->
-    <attr name="banner_pointAutoPlayInterval" format="integer" />
+    <attr format="integer" name="banner_pointAutoPlayInterval" />
     <!-- 页码切换过程的时间长度 -->
-    <attr name="banner_pageChangeDuration" format="integer" />
+    <attr format="integer" name="banner_pageChangeDuration" />
     <!-- 页面切换的动画效果 -->
-    <attr name="banner_transitionEffect" format="enum">
+    <attr format="enum" name="banner_transitionEffect">
         <enum name="defaultEffect" value="0" />
         <enum name="alpha" value="1" />
         <enum name="rotate" value="2" />
@@ -176,27 +179,27 @@ mContentBanner.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide
         <enum name="zoom" value="12" />
     </attr>
     <!-- 提示文案的文字颜色 -->
-    <attr name="banner_tipTextColor" format="reference|color" />
+    <attr format="reference|color" name="banner_tipTextColor" />
     <!-- 提示文案的文字大小 -->
-    <attr name="banner_tipTextSize" format="dimension" />
+    <attr format="dimension" name="banner_tipTextSize" />
     <!-- 加载网络数据时覆盖在 BGABanner 最上层的占位图 -->
-    <attr name="banner_placeholderDrawable" format="reference" />
+    <attr format="reference" name="banner_placeholderDrawable" />
     <!-- 是否是数字指示器 -->
-    <attr name="banner_isNumberIndicator" format="boolean" />
+    <attr format="boolean" name="banner_isNumberIndicator" />
     <!-- 数字指示器文字颜色 -->
-    <attr name="banner_numberIndicatorTextColor" format="reference|color" />
+    <attr format="reference|color" name="banner_numberIndicatorTextColor" />
     <!-- 数字指示器文字大小 -->
-    <attr name="banner_numberIndicatorTextSize" format="dimension" />
+    <attr format="dimension" name="banner_numberIndicatorTextSize" />
     <!-- 数字指示器背景 -->
-    <attr name="banner_numberIndicatorBackground" format="reference" />
+    <attr format="reference" name="banner_numberIndicatorBackground" />
     <!-- 当只有一页数据时是否显示指示器，默认值为 false -->
-    <attr name="banner_isNeedShowIndicatorOnOnlyOnePage" format="boolean" />
-    <!-- 自动轮播区域距离 BGABanner 底部的距离，用于使指示器区域与自动轮播区域不重叠 -->
-    <attr name="banner_contentBottomMargin" format="dimension"/>
+    <attr format="boolean" name="banner_isNeedShowIndicatorOnOnlyOnePage" />
+    <!-- 自动轮播区域距离 BGABanner 底部的距离 -->
+    <attr format="dimension" name="banner_contentBottomMargin" />
     <!-- 宽高比例，如果大于 0，则会根据宽度来计算高度，否则使用 android:layout_height 指定的高度 -->
-    <attr name="banner_aspectRatio" format="float"/>
+    <attr format="float" name="banner_aspectRatio" />
     <!-- 占位图和资源图片缩放模式 -->
-    <attr name="android:scaleType"/>
+    <attr name="android:scaleType" />
 </declare-styleable>
 ```
 
@@ -204,9 +207,9 @@ mContentBanner.setEnterSkipViewIdAndDelegate(R.id.btn_guide_enter, R.id.tv_guide
 
 ## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------- | ------------ | ------------ |
+| <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a> | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## 打赏支持
 

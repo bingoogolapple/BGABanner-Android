@@ -89,8 +89,6 @@ public class BGAViewPager extends ViewPager {
 
     /**
      * 切换到指定索引的页面，主要用于自动轮播
-     *
-     * @param position
      */
     public void setBannerCurrentItemInternal(int position, boolean smoothScroll) {
         Class viewpagerClass = ViewPager.class;

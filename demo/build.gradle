@@ -23,17 +23,18 @@ android {
 }
 
 dependencies {
-//    implementation project(':library')
+    implementation project(':library')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
-    implementation 'com.android.support:support-v4:27.0.2'
+//    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 
     // 以下几个库是演示案例所使用到的
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-    implementation "com.android.support:cardview-v7:27.0.2"
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation "com.android.support:cardview-v7:27.1.1"
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
