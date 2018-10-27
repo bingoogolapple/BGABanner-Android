@@ -11,10 +11,10 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-v4:27.0.2'
+    compileOnly 'com.android.support:support-v4:28.0.0'
 }
 
-// gradle clean build bintrayUpload -PpublishAar
+// ./gradlew :library:clean :library:build :library:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
 }

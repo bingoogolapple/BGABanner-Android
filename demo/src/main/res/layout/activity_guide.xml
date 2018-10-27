@@ -12,7 +12,7 @@
             app:banner_pageChangeDuration="1000"
             app:banner_pointAutoPlayAble="false"
             app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointDrawable="@drawable/selector_banner_unequal"
             app:banner_pointTopBottomMargin="15dp"
             app:banner_transitionEffect="fade"/>
 
@@ -22,7 +22,7 @@
             app:banner_pageChangeDuration="1000"
             app:banner_pointAutoPlayAble="false"
             app:banner_pointContainerBackground="@android:color/transparent"
-            app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"
+            app:banner_pointDrawable="@drawable/selector_banner_unequal"
             app:banner_pointTopBottomMargin="15dp"
             app:banner_transitionEffect="alpha"/>
     </cn.bingoogolapple.bgabanner.BGAGuideLinkageLayout>

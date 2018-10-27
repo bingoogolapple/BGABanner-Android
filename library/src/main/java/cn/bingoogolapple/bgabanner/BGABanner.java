@@ -692,7 +692,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                     !mIsNeedShowIndicatorOnOnlyOnePage && mViews.size() > 1)))) {
                 mPointRealContainerLl.setVisibility(View.VISIBLE);
                 for (int i = 0; i < mPointRealContainerLl.getChildCount(); i++) {
-                    mPointRealContainerLl.getChildAt(i).setEnabled(i == newCurrentPoint);
+                    mPointRealContainerLl.getChildAt(i).setSelected(i == newCurrentPoint);
                     // 处理指示器选中和未选中状态图片尺寸不相等
                     mPointRealContainerLl.getChildAt(i).requestLayout();
                 }

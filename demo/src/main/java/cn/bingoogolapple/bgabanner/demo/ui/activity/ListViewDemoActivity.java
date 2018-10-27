@@ -104,7 +104,7 @@ public class ListViewDemoActivity extends AppCompatActivity implements BGABanner
      * 加载内容列表数据
      */
     private void loadContentData() {
-        mEngine.loadContentData("http://7xk9dj.com1.z0.glb.clouddn.com/refreshlayout/api/defaultdata.json").enqueue(new Callback<List<RefreshModel>>() {
+        mEngine.loadContentData("http://bgashare.bingoogolapple.cn/refreshlayout/api/defaultdata.json").enqueue(new Callback<List<RefreshModel>>() {
             @Override
             public void onResponse(Call<List<RefreshModel>> call, Response<List<RefreshModel>> response) {
                 mContentAdapter.setData(response.body());
