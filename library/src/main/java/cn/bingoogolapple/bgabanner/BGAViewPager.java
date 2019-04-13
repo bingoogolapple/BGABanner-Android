@@ -100,6 +100,7 @@ public class BGAViewPager extends ViewPager {
             setCurrentItemInternalMethod.invoke(this, position, smoothScroll, true);
             ViewCompat.postInvalidateOnAnimation(this);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
