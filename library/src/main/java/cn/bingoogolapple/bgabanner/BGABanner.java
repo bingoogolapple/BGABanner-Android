@@ -748,20 +748,25 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     @Override
     public void handleAutoPlayActionUpOrCancel(float xVelocity) {
         if (mViewPager != null) {
-            if (mPageScrollPosition < mViewPager.getCurrentItem()) {
-                // 往右滑
+            if (mPageScrollPosition < mViewPager.getCurrentItem()) { // 往右滑
                 if (xVelocity > VEL_THRESHOLD || (mPageScrollPositionOffset < 0.7f && xVelocity > -VEL_THRESHOLD)) {
+                    // 已达到右滑到接下来展示左边一页的条件，展示左边一页
                     mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
                 } else {
+                    // 未达到右滑到接下来展示左边一页的条件，展示当前页
                     mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1, true);
+                }
+            } else if (mPageScrollPosition == mViewPager.getCurrentItem()) { // 往左滑
+                if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
+                    // 已达到左滑到接下来展示右边一页的条件，展示右边一页
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1, true);
+                } else {
+                    // 未达到左滑到接下来展示右边一页的条件，展示当前页
+                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
                 }
             } else {
-                // 往左滑
-                if (xVelocity < -VEL_THRESHOLD || (mPageScrollPositionOffset > 0.3f && xVelocity < VEL_THRESHOLD)) {
-                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition + 1, true);
-                } else {
-                    mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
-                }
+                // 快速左滑优化异常场景。感谢 https://blog.csdn.net/lylddingHFFW/article/details/89212664
+                mViewPager.setBannerCurrentItemInternal(mPageScrollPosition, true);
             }
         }
     }
