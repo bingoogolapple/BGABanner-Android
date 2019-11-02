@@ -330,6 +330,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         initIndicator();
         initViewPager();
         removePlaceholder();
+        handleGuideViewVisibility(0, 0);
     }
 
     /**
@@ -462,6 +463,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                 mSkipView.setOnClickListener(mGuideOnNoDoubleClickListener);
             }
         }
+        handleGuideViewVisibility(0, 0);
     }
 
     /**
@@ -570,7 +572,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         layoutParams.setMargins(0, 0, 0, mContentBottomMargin);
         addView(mViewPager, 0, layoutParams);
 
-        if (mAutoPlayAble) {
+        if (mAutoPlayAble && !BGABannerUtil.isCollectionEmpty(mViews)) {
             mViewPager.setAutoPlayDelegate(this);
 
             int zeroItem = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % mViews.size();
@@ -800,6 +802,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void onPageSelected(int position) {
+        if (BGABannerUtil.isCollectionEmpty(mViews)) {
+            return;
+        }
         position = position % mViews.size();
         switchToPoint(position);
 
@@ -810,6 +815,9 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (BGABannerUtil.isCollectionEmpty(mViews)) {
+            return;
+        }
         handleGuideViewVisibility(position % mViews.size(), positionOffset);
 
         mPageScrollPosition = position;
@@ -851,7 +859,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (mEnterView == null && mSkipView == null) {
             return;
         }
-        if (getItemCount() == 1) { // 只有一页时，有进入按钮则显示进入按钮并隐藏跳过按钮，没有进入按钮则显示跳过按钮
+        if (getItemCount() < 2) { // 只有一页时，有进入按钮则显示进入按钮并隐藏跳过按钮，没有进入按钮则显示跳过按钮
             if (mEnterView != null) {
                 mEnterView.setVisibility(VISIBLE);
                 if (mSkipView != null) {
