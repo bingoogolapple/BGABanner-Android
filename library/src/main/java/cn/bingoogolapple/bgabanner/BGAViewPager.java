@@ -115,7 +115,7 @@ public class BGAViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mAllowUserScrollable) {
+        if (mAllowUserScrollable && getAdapter() != null && getAdapter().getCount() > 0) {
             return super.onInterceptTouchEvent(ev);
         } else {
             return false;
@@ -124,7 +124,7 @@ public class BGAViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (mAllowUserScrollable) {
+        if (mAllowUserScrollable && getAdapter() != null && getAdapter().getCount() > 0) {
             if (mAutoPlayDelegate != null && (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)) {
                 mAutoPlayDelegate.handleAutoPlayActionUpOrCancel(getXVelocity());
                 return false;
