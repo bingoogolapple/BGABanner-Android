@@ -810,7 +810,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        handleGuideViewVisibility(position, positionOffset);
+        handleGuideViewVisibility(position % mViews.size(), positionOffset);
 
         mPageScrollPosition = position;
         mPageScrollPositionOffset = positionOffset;
@@ -889,12 +889,27 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                 }
             }
         } else if (position == getItemCount() - 1) {
-            if (mSkipView != null) {
-                mSkipView.setVisibility(View.GONE);
-            }
             if (mEnterView != null) {
-                mEnterView.setVisibility(View.VISIBLE);
-                ViewCompat.setAlpha(mEnterView, 1.0f);
+                ViewCompat.setAlpha(mEnterView, 1.0f - positionOffset);
+            }
+            if (mSkipView != null) {
+                ViewCompat.setAlpha(mSkipView,  positionOffset);
+            }
+
+            if (positionOffset < 0.5f) {
+                if (mEnterView != null) {
+                    mEnterView.setVisibility(View.VISIBLE);
+                }
+                if (mSkipView != null) {
+                    mSkipView.setVisibility(View.GONE);
+                }
+            } else {
+                if (mEnterView != null) {
+                    mEnterView.setVisibility(View.GONE);
+                }
+                if (mSkipView != null) {
+                    mSkipView.setVisibility(View.VISIBLE);
+                }
             }
         } else {
             if (mSkipView != null) {
