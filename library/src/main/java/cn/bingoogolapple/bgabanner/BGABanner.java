@@ -837,6 +837,19 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (mEnterView == null && mSkipView == null) {
             return;
         }
+        if (getItemCount() == 1) { // 只有一页时，有进入按钮则显示进入按钮并隐藏跳过按钮，没有进入按钮则显示跳过按钮
+            if (mEnterView != null) {
+                mEnterView.setVisibility(VISIBLE);
+                if (mSkipView != null) {
+                    mSkipView.setVisibility(GONE);
+                }
+                return;
+            }
+            if (mSkipView != null) {
+                mSkipView.setVisibility(VISIBLE);
+                return;
+            }
+        }
 
         if (position == getItemCount() - 2) {
             if (mEnterView != null) {
