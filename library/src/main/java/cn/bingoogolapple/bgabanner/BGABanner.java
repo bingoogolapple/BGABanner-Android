@@ -68,6 +68,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     private Adapter mAdapter;
     private int mOverScrollMode = OVER_SCROLL_NEVER;
     private ViewPager.OnPageChangeListener mOnPageChangeListener;
+    private RelativeLayout mPointContainerRl;
     private boolean mIsNumberIndicator = false;
     private TextView mNumberIndicatorTv;
     private int mNumberIndicatorTextColor = Color.WHITE;
@@ -188,13 +189,13 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     private void initView(Context context) {
-        RelativeLayout pointContainerRl = new RelativeLayout(context);
+        mPointContainerRl = new RelativeLayout(context);
         if (Build.VERSION.SDK_INT >= 16) {
-            pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
+            mPointContainerRl.setBackground(mPointContainerBackgroundDrawable);
         } else {
-            pointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
+            mPointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
         }
-        pointContainerRl.setPadding(mPointContainerLeftRightPadding, mPointTopBottomMargin, mPointContainerLeftRightPadding, mPointTopBottomMargin);
+        mPointContainerRl.setPadding(mPointContainerLeftRightPadding, mPointTopBottomMargin, mPointContainerLeftRightPadding, mPointTopBottomMargin);
         RelativeLayout.LayoutParams pointContainerLp = new RelativeLayout.LayoutParams(RMP, RWC);
         // 处理圆点在顶部还是底部
         if ((mPointGravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP) {
@@ -202,7 +203,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         } else {
             pointContainerLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         }
-        addView(pointContainerRl, pointContainerLp);
+        addView(mPointContainerRl, pointContainerLp);
 
 
         RelativeLayout.LayoutParams indicatorLp = new RelativeLayout.LayoutParams(RWC, RWC);
@@ -223,13 +224,13 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                     mNumberIndicatorTv.setBackgroundDrawable(mNumberIndicatorBackground);
                 }
             }
-            pointContainerRl.addView(mNumberIndicatorTv, indicatorLp);
+            mPointContainerRl.addView(mNumberIndicatorTv, indicatorLp);
         } else {
             mPointRealContainerLl = new LinearLayout(context);
             mPointRealContainerLl.setId(R.id.banner_indicatorId);
             mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
             mPointRealContainerLl.setGravity(Gravity.CENTER_VERTICAL);
-            pointContainerRl.addView(mPointRealContainerLl, indicatorLp);
+            mPointContainerRl.addView(mPointRealContainerLl, indicatorLp);
         }
 
         RelativeLayout.LayoutParams tipLp = new RelativeLayout.LayoutParams(RMP, RWC);
@@ -240,7 +241,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         mTipTv.setEllipsize(TextUtils.TruncateAt.END);
         mTipTv.setTextColor(mTipTextColor);
         mTipTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTipTextSize);
-        pointContainerRl.addView(mTipTv, tipLp);
+        mPointContainerRl.addView(mTipTv, tipLp);
 
         int horizontalGravity = mPointGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
         // 处理圆点在左边、右边还是水平居中
@@ -497,6 +498,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         if (mViewPager != null) {
             mViewPager.setOverScrollMode(mOverScrollMode);
         }
+    }
+
+    public void setIndicatorVisibility(boolean visible) {
+        mPointContainerRl.setVisibility(visible ? VISIBLE : GONE);
     }
 
     private void initIndicator() {
