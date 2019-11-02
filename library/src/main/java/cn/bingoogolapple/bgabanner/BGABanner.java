@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -510,6 +511,19 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     public void setIndicatorVisibility(boolean visible) {
         mPointContainerRl.setVisibility(visible ? VISIBLE : GONE);
+    }
+
+    public void setIndicatorTopBottomMarginDp(int marginDp) {
+        setIndicatorTopBottomMarginPx(BGABannerUtil.dp2px(getContext(), marginDp));
+    }
+
+    public void setIndicatorTopBottomMarginRes(@DimenRes int resId) {
+        setIndicatorTopBottomMarginPx(getResources().getDimensionPixelOffset(resId));
+    }
+
+    public void setIndicatorTopBottomMarginPx(int marginPx) {
+        mPointTopBottomMargin = marginPx;
+        mPointContainerRl.setPadding(mPointContainerLeftRightPadding, mPointTopBottomMargin, mPointContainerLeftRightPadding, mPointTopBottomMargin);
     }
 
     private void initIndicator() {
