@@ -345,16 +345,24 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
             tips = new ArrayList<>();
         }
         for (int i = 0; i < models.size(); i++) {
-            mViews.add(View.inflate(getContext(), layoutResId, null));
+            mViews.add(inflateItemView(layoutResId));
         }
         if (mAutoPlayAble && mViews.size() < 3) {
             mHackyViews = new ArrayList<>(mViews);
-            mHackyViews.add(View.inflate(getContext(), layoutResId, null));
+            mHackyViews.add(inflateItemView(layoutResId));
             if (mHackyViews.size() == 2) {
-                mHackyViews.add(View.inflate(getContext(), layoutResId, null));
+                mHackyViews.add(inflateItemView(layoutResId));
             }
         }
         setData(mViews, models, tips);
+    }
+
+    private View inflateItemView(@LayoutRes int layoutResId) {
+        View itemView = View.inflate(getContext(), layoutResId, null);
+        if (itemView instanceof ImageView) {
+            ((ImageView) itemView).setScaleType(mScaleType);
+        }
+        return itemView;
     }
 
     /**
