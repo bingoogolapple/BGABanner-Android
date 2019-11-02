@@ -960,8 +960,8 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         public void run() {
             BGABanner banner = mBanner.get();
             if (banner != null) {
-                banner.switchToNextPage();
                 banner.startAutoPlay();
+                banner.switchToNextPage();
             }
         }
     }
