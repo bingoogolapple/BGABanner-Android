@@ -41,11 +41,12 @@
 ## 使用
 
 ### 1.添加 Gradle 依赖
-[![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion) bga-banner 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+* androidx 项目用 [![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion) bga-banner 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+* 非 androidx 项目用 2.2.7 版本
 
 ```groovy
 dependencies {
-    implementation 'com.android.support:support-v4:latestVersion'
+    implementation 'androidx.legacy:legacy-support-v4:latestVersion'
     implementation 'cn.bingoogolapple:bga-banner:latestVersion@aar'
 }
 ```

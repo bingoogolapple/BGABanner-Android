@@ -2,7 +2,6 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -13,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import cn.bingoogolapple.baseadapter.BGAAdapterViewAdapter;
 import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.bgabanner.BGABanner;
