@@ -2,9 +2,9 @@ package cn.bingoogolapple.bgabanner.demo.ui.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;

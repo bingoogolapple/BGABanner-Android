@@ -1,7 +1,8 @@
 package cn.bingoogolapple.bgabanner.transformer;
 
-import android.support.v4.view.ViewCompat;
 import android.view.View;
+
+import androidx.core.view.ViewCompat;
 
 
 /**

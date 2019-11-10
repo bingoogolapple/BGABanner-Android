@@ -11,10 +11,15 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.android.support:support-v4:28.0.0'
+    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
 }
 
 // ./gradlew :library:clean :library:build :library:bintrayUpload -PpublishAar
 if (hasProperty("publishAar")) {
     apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+}
+
+// ./gradlew :library:clean :library:build :library:uploadArchives -PpublishAar
+if (hasProperty("publishAar")) {
+    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/local-release.gradle'
 }
