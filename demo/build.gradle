@@ -23,10 +23,10 @@ android {
 }
 
 dependencies {
-//    implementation project(':library')
+    implementation project(':library')
 
     // -------------------- 以下两个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-banner:3.0.0@aar'
+//    implementation 'com.github.bingoogolapple:BGABanner-Android:3.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 
@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'cn.bingoogolapple:bga-baseadapter:2.0.0@aar'
+    implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
 
     implementation 'com.facebook.fresco:fresco:2.0.0'
 }
