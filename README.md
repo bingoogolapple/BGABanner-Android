@@ -41,14 +41,13 @@
 ## 使用
 
 ### 1.添加 Gradle 依赖
-* androidx 项目用 [![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-banner/images/download.svg)](https://bintray.com/bingoogolapple/maven/bga-banner/_latestVersion) bga-banner 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
-* 非 androidx 项目用 2.2.7 版本
+
+* 把 `maven { url 'https://jitpack.io' }` 添加到 root build.gradle 的 repositories 中
+* 在 app build.gradle 中添加如下依赖，末尾的「latestVersion」指的是徽章 [![](https://jitpack.io/v/bingoogolapple/BGABanner-Android.svg)](https://jitpack.io/#bingoogolapple/BGABanner-Android) 里的版本名称，请自行替换
 
 ```groovy
-dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:latestVersion'
-    implementation 'cn.bingoogolapple:bga-banner:latestVersion@aar'
-}
+implementation 'androidx.legacy:legacy-support-v4:latestVersion'
+implementation 'com.github.bingoogolapple:BGABanner-Android:latestVersion'
 ```
 
 ### 2.在布局文件中添加 BGABanner
