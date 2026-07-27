@@ -124,108 +124,77 @@ public class MainActivity extends AppCompatActivity implements BGABanner.Delegat
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_main_visible:
-                mDefaultBanner.setVisibility(View.VISIBLE);
-                break;
-            case R.id.tv_main_invisible:
-                mDefaultBanner.setVisibility(View.INVISIBLE);
-                break;
-            case R.id.tv_main_gone:
-                mDefaultBanner.setVisibility(View.GONE);
-                break;
-            case R.id.tv_main_change_height:
-                // 设置宽高比例，如果大于 0，则会根据宽度来计算高度，否则使用 android:layout_height 指定的高度
-                mDefaultBanner.setAspectRatio(2.1f);
-                break;
-            case R.id.tv_main_enable_auto_play:
-                /**
-                 * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
-                 * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
-                 */
-                mDefaultBanner.setAutoPlayAble(true);
-                break;
-            case R.id.tv_main_disable_auto_play:
-                /**
-                 * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
-                 * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
-                 */
-                mDefaultBanner.setAutoPlayAble(false);
-                break;
-            case R.id.tv_main_start_auto_play:
-                // 仅在 autoPlayAble 为 true 时才会生效「开发者使用该库时不用调用该方法，这里只是为了演示而已，界面可见时在 BGABanner 内部已经帮开发者调用了该方方法」
-                mDefaultBanner.startAutoPlay();
-                break;
-            case R.id.tv_main_stop_auto_play:
-                // 仅在 autoPlayAble 为 true 时才会生效「开发者使用该库时不用调用该方法，这里只是为了演示而已，界面不可见时在 BGABanner 内部已经帮开发者调用了该方方法」
-                mDefaultBanner.stopAutoPlay();
-                break;
-            case R.id.tv_main_select_page_one:
-                mDefaultBanner.setCurrentItem(0);
-                break;
-            case R.id.tv_main_select_page_two:
-                mDefaultBanner.setCurrentItem(1);
-                break;
-            case R.id.tv_main_select_page_three:
-                mDefaultBanner.setCurrentItem(2);
-                break;
-            case R.id.tv_main_select_page_four:
-                mDefaultBanner.setCurrentItem(3);
-                break;
-            case R.id.tv_main_select_page_five:
-                mDefaultBanner.setCurrentItem(4);
-                break;
-            case R.id.tv_main_get_item_count:
-                Toast.makeText(App.getInstance(), "广告条总页数为 " + mDefaultBanner.getItemCount(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_main_get_current_item:
-                Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.tv_main_load_zero_item:
-                mDefaultBanner.setAdapter(this);
-                mDefaultBanner.setAutoPlayAble(false);
-                mDefaultBanner.setData(null, null);
-                mDefaultBanner.showPlaceholder();
-                break;
-            case R.id.tv_main_load_one_item:
-                loadData(mDefaultBanner, 1);
-                break;
-            case R.id.tv_main_load_two_item:
-                loadData(mDefaultBanner, 2);
-                break;
-            case R.id.tv_main_load_three_item:
-                loadData(mDefaultBanner, 3);
-                break;
-            case R.id.tv_main_load_five_item:
-                loadData(mDefaultBanner, 5);
-                break;
-            case R.id.tv_main_cube:
-                mDefaultBanner.setTransitionEffect(TransitionEffect.Cube);
-                break;
-            case R.id.tv_main_depth:
-                mDefaultBanner.setTransitionEffect(TransitionEffect.Depth);
-                break;
-            case R.id.tv_main_flip:
-                mDefaultBanner.setTransitionEffect(TransitionEffect.Flip);
-                break;
-            case R.id.tv_main_rotate:
-                mDefaultBanner.setTransitionEffect(TransitionEffect.Rotate);
-                break;
-            case R.id.tv_main_alpha:
-                mDefaultBanner.setTransitionEffect(TransitionEffect.Alpha);
-                break;
-            case R.id.tv_main_listview_demo:
-                startActivity(new Intent(this, ListViewDemoActivity.class));
-                break;
-            case R.id.tv_main_recyclerview_demo:
-                startActivity(new Intent(this, RecyclerViewDemoActivity.class));
-                break;
-            case R.id.tv_main_fresco:
-                startActivity(new Intent(this, FrescoDemoActivity.class));
-                break;
-
-            default:
-                break;
+        int id = v.getId();
+        if (id == R.id.tv_main_visible) {
+            mDefaultBanner.setVisibility(View.VISIBLE);
+        } else if (id == R.id.tv_main_invisible) {
+            mDefaultBanner.setVisibility(View.INVISIBLE);
+        } else if (id == R.id.tv_main_gone) {
+            mDefaultBanner.setVisibility(View.GONE);
+        } else if (id == R.id.tv_main_change_height) {
+            // 设置宽高比例，如果大于 0，则会根据宽度来计算高度，否则使用 android:layout_height 指定的高度
+            mDefaultBanner.setAspectRatio(2.1f);
+        } else if (id == R.id.tv_main_enable_auto_play) {
+            /**
+             * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
+             * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
+             */
+            mDefaultBanner.setAutoPlayAble(true);
+        } else if (id == R.id.tv_main_disable_auto_play) {
+            /**
+             * 设置是否开启自动轮播，需要在 setData 方法之前调用，并且调了该方法后必须再调用一次 setData 方法
+             * 例如根据图片当图片数量大于 1 时开启自动轮播，等于 1 时不开启自动轮播
+             */
+            mDefaultBanner.setAutoPlayAble(false);
+        } else if (id == R.id.tv_main_start_auto_play) {
+            // 仅在 autoPlayAble 为 true 时才会生效「开发者使用该库时不用调用该方法，这里只是为了演示而已，界面可见时在 BGABanner 内部已经帮开发者调用了该方方法」
+            mDefaultBanner.startAutoPlay();
+        } else if (id == R.id.tv_main_stop_auto_play) {
+            // 仅在 autoPlayAble 为 true 时才会生效「开发者使用该库时不用调用该方法，这里只是为了演示而已，界面不可见时在 BGABanner 内部已经帮开发者调用了该方方法」
+            mDefaultBanner.stopAutoPlay();
+        } else if (id == R.id.tv_main_select_page_one) {
+            mDefaultBanner.setCurrentItem(0);
+        } else if (id == R.id.tv_main_select_page_two) {
+            mDefaultBanner.setCurrentItem(1);
+        } else if (id == R.id.tv_main_select_page_three) {
+            mDefaultBanner.setCurrentItem(2);
+        } else if (id == R.id.tv_main_select_page_four) {
+            mDefaultBanner.setCurrentItem(3);
+        } else if (id == R.id.tv_main_select_page_five) {
+            mDefaultBanner.setCurrentItem(4);
+        } else if (id == R.id.tv_main_get_item_count) {
+            Toast.makeText(App.getInstance(), "广告条总页数为 " + mDefaultBanner.getItemCount(), Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.tv_main_get_current_item) {
+            Toast.makeText(App.getInstance(), "广告当前索引位置为 " + mDefaultBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.tv_main_load_zero_item) {
+            mDefaultBanner.setAdapter(this);
+            mDefaultBanner.setAutoPlayAble(false);
+            mDefaultBanner.setData(null, null);
+            mDefaultBanner.showPlaceholder();
+        } else if (id == R.id.tv_main_load_one_item) {
+            loadData(mDefaultBanner, 1);
+        } else if (id == R.id.tv_main_load_two_item) {
+            loadData(mDefaultBanner, 2);
+        } else if (id == R.id.tv_main_load_three_item) {
+            loadData(mDefaultBanner, 3);
+        } else if (id == R.id.tv_main_load_five_item) {
+            loadData(mDefaultBanner, 5);
+        } else if (id == R.id.tv_main_cube) {
+            mDefaultBanner.setTransitionEffect(TransitionEffect.Cube);
+        } else if (id == R.id.tv_main_depth) {
+            mDefaultBanner.setTransitionEffect(TransitionEffect.Depth);
+        } else if (id == R.id.tv_main_flip) {
+            mDefaultBanner.setTransitionEffect(TransitionEffect.Flip);
+        } else if (id == R.id.tv_main_rotate) {
+            mDefaultBanner.setTransitionEffect(TransitionEffect.Rotate);
+        } else if (id == R.id.tv_main_alpha) {
+            mDefaultBanner.setTransitionEffect(TransitionEffect.Alpha);
+        } else if (id == R.id.tv_main_listview_demo) {
+            startActivity(new Intent(this, ListViewDemoActivity.class));
+        } else if (id == R.id.tv_main_recyclerview_demo) {
+            startActivity(new Intent(this, RecyclerViewDemoActivity.class));
+        } else if (id == R.id.tv_main_fresco) {
+            startActivity(new Intent(this, FrescoDemoActivity.class));
         }
     }
 }
