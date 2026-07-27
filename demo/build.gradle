@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:5.0.9'
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
-    implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
+    implementation 'cn.bingoogolapple:bga-baseadapter:3.0.0@aar'
 
     implementation 'com.facebook.fresco:fresco:3.7.0'
 }
