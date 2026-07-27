@@ -1,6 +1,9 @@
 :running:BGABanner-Android:running:
 ============
 
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/cn.bingoogolapple/bga-banner)](https://central.sonatype.com/artifact/cn.bingoogolapple/bga-banner)
+
 ## 目录
 
 * [功能介绍](#功能介绍)
@@ -27,11 +30,11 @@
 
 ## 效果图与示例 apk
 
-![banner](https://cloud.githubusercontent.com/assets/8949716/17557718/dc235ec4-5f4a-11e6-92b7-144a2a1a1e3f.gif)
+![banner](images/banner.gif)
 
 [点击下载 BGABannerDemo.apk](http://fir.im/BGABannerDemo) 或扫描下面的二维码安装
 
-![BGABannerDemo apk文件二维](http://bgashare.bingoogolapple.cn/banner/BGABannerDemo.png)
+![BGABannerDemo apk文件二维码](images/qrcode-download.png)
 
 ## 常见问题
 
@@ -42,12 +45,10 @@
 
 ### 1.添加 Gradle 依赖
 
-* 把 `maven { url 'https://jitpack.io' }` 添加到 root build.gradle 的 repositories 中
-* 在 app build.gradle 中添加如下依赖，末尾的「latestVersion」指的是徽章 [![](https://jitpack.io/v/bingoogolapple/BGABanner-Android.svg)](https://jitpack.io/#bingoogolapple/BGABanner-Android) 里的版本名称，请自行替换
+> 该库已迁移到 AndroidX（minSdk 21），使用方工程需开启 AndroidX（`android.useAndroidX=true`）
 
 ```groovy
-implementation 'androidx.legacy:legacy-support-v4:latestVersion'
-implementation 'com.github.bingoogolapple:BGABanner-Android:latestVersion'
+implementation 'cn.bingoogolapple:bga-banner:latestVersion'
 ```
 
 ### 2.在布局文件中添加 BGABanner

@@ -74,6 +74,13 @@
     <methods>;
 }
 
+# BGABaseAdapter-Android:2.0.1 发布版 AAR 漏打包了 Data Binding 生成的
+# cn.bingoogolapple.baseadapter.BR 类（其 DummyBinding 的 setVariable 引用了它）。
+# 本 demo 并未使用 baseadapter 的 Data Binding 适配器，运行时不会触发该引用，
+# 故仅抑制 R8 的 “Missing class” 报错即可。若后续用到 baseadapter 的
+# BGABindingRecyclerViewAdapter 等 Data Binding 适配器，需升级到已修复的 baseadapter 版本。
+-dontwarn cn.bingoogolapple.baseadapter.BR
+
 ## ----------------------------------
 ##      配置不混淆 Demo 里的 Model
 ## ----------------------------------

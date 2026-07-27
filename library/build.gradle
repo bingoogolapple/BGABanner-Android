@@ -1,16 +1,30 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
+    namespace = 'cn.bingoogolapple.bgabanner'
+    compileSdk = ANDROID_BUILD_SDK_VERSION as int
 
     defaultConfig {
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
-        targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
+        minSdk = ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdk = ANDROID_BUILD_TARGET_SDK_VERSION as int
         consumerProguardFiles 'consumer-proguard-rules.pro'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 dependencies {
-    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }
+
+// 发布脚本（加 -PpublishAar 才启用；凭证 mavenCentralUsername/mavenCentralPassword、githubUsername/githubToken 见 ~/.gradle/gradle.properties）。
+// 简写发布命令（封装了 clean + build + 发布；完整任务名与参数分层见 publish-aar.gradle 头部注释）：
+//   Maven Central 正式版(手动 Release) : ./gradlew publishAar -PpublishAar
+//   Maven Central 正式版(自动 Release) : ./gradlew publishAarRelease -PpublishAar
+//   Maven Central 快照版              : ./gradlew publishAar -PpublishAar   (VERSION_NAME 以 -SNAPSHOT 结尾，上传即生效)
+//   GitHub Packages (正式/快照同命令)  : ./gradlew publishAarGpr -PpublishAar
+//   本地调试 Maven Local              : ./gradlew publishToMavenLocal -PpublishAar
+apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/publish-aar.gradle'
